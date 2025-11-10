@@ -4,6 +4,7 @@ import com.daymemory.domain.dto.AIRecommendationDto;
 import com.daymemory.domain.entity.Event;
 import com.daymemory.domain.entity.GiftItem;
 import com.daymemory.domain.repository.EventRepository;
+import com.daymemory.domain.repository.GiftItemRepository;
 import com.daymemory.exception.CustomException;
 import com.daymemory.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,6 +27,7 @@ import java.util.*;
 public class AIRecommendationService {
 
     private final EventRepository eventRepository;
+    private final GiftItemRepository giftItemRepository;
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -47,6 +49,7 @@ public class AIRecommendationService {
         Event.EventType eventType = request.getEventType();
         String eventTitle = "특별한 날";
         int daysUntilEvent = 0;
+        Long userId = null;
 
         if (request.getEventId() != null) {
             event = eventRepository.findById(request.getEventId())
@@ -54,6 +57,7 @@ public class AIRecommendationService {
             eventType = event.getEventType();
             eventTitle = event.getTitle();
             daysUntilEvent = (int) ChronoUnit.DAYS.between(LocalDate.now(), event.getEventDate());
+            userId = event.getUser().getId();
         }
 
         // 컨텍스트 빌드
@@ -67,6 +71,11 @@ public class AIRecommendationService {
             log.error("AI API call failed, providing fallback recommendations", e);
             // Fallback: 기본 추천 제공
             recommendations = getFallbackRecommendations(eventType, request);
+        }
+
+        // 사용자 저장 선물과 매칭 및 우선 정렬
+        if (userId != null) {
+            recommendations = matchAndPrioritizeUserGifts(recommendations, userId);
         }
 
         return AIRecommendationDto.RecommendResponse.builder()
@@ -208,6 +217,8 @@ public class AIRecommendationService {
                         .reason(node.path("reason").asText())
                         .estimatedPrice(node.path("estimatedPrice").asInt())
                         .category(category)
+                        .isUserSaved(false)
+                        .savedGiftId(null)
                         .build());
             }
 
@@ -279,6 +290,8 @@ public class AIRecommendationService {
                 .reason(reason)
                 .estimatedPrice(price)
                 .category(category)
+                .isUserSaved(false)
+                .savedGiftId(null)
                 .build();
     }
 
@@ -301,5 +314,86 @@ public class AIRecommendationService {
             case NEW_YEAR -> "새해";
             default -> "특별한 날";
         };
+    }
+
+    /**
+     * 사용자 저장 선물과 AI 추천 매칭 및 우선 정렬
+     */
+    private List<AIRecommendationDto.GiftRecommendation> matchAndPrioritizeUserGifts(
+            List<AIRecommendationDto.GiftRecommendation> recommendations, Long userId) {
+
+        // 사용자의 모든 저장된 선물 조회
+        List<GiftItem> userGifts = giftItemRepository.findByUserId(userId);
+
+        // AI 추천과 사용자 저장 선물 매칭
+        for (AIRecommendationDto.GiftRecommendation recommendation : recommendations) {
+            for (GiftItem userGift : userGifts) {
+                // 이름 유사도 또는 카테고리 매칭으로 판단
+                if (isMatchingGift(recommendation, userGift)) {
+                    recommendation = AIRecommendationDto.GiftRecommendation.builder()
+                            .name(recommendation.getName())
+                            .description(recommendation.getDescription())
+                            .reason(recommendation.getReason())
+                            .estimatedPrice(recommendation.getEstimatedPrice())
+                            .category(recommendation.getCategory())
+                            .purchaseLink(recommendation.getPurchaseLink())
+                            .isUserSaved(true)
+                            .savedGiftId(userGift.getId())
+                            .build();
+                    break;
+                }
+            }
+
+            // isUserSaved가 null이면 false로 설정
+            if (recommendation.getIsUserSaved() == null) {
+                recommendations.set(recommendations.indexOf(recommendation),
+                        AIRecommendationDto.GiftRecommendation.builder()
+                                .name(recommendation.getName())
+                                .description(recommendation.getDescription())
+                                .reason(recommendation.getReason())
+                                .estimatedPrice(recommendation.getEstimatedPrice())
+                                .category(recommendation.getCategory())
+                                .purchaseLink(recommendation.getPurchaseLink())
+                                .isUserSaved(false)
+                                .savedGiftId(null)
+                                .build());
+            }
+        }
+
+        // 사용자 저장 선물을 우선 정렬 (isUserSaved = true를 앞으로)
+        recommendations.sort((r1, r2) -> {
+            boolean r1Saved = r1.getIsUserSaved() != null && r1.getIsUserSaved();
+            boolean r2Saved = r2.getIsUserSaved() != null && r2.getIsUserSaved();
+            return Boolean.compare(r2Saved, r1Saved);
+        });
+
+        return recommendations;
+    }
+
+    /**
+     * AI 추천과 사용자 저장 선물 매칭 여부 판단
+     */
+    private boolean isMatchingGift(AIRecommendationDto.GiftRecommendation recommendation, GiftItem userGift) {
+        // 1. 이름 유사도 체크 (대소문자 무시, 공백 제거)
+        String recName = recommendation.getName().toLowerCase().replaceAll("\\s+", "");
+        String giftName = userGift.getName().toLowerCase().replaceAll("\\s+", "");
+
+        if (recName.contains(giftName) || giftName.contains(recName)) {
+            return true;
+        }
+
+        // 2. 카테고리 및 가격대가 유사한 경우
+        if (recommendation.getCategory() == userGift.getCategory()) {
+            if (userGift.getPrice() != null && recommendation.getEstimatedPrice() != null) {
+                // 가격이 ±30% 범위 내에 있으면 유사한 것으로 판단
+                int priceDiff = Math.abs(userGift.getPrice() - recommendation.getEstimatedPrice());
+                int priceAvg = (userGift.getPrice() + recommendation.getEstimatedPrice()) / 2;
+                if (priceDiff < priceAvg * 0.3) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

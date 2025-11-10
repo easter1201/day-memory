@@ -46,5 +46,7 @@ public class AIRecommendationDto {
         private Integer estimatedPrice; // 예상 가격
         private GiftItem.GiftCategory category; // 카테고리
         private String purchaseLink;    // 구매 링크 (선택)
+        private Boolean isUserSaved;    // 사용자가 이미 저장한 선물 여부
+        private Long savedGiftId;       // 저장된 선물 ID (있는 경우)
     }
 }
