@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 77개
+- **완료**: 95개
 - **진행중**: 0개
-- **대기**: 64개
+- **대기**: 46개
 - **전체**: 141개
-- **진행률**: 54.6%
+- **진행률**: 67.4%
 
 ---
 
@@ -160,26 +160,26 @@
 ### 📊 대시보드 및 통계
 
 #### 대시보드 API
-- [ ] 대시보드 요약 정보 API (GET /api/dashboard)
-  - [ ] 다가오는 이벤트 요약 (upcoming events count)
-  - [ ] 미구매 선물 개수 표시
-  - [ ] 최근 리마인더 발송 현황
-  - [ ] 이번 달 이벤트 개수
+- [x] 대시보드 요약 정보 API (GET /api/dashboard)
+  - [x] 다가오는 이벤트 요약 (upcoming events count)
+  - [x] 미구매 선물 개수 표시
+  - [x] 최근 리마인더 발송 현황
+  - [x] 이번 달 이벤트 개수
 
 #### 통계 API
-- [ ] 월별 이벤트 통계 API (GET /api/statistics/events)
-  - [ ] 월별 이벤트 수 집계
-  - [ ] 이벤트 타입별 분포
-- [ ] 선물 구매 내역 통계 API (GET /api/statistics/gifts)
-  - [ ] 총 구매 선물 수
-  - [ ] 카테고리별 구매 통계
-  - [ ] 총 지출 금액
-- [ ] 리마인더 발송 통계 API (GET /api/statistics/reminders)
-  - [ ] 발송 성공/실패 건수
-  - [ ] 일별 발송 통계
-- [ ] 캘린더 뷰 데이터 조회 API (GET /api/calendar)
-  - [ ] 특정 월의 모든 이벤트 조회
-  - [ ] 날짜별 이벤트 그룹핑
+- [x] 월별 이벤트 통계 API (GET /api/statistics/events)
+  - [x] 월별 이벤트 수 집계
+  - [x] 이벤트 타입별 분포
+- [x] 선물 구매 내역 통계 API (GET /api/statistics/gifts)
+  - [x] 총 구매 선물 수
+  - [x] 카테고리별 구매 통계
+  - [x] 총 지출 금액
+- [x] 리마인더 발송 통계 API (GET /api/statistics/reminders)
+  - [x] 발송 성공/실패 건수
+  - [x] 일별 발송 통계
+- [x] 캘린더 뷰 데이터 조회 API (GET /api/calendar)
+  - [x] 특정 월의 모든 이벤트 조회
+  - [x] 날짜별 이벤트 그룹핑
 
 ---
 

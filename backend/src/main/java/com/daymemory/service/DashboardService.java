@@ -1,0 +1,97 @@
+package com.daymemory.service;
+
+import com.daymemory.domain.dto.DashboardDto;
+import com.daymemory.domain.dto.EventDto;
+import com.daymemory.domain.entity.Event;
+import com.daymemory.domain.entity.GiftItem;
+import com.daymemory.domain.entity.ReminderLog;
+import com.daymemory.domain.repository.EventRepository;
+import com.daymemory.domain.repository.GiftItemRepository;
+import com.daymemory.domain.repository.ReminderLogRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Slf4j
+public class DashboardService {
+
+    private final EventRepository eventRepository;
+    private final GiftItemRepository giftItemRepository;
+    private final ReminderLogRepository reminderLogRepository;
+
+    /**
+     * 대시보드 요약 정보 조회
+     */
+    public DashboardDto getDashboardSummary(Long userId) {
+        LocalDate today = LocalDate.now();
+        LocalDate next30Days = today.plusDays(30);
+
+        // 다가오는 이벤트 조회 (30일 이내)
+        List<Event> upcomingEventsList = eventRepository.findUpcomingEvents(userId, today, next30Days);
+
+        // 미구매 선물 조회
+        List<GiftItem> unpurchasedGifts = giftItemRepository.findByUserIdAndIsPurchasedFalse(userId);
+
+        // 최근 리마인더 발송 현황 (최근 7일)
+        DashboardDto.RecentReminderStatus reminderStatus = getRecentReminderStatus();
+
+        // 이번 달 이벤트 조회
+        YearMonth currentMonth = YearMonth.now();
+        LocalDate monthStart = currentMonth.atDay(1);
+        LocalDate monthEnd = currentMonth.atEndOfMonth();
+        List<Event> thisMonthEvents = eventRepository.findUpcomingEvents(userId, monthStart, monthEnd);
+
+        // 상위 5개 이벤트만 반환
+        List<EventDto.Response> upcomingEventsDto = upcomingEventsList.stream()
+                .limit(5)
+                .map(EventDto.Response::from)
+                .collect(Collectors.toList());
+
+        return DashboardDto.builder()
+                .upcomingEventsCount(upcomingEventsList.size())
+                .unpurchasedGiftsCount(unpurchasedGifts.size())
+                .recentReminderStatus(reminderStatus)
+                .thisMonthEventsCount(thisMonthEvents.size())
+                .upcomingEvents(upcomingEventsDto)
+                .build();
+    }
+
+    /**
+     * 최근 리마인더 발송 현황 (최근 7일)
+     */
+    private DashboardDto.RecentReminderStatus getRecentReminderStatus() {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        LocalDateTime now = LocalDateTime.now();
+
+        List<ReminderLog> recentLogs = reminderLogRepository.findRemindersBetweenDates(sevenDaysAgo, now);
+
+        long sentCount = recentLogs.stream()
+                .filter(log -> log.getStatus() == ReminderLog.ReminderStatus.SENT)
+                .count();
+
+        long failedCount = recentLogs.stream()
+                .filter(log -> log.getStatus() == ReminderLog.ReminderStatus.FAILED)
+                .count();
+
+        String lastSentAt = recentLogs.isEmpty()
+                ? "없음"
+                : recentLogs.get(0).getSentAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        return DashboardDto.RecentReminderStatus.builder()
+                .sentCount((int) sentCount)
+                .failedCount((int) failedCount)
+                .lastSentAt(lastSentAt)
+                .build();
+    }
+}
