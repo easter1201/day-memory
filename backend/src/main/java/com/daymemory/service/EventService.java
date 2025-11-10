@@ -6,6 +6,8 @@ import com.daymemory.domain.entity.EventReminder;
 import com.daymemory.domain.entity.User;
 import com.daymemory.domain.repository.EventRepository;
 import com.daymemory.domain.repository.UserRepository;
+import com.daymemory.exception.CustomException;
+import com.daymemory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,7 @@ public class EventService {
     @Transactional
     public EventDto.Response createEvent(Long userId, EventDto.Request request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Event event = Event.builder()
                 .user(user)
@@ -64,14 +66,14 @@ public class EventService {
 
     public EventDto.Response getEvent(Long eventId) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
         return EventDto.Response.from(event);
     }
 
     @Transactional
     public EventDto.Response updateEvent(Long eventId, EventDto.Request request) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
 
         event.update(
                 request.getTitle(),
@@ -97,7 +99,7 @@ public class EventService {
     @Transactional
     public void deleteEvent(Long eventId) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
         event.deactivate();
     }
 
@@ -114,7 +116,7 @@ public class EventService {
     @Transactional
     public EventDto.Response updateReminders(Long eventId, EventDto.UpdateReminderRequest request) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
 
         updateEventReminders(event, request.getReminderDays());
 
@@ -124,7 +126,7 @@ public class EventService {
     @Transactional
     public EventDto.Response toggleTracking(Long eventId, Boolean isTracking) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
 
         event.setTracking(isTracking);
 

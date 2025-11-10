@@ -7,6 +7,8 @@ import com.daymemory.domain.entity.User;
 import com.daymemory.domain.repository.EventRepository;
 import com.daymemory.domain.repository.GiftItemRepository;
 import com.daymemory.domain.repository.UserRepository;
+import com.daymemory.exception.CustomException;
+import com.daymemory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +28,12 @@ public class GiftItemService {
     @Transactional
     public GiftItemDto.Response createGiftItem(Long userId, GiftItemDto.Request request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Event event = null;
         if (request.getEventId() != null) {
             event = eventRepository.findById(request.getEventId())
-                    .orElseThrow(() -> new RuntimeException("Event not found"));
+                    .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
         }
 
         GiftItem giftItem = GiftItem.builder()
@@ -65,7 +67,7 @@ public class GiftItemService {
     @Transactional
     public GiftItemDto.Response updateGiftItem(Long giftId, GiftItemDto.Request request) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
-                .orElseThrow(() -> new RuntimeException("Gift item not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
 
         giftItem.update(
                 request.getName(),
@@ -81,7 +83,7 @@ public class GiftItemService {
     @Transactional
     public GiftItemDto.Response togglePurchaseStatus(Long giftId) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
-                .orElseThrow(() -> new RuntimeException("Gift item not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
 
         if (giftItem.getIsPurchased()) {
             giftItem.markAsNotPurchased();
@@ -95,7 +97,7 @@ public class GiftItemService {
     @Transactional
     public void deleteGiftItem(Long giftId) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
-                .orElseThrow(() -> new RuntimeException("Gift item not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
         giftItemRepository.delete(giftItem);
     }
 }

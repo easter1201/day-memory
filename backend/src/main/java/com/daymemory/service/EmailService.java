@@ -1,5 +1,7 @@
 package com.daymemory.service;
 
+import com.daymemory.exception.CustomException;
+import com.daymemory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,7 +27,7 @@ public class EmailService {
             log.info("Reminder email sent to: {}", to);
         } catch (Exception e) {
             log.error("Failed to send email to: {}", to, e);
-            throw new RuntimeException("Failed to send email", e);
+            throw new CustomException(ErrorCode.EMAIL_SEND_FAILED);
         }
     }
 

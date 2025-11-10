@@ -56,4 +56,20 @@ public class EventController {
         List<EventDto.Response> events = eventService.getUpcomingEvents(userId, days);
         return ResponseEntity.ok(events);
     }
+
+    @PutMapping("/{eventId}/tracking")
+    public ResponseEntity<EventDto.Response> toggleTracking(
+            @PathVariable Long eventId,
+            @RequestBody EventDto.ToggleTrackingRequest request) {
+        EventDto.Response response = eventService.toggleTracking(eventId, request.getIsTracking());
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{eventId}/reminders")
+    public ResponseEntity<EventDto.Response> updateReminders(
+            @PathVariable Long eventId,
+            @RequestBody EventDto.UpdateReminderRequest request) {
+        EventDto.Response response = eventService.updateReminders(eventId, request);
+        return ResponseEntity.ok(response);
+    }
 }

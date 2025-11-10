@@ -5,6 +5,8 @@ import com.daymemory.domain.entity.EventReminder;
 import com.daymemory.domain.entity.ReminderLog;
 import com.daymemory.domain.repository.EventRepository;
 import com.daymemory.domain.repository.ReminderLogRepository;
+import com.daymemory.exception.CustomException;
+import com.daymemory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -123,7 +125,7 @@ public class ReminderService {
     @Transactional
     public void sendImmediateReminder(Long eventId) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
 
         LocalDate today = LocalDate.now();
         int daysUntilEvent = (int) java.time.temporal.ChronoUnit.DAYS.between(today, event.getEventDate());
