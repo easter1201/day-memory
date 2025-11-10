@@ -57,4 +57,15 @@ public interface GiftItemRepository extends JpaRepository<GiftItem, Long> {
     List<GiftItem> findByUserIdAndCategory(
             @Param("userId") Long userId,
             @Param("category") GiftItem.GiftCategory category);
+
+    // 키워드 검색 (N+1 방지) - 선물 이름, 설명에서 검색
+    @Query("SELECT DISTINCT g FROM GiftItem g " +
+           "LEFT JOIN FETCH g.user " +
+           "LEFT JOIN FETCH g.event " +
+           "WHERE g.user.id = :userId " +
+           "AND (LOWER(g.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+           "OR LOWER(g.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    List<GiftItem> searchByKeyword(
+            @Param("userId") Long userId,
+            @Param("keyword") String keyword);
 }

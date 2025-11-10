@@ -12,6 +12,7 @@ import com.daymemory.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class GiftItemService {
     private final GiftItemRepository giftItemRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
+    private final FileStorageService fileStorageService;
 
     @Transactional
     public GiftItemDto.Response createGiftItem(Long userId, GiftItemDto.Request request) {
@@ -99,5 +101,72 @@ public class GiftItemService {
         GiftItem giftItem = giftItemRepository.findById(giftId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
         giftItemRepository.delete(giftItem);
+    }
+
+    /**
+     * 미구매 선물 목록 조회
+     */
+    public List<GiftItemDto.Response> getUnpurchasedGiftItems(Long userId) {
+        List<GiftItem> giftItems = giftItemRepository.findByUserIdAndIsPurchasedFalse(userId);
+        return giftItems.stream()
+                .map(GiftItemDto.Response::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 카테고리별 선물 조회
+     */
+    public List<GiftItemDto.Response> getGiftItemsByCategory(Long userId, GiftItem.GiftCategory category) {
+        List<GiftItem> giftItems = giftItemRepository.findByUserIdAndCategory(userId, category);
+        return giftItems.stream()
+                .map(GiftItemDto.Response::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 키워드로 선물 검색
+     */
+    public List<GiftItemDto.Response> searchGiftItems(Long userId, String keyword) {
+        List<GiftItem> giftItems = giftItemRepository.searchByKeyword(userId, keyword);
+        return giftItems.stream()
+                .map(GiftItemDto.Response::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 선물 이미지 업로드
+     */
+    @Transactional
+    public GiftItemDto.Response uploadGiftImage(Long giftId, MultipartFile file) {
+        GiftItem giftItem = giftItemRepository.findById(giftId)
+                .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+
+        // 파일 유효성 검사
+        fileStorageService.validateImageFile(file);
+
+        // 기존 이미지 삭제
+        if (giftItem.getImageUrl() != null) {
+            fileStorageService.deleteFile(giftItem.getImageUrl());
+        }
+
+        // 새 이미지 업로드
+        String imageUrl = fileStorageService.uploadFile(file);
+        giftItem.updateImageUrl(imageUrl);
+
+        return GiftItemDto.Response.from(giftItem);
+    }
+
+    /**
+     * 선물 이미지 삭제
+     */
+    @Transactional
+    public void deleteGiftImage(Long giftId) {
+        GiftItem giftItem = giftItemRepository.findById(giftId)
+                .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+
+        if (giftItem.getImageUrl() != null) {
+            fileStorageService.deleteFile(giftItem.getImageUrl());
+            giftItem.updateImageUrl(null);
+        }
     }
 }

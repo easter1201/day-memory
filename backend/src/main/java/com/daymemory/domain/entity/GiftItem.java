@@ -35,6 +35,9 @@ public class GiftItem extends BaseEntity {
     @Column
     private String url;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
@@ -63,6 +66,10 @@ public class GiftItem extends BaseEntity {
         this.price = price;
         this.url = url;
         this.category = category;
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void markAsPurchased() {

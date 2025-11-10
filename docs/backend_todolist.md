@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 95개
+- **완료**: 98개
 - **진행중**: 0개
-- **대기**: 46개
+- **대기**: 43개
 - **전체**: 141개
-- **진행률**: 67.4%
+- **진행률**: 69.5%
 
 ---
 
@@ -114,9 +114,9 @@
 
 #### 고급 기능
 - [x] 미구매 선물 목록 조회 API (GET /api/gifts?purchased=false)
-- [ ] 카테고리별 선물 조회 API (GET /api/gifts?category={category})
-- [ ] 선물 검색 기능 (GET /api/gifts/search?keyword={keyword})
-- [ ] 선물 이미지 업로드 (AWS S3 연동)
+- [x] 카테고리별 선물 조회 API (GET /api/gifts?category={category})
+- [x] 선물 검색 기능 (GET /api/gifts/search?keyword={keyword})
+- [x] 선물 이미지 업로드 (로컬 파일 시스템, AWS S3 연동 준비)
 
 #### 엔티티 및 Repository
 - [x] GiftItem 엔티티 설계

@@ -32,6 +32,7 @@ public class GiftItemDto {
         private String description;
         private Integer price;
         private String url;
+        private String imageUrl;
         private GiftItem.GiftCategory category;
         private Boolean isPurchased;
 
@@ -43,6 +44,7 @@ public class GiftItemDto {
                     .description(giftItem.getDescription())
                     .price(giftItem.getPrice())
                     .url(giftItem.getUrl())
+                    .imageUrl(giftItem.getImageUrl())
                     .category(giftItem.getCategory())
                     .isPurchased(giftItem.getIsPurchased())
                     .build();

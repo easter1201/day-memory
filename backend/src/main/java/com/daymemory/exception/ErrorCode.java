@@ -32,6 +32,11 @@ public enum ErrorCode {
     GIFT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 선물에 접근할 권한이 없습니다."),
     GIFT_CATEGORY_INVALID(HttpStatus.BAD_REQUEST, "유효하지 않은 선물 카테고리입니다."),
 
+    // File
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다."),
+    FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "파일 크기가 제한을 초과했습니다. (최대 5MB)"),
+    INVALID_FILE_TYPE(HttpStatus.BAD_REQUEST, "이미지 파일만 업로드 가능합니다."),
+
     // AI
     AI_SERVICE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "AI 서비스를 사용할 수 없습니다."),
     AI_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AI 추천 요청에 실패했습니다."),

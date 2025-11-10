@@ -30,6 +30,15 @@ spring:
             enable: true
             required: true
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+file:
+  upload-dir: uploads/gifts
+
 jwt:
   secret: your-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm
   access-token-expiration: 3600000  # 1시간 (1000 * 60 * 60)
