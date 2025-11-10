@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 37개
+- **완료**: 68개
 - **진행중**: 0개
-- **대기**: 104개
+- **대기**: 73개
 - **전체**: 141개
-- **진행률**: 26.2%
+- **진행률**: 48.2%
 
 ---
 
@@ -15,25 +15,25 @@
 ### 👤 사용자 인증 및 관리
 
 #### 기본 인증 API
-- [ ] 사용자 회원가입 API (POST /api/users/signup)
-- [ ] 사용자 로그인 API (POST /api/users/login)
-- [ ] JWT 토큰 재발급 API (POST /api/users/refresh)
-- [ ] 내 정보 조회 API (GET /api/users/me)
-- [ ] 내 정보 수정 API (PUT /api/users/me)
-- [ ] 비밀번호 변경 API (PUT /api/users/password)
+- [x] 사용자 회원가입 API (POST /api/users/signup)
+- [x] 사용자 로그인 API (POST /api/users/login)
+- [x] JWT 토큰 재발급 API (POST /api/users/refresh)
+- [x] 내 정보 조회 API (GET /api/users/me)
+- [x] 내 정보 수정 API (PUT /api/users/me)
+- [x] 비밀번호 변경 API (PUT /api/users/password)
 
 #### 보안 설정
-- [ ] Spring Security 설정 (SecurityConfig)
-- [ ] JwtTokenProvider 구현 (JWT 생성/검증)
-- [ ] JwtAuthenticationFilter 구현 (JWT 필터)
-- [ ] CustomUserDetailsService 구현 (사용자 인증 정보 로드)
-- [ ] BCrypt 비밀번호 암호화
-- [ ] SecurityContext 인증 정보 설정
+- [x] Spring Security 설정 (SecurityConfig)
+- [x] JwtTokenProvider 구현 (JWT 생성/검증)
+- [x] JwtAuthenticationFilter 구현 (JWT 필터)
+- [x] CustomUserDetailsService 구현 (사용자 인증 정보 로드)
+- [x] BCrypt 비밀번호 암호화
+- [x] SecurityContext 인증 정보 설정
 
 #### 엔티티 및 Repository
-- [ ] User 엔티티 설계 (email, password, name)
-- [ ] UserRepository 구현 (findByEmail, existsByEmail)
-- [ ] DTO 설계 (SignupRequest, LoginRequest, LoginResponse)
+- [x] User 엔티티 설계 (email, password, name)
+- [x] UserRepository 구현 (findByEmail, existsByEmail)
+- [x] DTO 설계 (SignupRequest, LoginRequest, LoginResponse)
 
 ---
 
@@ -214,41 +214,41 @@
 ### 예외 처리 및 응답
 
 #### CustomException 구조
-- [ ] CustomException 클래스 생성
-- [ ] ErrorCode enum 정의
-  - [ ] USER_ (7개: NOT_FOUND, ALREADY_EXISTS, INVALID_PASSWORD, INVALID_TOKEN, EXPIRED_TOKEN, UNAUTHORIZED, FORBIDDEN)
-  - [ ] EVENT_ (5개: NOT_FOUND, DATE_INVALID, TYPE_INVALID, ACCESS_DENIED, REMINDER_DAYS_INVALID)
-  - [ ] REMINDER_ (3개: NOT_FOUND, ALREADY_SENT, EMAIL_SEND_FAILED)
-  - [ ] GIFT_ (3개: NOT_FOUND, ACCESS_DENIED, CATEGORY_INVALID)
-  - [ ] AI_ (2개: SERVICE_UNAVAILABLE, REQUEST_FAILED)
-  - [ ] 공통 (4개: VALIDATION_ERROR, INVALID_REQUEST, SERVER_INTERNAL_ERROR, DATABASE_ERROR)
-- [ ] GlobalExceptionHandler 구현 (@RestControllerAdvice)
-  - [ ] CustomException 처리
-  - [ ] MethodArgumentNotValidException 처리 (@Valid)
-  - [ ] 예상치 못한 예외 처리
+- [x] CustomException 클래스 생성
+- [x] ErrorCode enum 정의
+  - [x] USER_ (7개: NOT_FOUND, ALREADY_EXISTS, INVALID_PASSWORD, INVALID_TOKEN, EXPIRED_TOKEN, UNAUTHORIZED, FORBIDDEN)
+  - [x] EVENT_ (5개: NOT_FOUND, DATE_INVALID, TYPE_INVALID, ACCESS_DENIED, REMINDER_DAYS_INVALID)
+  - [x] REMINDER_ (3개: NOT_FOUND, ALREADY_SENT, EMAIL_SEND_FAILED)
+  - [x] GIFT_ (3개: NOT_FOUND, ACCESS_DENIED, CATEGORY_INVALID)
+  - [x] AI_ (2개: SERVICE_UNAVAILABLE, REQUEST_FAILED)
+  - [x] 공통 (4개: VALIDATION_ERROR, INVALID_REQUEST, SERVER_INTERNAL_ERROR, DATABASE_ERROR)
+- [x] GlobalExceptionHandler 구현 (@RestControllerAdvice)
+  - [x] CustomException 처리
+  - [x] MethodArgumentNotValidException 처리 (@Valid)
+  - [x] 예상치 못한 예외 처리
 
 #### 응답 형식
-- [ ] ErrorResponse DTO 설계 (status, code, message, timestamp)
-- [ ] ValidationErrorResponse DTO 설계 (+ errors 배열)
-- [ ] FieldErrorDetail 클래스 (field, rejectedValue, message)
-- [ ] 일관된 에러 응답 형식 적용
-- [ ] HTTP 상태 코드 명확한 매핑
+- [x] ErrorResponse DTO 설계 (status, code, message, timestamp)
+- [x] ValidationErrorResponse DTO 설계 (+ errors 배열)
+- [x] FieldErrorDetail 클래스 (field, rejectedValue, message)
+- [x] 일관된 에러 응답 형식 적용
+- [x] HTTP 상태 코드 명확한 매핑
 
 ---
 
 ### 검증 및 보안
 
 #### Bean Validation
-- [ ] DTO에 @Valid 어노테이션 적용
-- [ ] 필수값 검증 (@NotNull, @NotBlank)
-- [ ] 이메일 형식 검증 (@Email)
-- [ ] 문자열 길이 검증 (@Size)
+- [x] DTO에 @Valid 어노테이션 적용
+- [x] 필수값 검증 (@NotNull, @NotBlank)
+- [x] 이메일 형식 검증 (@Email)
+- [x] 문자열 길이 검증 (@Size)
 - [ ] 날짜 검증 (@Past, @Future)
-- [ ] 숫자 검증 (@Positive, @Min, @Max)
+- [x] 숫자 검증 (@Positive, @Min, @Max)
 - [ ] 커스텀 Validator 구현 (필요 시)
 
 #### 보안 설정
-- [ ] SQL Injection 방지 확인 (JPA Parameterized Query)
+- [x] SQL Injection 방지 확인 (JPA Parameterized Query)
 - [ ] XSS 방지 처리 (입력값 검증 및 이스케이프)
 - [ ] Rate Limiting (API 호출 제한)
   - [ ] Bucket4j 또는 Redis 활용
