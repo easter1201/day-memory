@@ -28,6 +28,17 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean emailVerified = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private OAuthProvider oauthProvider;
+
+    @Column
+    private String oauthProviderId;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Event> events = new ArrayList<>();
@@ -35,4 +46,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<GiftItem> giftItems = new ArrayList<>();
+
+    public void verifyEmail() {
+        this.emailVerified = true;
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }
