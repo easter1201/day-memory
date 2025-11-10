@@ -1,6 +1,7 @@
 package com.daymemory.domain.dto;
 
 import com.daymemory.domain.entity.GiftItem;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,9 +15,17 @@ public class GiftItemDto {
     @Builder
     public static class Request {
         private Long eventId;
+
+        @NotBlank(message = "선물 이름은 필수입니다.")
+        @Size(max = 100, message = "선물 이름은 100자 이하여야 합니다.")
         private String name;
+
+        @Size(max = 500, message = "설명은 500자 이하여야 합니다.")
         private String description;
+
+        @Positive(message = "가격은 양수여야 합니다.")
         private Integer price;
+
         private String url;
         private GiftItem.GiftCategory category;
     }

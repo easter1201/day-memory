@@ -243,16 +243,16 @@
 - [x] 필수값 검증 (@NotNull, @NotBlank)
 - [x] 이메일 형식 검증 (@Email)
 - [x] 문자열 길이 검증 (@Size)
-- [ ] 날짜 검증 (@Past, @Future)
+- [x] 날짜 검증 (@FutureOrPresent)
 - [x] 숫자 검증 (@Positive, @Min, @Max)
-- [ ] 커스텀 Validator 구현 (필요 시)
+- [x] 커스텀 Validator 구현 (@ValidEventDate)
 
 #### 보안 설정
 - [x] SQL Injection 방지 확인 (JPA Parameterized Query)
-- [ ] XSS 방지 처리 (입력값 검증 및 이스케이프)
-- [ ] Rate Limiting (API 호출 제한)
-  - [ ] Bucket4j 또는 Redis 활용
-  - [ ] 사용자별 호출 제한 설정
+- [x] XSS 방지 처리 (HtmlUtils.htmlEscape)
+- [x] Rate Limiting (API 호출 제한)
+  - [x] 메모리 기반 Rate Limit (분당 100회)
+  - [x] IP별 호출 제한 설정
 - [ ] HTTPS 강제 설정 (배포 시)
 
 ---

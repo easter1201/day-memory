@@ -2,6 +2,7 @@ package com.daymemory.domain.dto;
 
 import com.daymemory.domain.entity.Event;
 import com.daymemory.domain.entity.EventReminder;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,13 +20,23 @@ public class EventDto {
     @AllArgsConstructor
     @Builder
     public static class Request {
+        @NotBlank(message = "이벤트 제목은 필수입니다.")
+        @Size(max = 100, message = "제목은 100자 이하여야 합니다.")
         private String title;
+
+        @Size(max = 500, message = "설명은 500자 이하여야 합니다.")
         private String description;
+
+        @NotNull(message = "이벤트 날짜는 필수입니다.")
+        @FutureOrPresent(message = "이벤트 날짜는 오늘 이후여야 합니다.")
         private LocalDate eventDate;
+
+        @NotNull(message = "이벤트 타입은 필수입니다.")
         private Event.EventType eventType;
+
         private Boolean isRecurring;
         private Boolean isTracking;
-        private List<Integer> reminderDays; // 예: [30, 14, 7, 1]
+        private List<@Positive(message = "리마인더 일수는 양수여야 합니다.") Integer> reminderDays;
     }
 
     @Getter
