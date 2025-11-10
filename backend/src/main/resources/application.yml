@@ -47,6 +47,11 @@ jwt:
 server:
   port: 8080
 
+ai:
+  api-key: ${OPENAI_API_KEY:}
+  provider: openai
+  model: gpt-3.5-turbo
+
 logging:
   level:
     com.daymemory: DEBUG
