@@ -145,4 +145,63 @@ public class ReminderService {
                 sendReminder(event, reminder.getDaysBeforeEvent())
         );
     }
+
+    /**
+     * 리마인더 발송 이력 조회
+     */
+    public List<ReminderLog> getReminderLogs(Long eventId) {
+        if (eventId != null) {
+            return reminderLogRepository.findByEventId(eventId);
+        } else {
+            // 최근 30일간의 모든 리마인더 로그 조회
+            LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+            LocalDateTime now = LocalDateTime.now();
+            return reminderLogRepository.findRemindersBetweenDates(thirtyDaysAgo, now);
+        }
+    }
+
+    /**
+     * 실패한 리마인더 재발송
+     */
+    @Transactional
+    public boolean retryFailedReminder(Long reminderLogId) {
+        ReminderLog failedLog = reminderLogRepository.findById(reminderLogId)
+                .orElseThrow(() -> new CustomException(ErrorCode.REMINDER_NOT_FOUND));
+
+        if (failedLog.getStatus() != ReminderLog.ReminderStatus.FAILED) {
+            throw new CustomException(ErrorCode.REMINDER_ALREADY_SENT);
+        }
+
+        try {
+            Event event = failedLog.getEvent();
+            String subject = String.format("[Day Memory] '%s' %d일 전 알림 (재발송)",
+                    event.getTitle(), failedLog.getDaysBeforeEvent());
+            String content = emailService.buildReminderEmailContent(event.getTitle(), failedLog.getDaysBeforeEvent());
+            emailService.sendReminderEmail(event.getUser().getEmail(), subject, content);
+
+            // 새로운 성공 로그 저장
+            ReminderLog successLog = ReminderLog.builder()
+                    .event(event)
+                    .daysBeforeEvent(failedLog.getDaysBeforeEvent())
+                    .sentAt(LocalDateTime.now())
+                    .status(ReminderLog.ReminderStatus.SENT)
+                    .build();
+            reminderLogRepository.save(successLog);
+
+            log.info("Reminder retry successful for log: {}", reminderLogId);
+            return true;
+
+        } catch (Exception e) {
+            log.error("Reminder retry failed for log: {}", reminderLogId, e);
+            return false;
+        }
+    }
+
+    /**
+     * 실패한 리마인더 목록 조회
+     */
+    public List<ReminderLog> getFailedReminders() {
+        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+        return reminderLogRepository.findFailedRemindersAfter(thirtyDaysAgo);
+    }
 }

@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 70개
+- **완료**: 77개
 - **진행중**: 0개
-- **대기**: 71개
+- **대기**: 64개
 - **전체**: 141개
-- **진행률**: 49.6%
+- **진행률**: 54.6%
 
 ---
 
@@ -86,18 +86,18 @@
 - [x] 향후 365일 이벤트 조회 로직
 - [x] 오늘 발송할 리마인더 필터링
 - [x] 중복 발송 방지 로직 (24시간 이내)
-- [ ] JavaMailSender 설정 (application.properties)
-- [ ] 이메일 발송 로직 구현 (EmailService)
-- [ ] 이메일 템플릿 디자인 (reminder-email.html)
-- [ ] SMTP 설정 (Gmail 또는 AWS SES)
+- [x] JavaMailSender 설정 (application.yml)
+- [x] 이메일 발송 로직 구현 (EmailService)
+- [x] 이메일 템플릿 디자인 (HTML 템플릿)
+- [x] SMTP 설정 (Gmail)
 
 #### 로그 및 모니터링
 - [x] ReminderLog 엔티티 생성
   - [x] event_id, days_before_event, sent_at, status
 - [x] ReminderLogRepository 구현
 - [x] 리마인더 발송 로그 기록
-- [ ] 리마인더 발송 이력 조회 API (GET /api/reminders/logs)
-- [ ] 실패한 리마인더 재발송 API (POST /api/reminders/retry)
+- [x] 리마인더 발송 이력 조회 API (GET /api/reminders/logs)
+- [x] 실패한 리마인더 재발송 API (POST /api/reminders/retry/{reminderLogId})
 - [x] 즉시 리마인더 발송 기능 (POST /api/reminders/immediate/{eventId})
 
 ---
