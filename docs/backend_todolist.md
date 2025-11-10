@@ -136,24 +136,24 @@
 ### 🤖 AI 기반 선물 추천
 
 #### API 연동
-- [ ] OpenAI API 또는 Claude API 연동
-- [ ] API 키 설정 (application.properties)
-- [ ] AIRecommendationService 생성
-- [ ] AI 추천 요청 API (POST /api/gifts/recommend)
-- [ ] 프롬프트 엔지니어링 (기념일 유형별)
+- [x] OpenAI API 또는 Claude API 연동
+- [x] API 키 설정 (application.properties)
+- [x] AIRecommendationService 생성
+- [x] AI 추천 요청 API (POST /api/gifts/recommend)
+- [x] 프롬프트 엔지니어링 (기념일 유형별)
 
 #### 추천 로직
-- [ ] 컨텍스트 빌더 (이벤트 정보, 관계, 예산)
+- [x] 컨텍스트 빌더 (이벤트 정보, 관계, 예산)
 - [ ] 사용자 저장 선물 우선 표시 로직
-- [ ] AI 응답 파싱 (선물명, 설명, 이유)
-- [ ] 추천 결과 포맷 (JSON)
-- [ ] 추천 이유 포함하여 응답
+- [x] AI 응답 파싱 (선물명, 설명, 이유)
+- [x] 추천 결과 포맷 (JSON)
+- [x] 추천 이유 포함하여 응답
 - [ ] 추천 결과 캐싱 (Redis - 선택)
 
 #### 예외 처리
-- [ ] API 호출 실패 처리 (AI_SERVICE_UNAVAILABLE)
-- [ ] 타임아웃 처리 (AI_REQUEST_FAILED)
-- [ ] 대체 응답 제공 (fallback)
+- [x] API 호출 실패 처리 (AI_SERVICE_UNAVAILABLE)
+- [x] 타임아웃 처리 (AI_REQUEST_FAILED)
+- [x] 대체 응답 제공 (fallback)
 
 ---
 
