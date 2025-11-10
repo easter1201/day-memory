@@ -26,6 +26,19 @@ public interface EventRepository extends JpaRepository<Event, Long> {
            "WHERE e.user.id = :userId AND e.isActive = true")
     List<Event> findByUserIdAndIsActiveTrue(@Param("userId") Long userId);
 
+    // N+1 문제 방지: User만 fetch join + 이벤트 타입 필터링
+    @Query("SELECT DISTINCT e FROM Event e " +
+           "LEFT JOIN FETCH e.user " +
+           "WHERE e.user.id = :userId AND e.eventType = :eventType AND e.isActive = true")
+    List<Event> findByUserIdAndEventTypeAndIsActiveTrue(@Param("userId") Long userId,
+                                                         @Param("eventType") Event.EventType eventType);
+
+    // 반복 이벤트 조회 (지난 이벤트 포함)
+    @Query("SELECT DISTINCT e FROM Event e " +
+           "LEFT JOIN FETCH e.user " +
+           "WHERE e.user.id = :userId AND e.isRecurring = true AND e.isActive = true")
+    List<Event> findByUserIdAndIsRecurringTrue(@Param("userId") Long userId);
+
     // N+1 문제 방지: User와 Reminders를 fetch join
     @Query("SELECT DISTINCT e FROM Event e " +
            "LEFT JOIN FETCH e.user " +

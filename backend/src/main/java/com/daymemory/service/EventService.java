@@ -64,6 +64,13 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    public List<EventDto.Response> getEventsByUserAndType(Long userId, Event.EventType eventType) {
+        List<Event> events = eventRepository.findByUserIdAndEventTypeAndIsActiveTrue(userId, eventType);
+        return events.stream()
+                .map(EventDto.Response::from)
+                .collect(Collectors.toList());
+    }
+
     public EventDto.Response getEvent(Long eventId) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));

@@ -1,6 +1,7 @@
 package com.daymemory.controller;
 
 import com.daymemory.domain.dto.EventDto;
+import com.daymemory.domain.entity.Event;
 import com.daymemory.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,15 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventDto.Response>> getEvents(@RequestParam Long userId) {
-        List<EventDto.Response> events = eventService.getEventsByUser(userId);
+    public ResponseEntity<List<EventDto.Response>> getEvents(
+            @RequestParam Long userId,
+            @RequestParam(required = false) Event.EventType type) {
+        List<EventDto.Response> events;
+        if (type != null) {
+            events = eventService.getEventsByUserAndType(userId, type);
+        } else {
+            events = eventService.getEventsByUser(userId);
+        }
         return ResponseEntity.ok(events);
     }
 

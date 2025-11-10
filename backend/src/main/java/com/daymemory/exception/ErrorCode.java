@@ -19,6 +19,7 @@ public enum ErrorCode {
     EVENT_DATE_INVALID(HttpStatus.BAD_REQUEST, "유효하지 않은 이벤트 날짜입니다."),
     EVENT_TYPE_INVALID(HttpStatus.BAD_REQUEST, "유효하지 않은 이벤트 타입입니다."),
     EVENT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 이벤트에 접근할 권한이 없습니다."),
+    EVENT_NOT_RECURRING(HttpStatus.BAD_REQUEST, "반복 이벤트가 아닙니다."),
     REMINDER_DAYS_INVALID(HttpStatus.BAD_REQUEST, "리마인더 일수는 1 이상이어야 합니다."),
 
     // Reminder
