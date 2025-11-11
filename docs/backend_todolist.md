@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 107개
+- **완료**: 126개
 - **진행중**: 0개
-- **대기**: 62개
+- **대기**: 43개
 - **전체**: 169개
-- **진행률**: 63.3%
+- **진행률**: 74.6%
 
 ---
 
@@ -270,26 +270,26 @@
 - [x] API 명세 자동 생성
   - [x] Swagger UI 접근 확인 (/swagger-ui/index.html)
   - [x] OpenAPI JSON 접근 확인 (/v3/api-docs)
-- [ ] Controller에 @Operation, @ApiResponse 적용
-  - [ ] UserController API 문서화
-  - [ ] EventController API 문서화
-  - [ ] GiftItemController API 문서화
-  - [ ] ReminderController API 문서화
-  - [ ] AIRecommendationController API 문서화
-  - [ ] DashboardController API 문서화
-  - [ ] StatisticsController API 문서화
-  - [ ] OAuthController API 문서화
-  - [ ] VerificationController API 문서화
-- [ ] DTO에 @Schema 적용 (설명 추가)
-  - [ ] Request DTO 문서화 (SignupRequest, LoginRequest 등)
-  - [ ] Response DTO 문서화 (LoginResponse, EventResponse 등)
-  - [ ] 필드별 description, example 추가
-- [ ] 예제 요청/응답 추가
-  - [ ] @ExampleObject 활용하여 실제 사용 예시 추가
-  - [ ] 각 API별 성공/실패 케이스 예시
-- [ ] API 그룹핑 및 태그 정리
-  - [ ] @Tag 어노테이션으로 Controller 그룹화
-  - [ ] 태그별 설명 추가
+- [x] Controller에 @Operation, @ApiResponse 적용
+  - [x] UserController API 문서화 (6개 메서드)
+  - [x] EventController API 문서화 (8개 메서드)
+  - [x] GiftItemController API 문서화 (9개 메서드)
+  - [x] ReminderController API 문서화 (4개 메서드)
+  - [x] AIRecommendationController API 문서화 (1개 메서드)
+  - [x] DashboardController API 문서화 (1개 메서드)
+  - [x] StatisticsController API 문서화 (4개 메서드)
+  - [x] OAuthController API 문서화 (2개 메서드)
+  - [x] VerificationController API 문서화 (4개 메서드)
+- [x] DTO에 @Schema 적용 (설명 추가)
+  - [x] Request DTO 문서화 (SignupRequest, LoginRequest 등 - 35개 클래스)
+  - [x] Response DTO 문서화 (LoginResponse, EventResponse 등)
+  - [x] 필드별 description, example 추가 (~130개 필드)
+- [x] 예제 요청/응답 추가
+  - [x] @Schema example 활용하여 실제 사용 예시 추가
+  - [x] 각 API별 성공/실패 케이스 예시 (ApiResponses)
+- [x] API 그룹핑 및 태그 정리
+  - [x] @Tag 어노테이션으로 Controller 그룹화 (9개 태그)
+  - [x] 태그별 설명 추가
 
 ---
 
