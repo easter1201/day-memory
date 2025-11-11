@@ -26,3 +26,14 @@ export interface EventsQueryParams {
   filter?: "all" | "upcoming" | "past";
   search?: string;
 }
+
+export interface CreateEventRequest {
+  title: string;
+  eventDate: string;
+  eventType: string;
+  recipientName: string;
+  relationship?: string;
+  memo?: string;
+  isTracked: boolean;
+  reminders?: number[];
+}

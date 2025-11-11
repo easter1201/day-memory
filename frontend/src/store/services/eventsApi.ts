@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { Event, EventsResponse, EventsQueryParams } from "../../types/event";
+import type { Event, EventsResponse, EventsQueryParams, CreateEventRequest } from "../../types/event";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
@@ -33,7 +33,15 @@ export const eventsApi = createApi({
       query: (id) => `/events/${id}`,
       providesTags: (result, error, id) => [{ type: "Events", id }],
     }),
+    createEvent: builder.mutation<Event, CreateEventRequest>({
+      query: (newEvent) => ({
+        url: "/events",
+        method: "POST",
+        body: newEvent,
+      }),
+      invalidatesTags: ["Events"],
+    }),
   }),
 });
 
-export const { useGetEventsQuery, useGetEventByIdQuery } = eventsApi;
+export const { useGetEventsQuery, useGetEventByIdQuery, useCreateEventMutation } = eventsApi;
