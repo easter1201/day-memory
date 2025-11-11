@@ -2,10 +2,10 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 191개
+- **완료**: 201개
 - **진행중**: 0개
 - **대기**: 0개
-- **전체**: 191개
+- **전체**: 201개
 - **진행률**: 100%
 
 ---
@@ -455,18 +455,18 @@
 ### 컨테이너화
 
 #### Docker 설정
-- [ ] Dockerfile 작성 (백엔드)
-  - [ ] Java 17 베이스 이미지
-  - [ ] JAR 파일 복사
-  - [ ] 포트 노출 (8080)
-- [ ] Docker Compose 설정
-  - [ ] Spring Boot 서비스
-  - [ ] PostgreSQL 서비스
-  - [ ] 네트워크 설정
-- [ ] 개발/프로덕션 환경 분리
-  - [ ] docker-compose.dev.yml
-  - [ ] docker-compose.prod.yml
-- [ ] 환경 변수 설정 (.env 파일)
+- [x] Dockerfile 작성 (백엔드)
+  - [x] Java 17 베이스 이미지
+  - [x] JAR 파일 복사
+  - [x] 포트 노출 (8080)
+- [x] Docker Compose 설정
+  - [x] Spring Boot 서비스
+  - [x] PostgreSQL 서비스
+  - [x] 네트워크 설정
+- [x] 개발/프로덕션 환경 분리
+  - [x] docker-compose.dev.yml
+  - [x] docker-compose.prod.yml
+- [x] 환경 변수 설정 (.env 파일)
 
 ---
 
