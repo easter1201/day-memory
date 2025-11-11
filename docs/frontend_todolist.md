@@ -8,10 +8,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 📊 전체 진행 상황
 
 ### Phase별 진행률
-- **Phase 1 (MVP)**: 88/91 (96.7%)
+- **Phase 1 (MVP)**: 101/104 (97.1%)
 - **Phase 2 (확장 기능)**: 0/20 (0%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 88/126 (69.8%)
+- **전체**: 101/139 (72.7%)
 
 ---
 
@@ -130,19 +130,19 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 - [x] 생성 성공 시 /events/:id 리다이렉트
 
 #### 5.3 이벤트 상세 페이지 (/events/:id)
-- [ ] 페이지 레이아웃 구성
-- [ ] EventHeader 컴포넌트
-  - [ ] 이벤트명
-  - [ ] D-Day 카운터 (실시간)
-- [ ] EventInfoSection 컴포넌트
-  - [ ] 날짜, 타입, 대상자, 관계, 메모 표시
-- [ ] ReminderSection 컴포넌트
-  - [ ] 설정된 리마인더 목록
-- [ ] LinkedGiftsSection 컴포넌트
-  - [ ] 연결된 선물 목록
-- [ ] 수정 버튼
-- [ ] 삭제 버튼 (확인 다이얼로그)
-- [ ] API 연동 (eventsApi.getEventById)
+- [x] 페이지 레이아웃 구성
+- [x] EventHeader 컴포넌트
+  - [x] 이벤트명
+  - [x] D-Day 카운터 (실시간)
+- [x] EventInfoSection 컴포넌트
+  - [x] 날짜, 타입, 대상자, 관계, 메모 표시
+- [x] ReminderSection 컴포넌트
+  - [x] 설정된 리마인더 목록
+- [x] LinkedGiftsSection 컴포넌트
+  - [x] 연결된 선물 목록
+- [x] 수정 버튼
+- [x] 삭제 버튼 (확인 다이얼로그)
+- [x] API 연동 (eventsApi.getEventById)
 
 #### 5.4 이벤트 수정 페이지 (/events/:id/edit)
 - [ ] 페이지 레이아웃 구성
