@@ -8,10 +8,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 📊 전체 진행 상황
 
 ### Phase별 진행률
-- **Phase 1 (MVP)**: 132/135 (97.8%)
+- **Phase 1 (MVP)**: 140/143 (97.9%)
 - **Phase 2 (확장 기능)**: 0/20 (0%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 132/170 (77.6%)
+- **전체**: 140/178 (78.7%)
 
 ---
 
@@ -185,14 +185,14 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 - [x] 생성 성공 시 /gifts 리다이렉트
 
 #### 6.3 선물 상세 페이지 (/gifts/:id)
-- [ ] 페이지 레이아웃 구성
-- [ ] GiftHeader 컴포넌트
-- [ ] GiftInfoSection 컴포넌트
-- [ ] LinkedEventSection 컴포넌트
-- [ ] 구매 완료 토글 버튼
-- [ ] 수정 버튼
-- [ ] 삭제 버튼
-- [ ] API 연동 (giftsApi.getGiftById)
+- [x] 페이지 레이아웃 구성
+- [x] GiftHeader 컴포넌트
+- [x] GiftInfoSection 컴포넌트
+- [x] LinkedEventSection 컴포넌트
+- [x] 구매 완료 토글 버튼
+- [x] 수정 버튼
+- [x] 삭제 버튼
+- [x] API 연동 (giftsApi.getGiftById)
 
 #### 6.4 선물 수정 페이지 (/gifts/:id/edit)
 - [ ] 페이지 레이아웃 구성
