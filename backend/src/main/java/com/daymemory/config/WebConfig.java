@@ -11,11 +11,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final RateLimitInterceptor rateLimitInterceptor;
+    private final LoggingInterceptor loggingInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 로깅 인터셉터 (모든 요청에 대해 로깅)
+        registry.addInterceptor(loggingInterceptor)
+                .addPathPatterns("/**")
+                .order(1); // 가장 먼저 실행
+
+        // Rate Limit 인터셉터
         registry.addInterceptor(rateLimitInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**"); // 인증 API는 제외
+                .excludePathPatterns("/api/auth/**")
+                .order(2); // 로깅 다음 실행
     }
 }

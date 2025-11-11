@@ -47,8 +47,15 @@ public class SecurityConfig {
                         // Swagger UI 및 OpenAPI 엔드포인트
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/swagger-ui.html"
+                        "/swagger-ui.html",
+                        // Actuator 엔드포인트 (헬스 체크는 public, 나머지는 인증 필요)
+                        "/actuator/health",
+                        "/actuator/health/**",
+                        "/actuator/info"
                     ).permitAll()
+
+                    // Actuator 관리 엔드포인트는 인증 필요
+                    .requestMatchers("/actuator/**").authenticated()
 
                     // 그 외 모든 요청은 인증 필요
                     .anyRequest().authenticated()
