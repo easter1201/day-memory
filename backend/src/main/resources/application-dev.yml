@@ -1,0 +1,42 @@
+# 개발 환경 설정
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/daymemory
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # 개발 환경에서는 자동 스키마 업데이트
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    com.daymemory: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    path: logs
+    name: logs/day-memory-dev
+
+# Actuator 설정 (개발 환경)
+management:
+  endpoints:
+    web:
+      exposure:
+        # 개발 환경에서는 모든 엔드포인트 활성화
+        include: '*'
+  endpoint:
+    health:
+      show-details: always  # 개발 환경에서는 항상 상세 정보 표시
+
+# CORS 설정 (개발 환경)
+cors:
+  allowed-origins: http://localhost:3000,http://localhost:3001
+
+# 파일 업로드 디렉토리 (개발)
+file:
+  upload-dir: uploads-dev/gifts

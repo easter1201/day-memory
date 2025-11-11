@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 137개
+- **완료**: 145개
 - **진행중**: 0개
-- **대기**: 32개
+- **대기**: 24개
 - **전체**: 169개
-- **진행률**: 81.1%
+- **진행률**: 85.8%
 
 ---
 
@@ -324,14 +324,18 @@
 - [x] JPA Auditing 설정 (BaseEntity)
   - [x] createdAt, updatedAt 자동 관리
   - [x] @EnableJpaAuditing
-- [ ] 환경별 설정 분리
-  - [ ] application-dev.properties (개발)
-  - [ ] application-prod.properties (운영)
-- [ ] 민감 정보 암호화 (.env)
-  - [ ] JWT secret key
-  - [ ] Database password
-  - [ ] Email password
-  - [ ] API keys
+- [x] 환경별 설정 분리
+  - [x] application-dev.yml (개발)
+  - [x] application-prod.yml (운영)
+  - [x] Spring Profiles 설정 (dev/prod)
+- [x] 민감 정보 환경 변수화
+  - [x] JWT secret key
+  - [x] Database password
+  - [x] Email password
+  - [x] AI API keys
+  - [x] OAuth credentials
+  - [x] .env.example 파일 생성
+  - [x] .gitignore 업데이트 (logs, uploads, .env)
 
 ---
 

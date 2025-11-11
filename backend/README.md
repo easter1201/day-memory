@@ -11,38 +11,49 @@ Spring Boot 기반 기념일 관리 백엔드 API
 - Spring Mail
 - Lombok
 
-## 데이터베이스 설정
+## 환경 설정
+
+### 1. 환경 변수 설정
+
+`.env.example` 파일을 복사하여 `.env` 파일을 생성하고 실제 값으로 변경하세요:
+
+```bash
+cp .env.example .env
+```
+
+필수 환경 변수:
+- `DB_PASSWORD`: 데이터베이스 비밀번호
+- `JWT_SECRET`: JWT 토큰 암호화 키 (최소 256비트)
+- `MAIL_USERNAME`: 이메일 발송 계정
+- `MAIL_PASSWORD`: Gmail App Password
+- `AI_API_KEY`: OpenAI API 키
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`: Google OAuth
+- `KAKAO_CLIENT_ID`, `KAKAO_CLIENT_SECRET`: Kakao OAuth
+
+### 2. 프로파일 설정
+
+애플리케이션은 환경별 프로파일을 지원합니다:
+
+#### 개발 환경 (dev) - 기본값
+```bash
+mvn spring-boot:run
+# 또는
+export SPRING_PROFILES_ACTIVE=dev
+```
+
+#### 운영 환경 (prod)
+```bash
+export SPRING_PROFILES_ACTIVE=prod
+java -jar target/backend-0.0.1-SNAPSHOT.jar
+```
+
+### 3. 데이터베이스 설정
 
 PostgreSQL 데이터베이스를 생성해주세요:
 
 ```sql
 CREATE DATABASE daymemory;
 ```
-
-[application.yml](src/main/resources/application.yml)에서 데이터베이스 연결 정보를 수정하세요:
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/daymemory
-    username: your-username
-    password: your-password
-```
-
-## 이메일 설정
-
-이메일 리마인더를 사용하려면 [application.yml](src/main/resources/application.yml)에서 메일 설정을 구성하세요:
-
-```yaml
-spring:
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: your-email@gmail.com
-    password: your-app-password
-```
-
-Gmail을 사용하는 경우 앱 비밀번호를 생성해야 합니다.
 
 ## 실행 방법
 

@@ -33,4 +33,13 @@ Thumbs.db
 
 # Environment
 .env
+backend/.env
 *.log
+logs/
+backend/logs/
+
+# Upload directories
+uploads/
+backend/uploads/
+uploads-dev/
+backend/uploads-dev/
