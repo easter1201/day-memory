@@ -37,3 +37,14 @@ export interface CreateEventRequest {
   isTracked: boolean;
   reminders?: number[];
 }
+
+export interface UpdateEventRequest {
+  title: string;
+  eventDate: string;
+  eventType: string;
+  recipientName: string;
+  relationship?: string;
+  memo?: string;
+  isTracked: boolean;
+  reminders?: number[];
+}

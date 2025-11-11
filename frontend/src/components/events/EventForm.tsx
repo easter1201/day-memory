@@ -25,6 +25,7 @@ interface EventFormProps {
   onSubmit: (data: CreateEventRequest) => void;
   onCancel: () => void;
   isLoading?: boolean;
+  defaultValues?: Partial<EventFormData>;
 }
 
 const EVENT_TYPE_OPTIONS = [
@@ -52,7 +53,7 @@ const REMINDER_OPTIONS = [
   { value: 1, label: "1일 전" },
 ];
 
-export const EventForm = ({ onSubmit, onCancel, isLoading }: EventFormProps) => {
+export const EventForm = ({ onSubmit, onCancel, isLoading, defaultValues }: EventFormProps) => {
   const {
     register,
     handleSubmit,
@@ -62,14 +63,14 @@ export const EventForm = ({ onSubmit, onCancel, isLoading }: EventFormProps) => 
   } = useForm<EventFormData>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      title: "",
-      eventDate: "",
-      eventType: "",
-      recipientName: "",
-      relationship: "",
-      memo: "",
-      isTracked: true,
-      reminders: [],
+      title: defaultValues?.title || "",
+      eventDate: defaultValues?.eventDate || "",
+      eventType: defaultValues?.eventType || "",
+      recipientName: defaultValues?.recipientName || "",
+      relationship: defaultValues?.relationship || "",
+      memo: defaultValues?.memo || "",
+      isTracked: defaultValues?.isTracked !== undefined ? defaultValues.isTracked : true,
+      reminders: defaultValues?.reminders || [],
     },
   });
 
