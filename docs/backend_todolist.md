@@ -4,9 +4,9 @@
 
 - **완료**: 98개
 - **진행중**: 0개
-- **대기**: 43개
-- **전체**: 141개
-- **진행률**: 69.5%
+- **대기**: 71개
+- **전체**: 169개
+- **진행률**: 58.0%
 
 ---
 
@@ -261,14 +261,35 @@
 
 #### Swagger/Springdoc OpenAPI
 - [ ] Springdoc OpenAPI 의존성 추가 (pom.xml)
+  - [ ] springdoc-openapi-starter-webmvc-ui 의존성 추가
 - [ ] SwaggerConfig 설정
-  - [ ] API 정보 설정 (title, version, description)
-  - [ ] JWT 인증 설정 (SecurityScheme)
+  - [ ] OpenAPI Bean 생성
+  - [ ] API 정보 설정 (title, version, description, contact)
+  - [ ] JWT 인증 설정 (SecurityScheme - bearerAuth)
+  - [ ] Security Requirement 전역 설정
 - [ ] API 명세 자동 생성
+  - [ ] Swagger UI 접근 확인 (/swagger-ui/index.html)
+  - [ ] OpenAPI JSON 접근 확인 (/v3/api-docs)
 - [ ] Controller에 @Operation, @ApiResponse 적용
+  - [ ] UserController API 문서화
+  - [ ] EventController API 문서화
+  - [ ] GiftItemController API 문서화
+  - [ ] ReminderController API 문서화
+  - [ ] AIRecommendationController API 문서화
+  - [ ] DashboardController API 문서화
+  - [ ] StatisticsController API 문서화
+  - [ ] OAuthController API 문서화
+  - [ ] VerificationController API 문서화
 - [ ] DTO에 @Schema 적용 (설명 추가)
+  - [ ] Request DTO 문서화 (SignupRequest, LoginRequest 등)
+  - [ ] Response DTO 문서화 (LoginResponse, EventResponse 등)
+  - [ ] 필드별 description, example 추가
 - [ ] 예제 요청/응답 추가
-- [ ] Swagger UI 접근 확인 (/swagger-ui/index.html)
+  - [ ] @ExampleObject 활용하여 실제 사용 예시 추가
+  - [ ] 각 API별 성공/실패 케이스 예시
+- [ ] API 그룹핑 및 태그 정리
+  - [ ] @Tag 어노테이션으로 Controller 그룹화
+  - [ ] 태그별 설명 추가
 
 ---
 
