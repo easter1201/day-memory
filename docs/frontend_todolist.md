@@ -8,10 +8,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 📊 전체 진행 상황
 
 ### Phase별 진행률
-- **Phase 1 (MVP)**: 140/143 (97.9%)
+- **Phase 1 (MVP)**: 144/147 (98.0%)
 - **Phase 2 (확장 기능)**: 0/20 (0%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 140/178 (78.7%)
+- **전체**: 144/182 (79.1%)
 
 ---
 
@@ -195,10 +195,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 - [x] API 연동 (giftsApi.getGiftById)
 
 #### 6.4 선물 수정 페이지 (/gifts/:id/edit)
-- [ ] 페이지 레이아웃 구성
-- [ ] GiftForm 재사용 (기존 데이터 미리 채우기)
-- [ ] API 연동 (giftsApi.updateGift)
-- [ ] 수정 성공 시 /gifts/:id 리다이렉트
+- [x] 페이지 레이아웃 구성
+- [x] GiftForm 재사용 (기존 데이터 미리 채우기)
+- [x] API 연동 (giftsApi.updateGift)
+- [x] 수정 성공 시 /gifts/:id 리다이렉트
 
 ### 7. 공통 UI 컴포넌트 (shadcn/ui 기반)
 #### 7.1 Atoms (기본 컴포넌트)
