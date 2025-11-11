@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 98개
+- **완료**: 107개
 - **진행중**: 0개
-- **대기**: 71개
+- **대기**: 62개
 - **전체**: 169개
-- **진행률**: 58.0%
+- **진행률**: 63.3%
 
 ---
 
@@ -260,16 +260,16 @@
 ### 문서화
 
 #### Swagger/Springdoc OpenAPI
-- [ ] Springdoc OpenAPI 의존성 추가 (pom.xml)
-  - [ ] springdoc-openapi-starter-webmvc-ui 의존성 추가
-- [ ] SwaggerConfig 설정
-  - [ ] OpenAPI Bean 생성
-  - [ ] API 정보 설정 (title, version, description, contact)
-  - [ ] JWT 인증 설정 (SecurityScheme - bearerAuth)
-  - [ ] Security Requirement 전역 설정
-- [ ] API 명세 자동 생성
-  - [ ] Swagger UI 접근 확인 (/swagger-ui/index.html)
-  - [ ] OpenAPI JSON 접근 확인 (/v3/api-docs)
+- [x] Springdoc OpenAPI 의존성 추가 (pom.xml)
+  - [x] springdoc-openapi-starter-webmvc-ui 의존성 추가
+- [x] SwaggerConfig 설정
+  - [x] OpenAPI Bean 생성
+  - [x] API 정보 설정 (title, version, description, contact)
+  - [x] JWT 인증 설정 (SecurityScheme - bearerAuth)
+  - [x] Security Requirement 전역 설정
+- [x] API 명세 자동 생성
+  - [x] Swagger UI 접근 확인 (/swagger-ui/index.html)
+  - [x] OpenAPI JSON 접근 확인 (/v3/api-docs)
 - [ ] Controller에 @Operation, @ApiResponse 적용
   - [ ] UserController API 문서화
   - [ ] EventController API 문서화

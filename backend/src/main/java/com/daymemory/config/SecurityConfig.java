@@ -43,7 +43,11 @@ public class SecurityConfig {
                         "/api/users/signup",
                         "/api/users/login",
                         "/api/users/refresh",
-                        "/api/auth/**"
+                        "/api/auth/**",
+                        // Swagger UI 및 OpenAPI 엔드포인트
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui.html"
                     ).permitAll()
 
                     // 그 외 모든 요청은 인증 필요
