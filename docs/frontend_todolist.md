@@ -8,10 +8,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 📊 전체 진행 상황
 
 ### Phase별 진행률
-- **Phase 1 (MVP)**: 180/183 (98.4%)
+- **Phase 1 (MVP)**: 201/204 (98.5%)
 - **Phase 2 (확장 기능)**: 0/20 (0%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 180/218 (82.6%)
+- **전체**: 201/239 (84.1%)
 
 ---
 
@@ -246,27 +246,26 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
   - [x] theme 상태 (다크 모드 준비)
 
 #### 8.2 RTK Query API Services
-- [ ] authApi 구현
-  - [ ] login mutation
-  - [ ] signup mutation
-  - [ ] logout mutation
-  - [ ] passwordReset mutation
-- [ ] eventsApi 구현
-  - [ ] getEvents query
-  - [ ] getEventById query
-  - [ ] createEvent mutation
-  - [ ] updateEvent mutation
-  - [ ] deleteEvent mutation
-- [ ] giftsApi 구현
-  - [ ] getGifts query
-  - [ ] getGiftById query
-  - [ ] createGift mutation
-  - [ ] updateGift mutation
-  - [ ] deleteGift mutation
-  - [ ] togglePurchase mutation
-- [ ] dashboardApi 구현
-  - [ ] getStatistics query
-  - [ ] getUpcomingEvents query
+- [x] authApi 구현
+  - [x] login mutation
+  - [x] signup mutation
+  - [x] logout mutation
+  - [x] passwordReset mutation
+- [x] eventsApi 구현
+  - [x] getEvents query
+  - [x] getEventById query
+  - [x] createEvent mutation
+  - [x] updateEvent mutation
+  - [x] deleteEvent mutation
+- [x] giftsApi 구현
+  - [x] getGifts query
+  - [x] getGiftById query
+  - [x] createGift mutation
+  - [x] updateGift mutation
+  - [x] deleteGift mutation
+  - [x] togglePurchase mutation
+- [x] dashboardApi 구현
+  - [x] getDashboardData query (통합)
 
 ### 9. 라우팅 및 가드
 - [ ] 라우트 정의 (routes/index.tsx)
