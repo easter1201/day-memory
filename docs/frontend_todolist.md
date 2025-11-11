@@ -8,10 +8,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 📊 전체 진행 상황
 
 ### Phase별 진행률
-- **Phase 1 (MVP)**: 144/147 (98.0%)
+- **Phase 1 (MVP)**: 153/156 (98.1%)
 - **Phase 2 (확장 기능)**: 0/20 (0%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 144/182 (79.1%)
+- **전체**: 153/191 (80.1%)
 
 ---
 
@@ -202,15 +202,15 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 
 ### 7. 공통 UI 컴포넌트 (shadcn/ui 기반)
 #### 7.1 Atoms (기본 컴포넌트)
-- [ ] Button 컴포넌트 (Primary, Secondary, Ghost, Danger)
-- [ ] Input 컴포넌트
-- [ ] Label 컴포넌트
-- [ ] Badge 컴포넌트 (이벤트 타입, 카테고리)
-- [ ] Checkbox 컴포넌트
-- [ ] Select 컴포넌트 (드롭다운)
-- [ ] Textarea 컴포넌트
-- [ ] Switch 컴포넌트 (토글)
-- [ ] DatePicker 컴포넌트
+- [x] Button 컴포넌트 (Primary, Secondary, Ghost, Danger)
+- [x] Input 컴포넌트
+- [x] Label 컴포넌트
+- [x] Badge 컴포넌트 (이벤트 타입, 카테고리)
+- [x] Checkbox 컴포넌트
+- [x] Select 컴포넌트 (드롭다운)
+- [x] Textarea 컴포넌트
+- [x] Switch 컴포넌트 (토글)
+- [x] DatePicker 컴포넌트
 
 #### 7.2 Molecules (조합 컴포넌트)
 - [ ] FormField 컴포넌트 (Label + Input + Error)
