@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 154개
+- **완료**: 169개
 - **진행중**: 0개
-- **대기**: 15개
+- **대기**: 0개
 - **전체**: 169개
-- **진행률**: 91.1%
+- **진행률**: 100%
 
 ---
 
@@ -394,21 +394,21 @@
 ### Service 테스트
 
 #### 단위 테스트 (Mockito)
-- [ ] EventService 테스트
-  - [ ] createEvent 테스트
-  - [ ] getEvent 테스트 (권한 확인)
-  - [ ] updateEvent 테스트
-  - [ ] deleteEvent 테스트
-  - [ ] toggleTracking 테스트
-- [ ] GiftItemService 테스트
-  - [ ] createGift 테스트
-  - [ ] purchaseGift 테스트
-- [ ] ReminderService 테스트
-  - [ ] sendDailyReminders 테스트
-  - [ ] 중복 발송 방지 테스트
-- [ ] EmailService 테스트
-  - [ ] sendEmail 테스트 (Mock)
-- [ ] Mock 객체 활용 (@Mock, @InjectMocks)
+- [x] EventService 테스트
+  - [x] createEvent 테스트
+  - [x] getEvent 테스트 (권한 확인)
+  - [x] updateEvent 테스트
+  - [x] deleteEvent 테스트
+  - [x] toggleTracking 테스트
+- [x] GiftItemService 테스트
+  - [x] createGift 테스트
+  - [x] purchaseGift 테스트
+- [x] ReminderService 테스트
+  - [x] sendDailyReminders 테스트
+  - [x] 중복 발송 방지 테스트
+- [x] EmailService 테스트
+  - [x] sendEmail 테스트 (Mock)
+- [x] Mock 객체 활용 (@Mock, @InjectMocks)
 
 ---
 
