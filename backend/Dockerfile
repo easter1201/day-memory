@@ -1,17 +1,23 @@
 # Multi-stage build for Spring Boot application
 
 # Stage 1: Build stage
-FROM maven:3.9-eclipse-temurin-17-alpine AS build
+FROM gradle:8.5-jdk17-alpine AS build
 
 WORKDIR /app
 
-# Copy pom.xml and download dependencies (cached layer)
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# Copy Gradle wrapper and build files (cached layer)
+COPY gradle gradle
+COPY gradlew .
+COPY gradlew.bat .
+COPY settings.gradle.kts .
+COPY build.gradle.kts .
+
+# Download dependencies (cached layer)
+RUN ./gradlew dependencies --no-daemon
 
 # Copy source code and build
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN ./gradlew bootJar --no-daemon
 
 # Stage 2: Runtime stage
 FROM eclipse-temurin:17-jre-alpine
@@ -23,7 +29,7 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
 # Copy JAR from build stage
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
 # Expose port
 EXPOSE 8080

@@ -1,4 +1,10 @@
 # Backend
+# Gradle
+backend/.gradle/
+backend/build/
+!backend/gradle/wrapper/
+
+# Maven (legacy)
 backend/target/
 backend/.mvn/
 backend/mvnw

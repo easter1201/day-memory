@@ -271,7 +271,7 @@ docker network inspect daymemory_daymemory-network
 
 ### 빌드 실패
 
-**문제**: Maven 빌드 중 오류 발생
+**문제**: Gradle 빌드 중 오류 발생
 
 **해결**:
 ```bash
@@ -280,10 +280,14 @@ docker-compose build --no-cache backend
 
 # 로컬에서 빌드 테스트
 cd backend
-mvn clean package -DskipTests
+./gradlew clean build -x test
 
 # Docker 빌드 로그 상세 확인
 docker-compose build --progress=plain backend
+
+# Gradle 캐시 정리
+./gradlew clean
+rm -rf .gradle build
 ```
 
 ### 볼륨 권한 문제
@@ -322,7 +326,7 @@ environment:
 
 Dockerfile은 멀티스테이지 빌드를 사용하여 이미지 크기를 최적화합니다:
 
-- **Build Stage**: Maven으로 JAR 빌드
+- **Build Stage**: Gradle로 JAR 빌드
 - **Runtime Stage**: JRE만 포함하여 경량화 (약 200MB)
 
 ### Layer Caching
@@ -330,13 +334,14 @@ Dockerfile은 멀티스테이지 빌드를 사용하여 이미지 크기를 최�
 의존성 다운로드를 별도 레이어로 분리하여 빌드 속도를 향상:
 
 ```dockerfile
-# pom.xml만 먼저 복사하여 의존성 다운로드 (캐시됨)
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# build.gradle.kts만 먼저 복사하여 의존성 다운로드 (캐시됨)
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+RUN ./gradlew dependencies --no-daemon
 
 # 소스 코드 변경 시에만 재빌드
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN ./gradlew bootJar --no-daemon
 ```
 
 ## 보안 권장사항

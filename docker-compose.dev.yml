@@ -25,13 +25,14 @@ services:
     volumes:
       # Mount source code for hot reload (optional, requires dev tools)
       - ./backend/src:/app/src
-      - ./backend/pom.xml:/app/pom.xml
+      - ./backend/build.gradle.kts:/app/build.gradle.kts
+      - ./backend/settings.gradle.kts:/app/settings.gradle.kts
       - backend_dev_uploads:/app/uploads
       - backend_dev_logs:/app/logs
-      # Maven cache for faster builds
-      - maven_cache:/root/.m2
+      # Gradle cache for faster builds
+      - gradle_cache:/home/gradle/.gradle
     command: >
-      sh -c "mvn spring-boot:run"
+      sh -c "./gradlew bootRun --no-daemon"
 
   # Optional: pgAdmin for database management
   pgadmin:
@@ -56,5 +57,5 @@ volumes:
     driver: local
   backend_dev_logs:
     driver: local
-  maven_cache:
+  gradle_cache:
     driver: local

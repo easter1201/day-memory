@@ -57,25 +57,47 @@ CREATE DATABASE daymemory;
 
 ## 실행 방법
 
-### Maven Wrapper 사용 (Windows)
+### Gradle Wrapper 사용 (Windows)
 
 ```bash
-mvnw.cmd spring-boot:run
+gradlew.bat bootRun
 ```
 
-### Maven Wrapper 사용 (Mac/Linux)
+### Gradle Wrapper 사용 (Mac/Linux)
 
 ```bash
-./mvnw spring-boot:run
+./gradlew bootRun
 ```
 
-### Maven 직접 사용
+### Gradle 직접 사용
 
 ```bash
-mvn spring-boot:run
+gradle bootRun
 ```
 
 애플리케이션은 기본적으로 http://localhost:8080에서 실행됩니다.
+
+## 빌드 방법
+
+### JAR 파일 생성
+
+```bash
+./gradlew bootJar
+```
+
+생성된 JAR 파일은 `build/libs/backend.jar`에 위치합니다.
+
+### 테스트 실행
+
+```bash
+./gradlew test
+```
+
+### 빌드 및 테스트
+
+```bash
+./gradlew build
+```
 
 ## API 엔드포인트
 
