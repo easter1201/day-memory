@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 145개
+- **완료**: 154개
 - **진행중**: 0개
-- **대기**: 24개
+- **대기**: 15개
 - **전체**: 169개
-- **진행률**: 85.8%
+- **진행률**: 91.1%
 
 ---
 
@@ -344,20 +344,50 @@
 ### Repository 테스트
 
 #### 단위 테스트
-- [ ] UserRepository 테스트
-  - [ ] findByEmail 테스트
-  - [ ] existsByEmail 테스트
-- [ ] EventRepository 테스트
-  - [ ] fetch join 동작 확인
-  - [ ] findByUserIdAndIsActiveTrue 테스트
-  - [ ] findUpcomingEvents 테스트
-- [ ] GiftItemRepository 테스트
-  - [ ] findByUserId 테스트
-  - [ ] findByEventId 테스트
-- [ ] ReminderLogRepository 테스트
-  - [ ] 중복 발송 체크 테스트
-- [ ] N+1 쿼리 검증 테스트
-  - [ ] 쿼리 카운트 확인
+- [x] UserRepository 테스트 (10개 테스트)
+  - [x] findByEmail 테스트 (성공/실패)
+  - [x] existsByEmail 테스트 (존재/미존재)
+  - [x] OAuth 제공자별 조회
+  - [x] 이메일 인증 상태 확인
+  - [x] 비밀번호 업데이트
+  - [x] 유니크 제약조건 검증
+- [x] EventRepository 테스트 (12개 테스트)
+  - [x] fetch join 동작 확인 (User, Reminders)
+  - [x] findByUserIdAndIsActiveTrue 테스트
+  - [x] findUpcomingEvents 테스트
+  - [x] 이벤트 타입별 필터링
+  - [x] 반복 이벤트 조회
+  - [x] 추적 이벤트 기간별 조회
+  - [x] N+1 문제 해결 검증
+- [x] GiftItemRepository 테스트 (15개 테스트)
+  - [x] findByUserId 테스트
+  - [x] findByEventId 테스트
+  - [x] 미구매 선물 필터링
+  - [x] 카테고리별 조회
+  - [x] 키워드 검색 (이름, 설명)
+  - [x] fetch join 검증 (User, Event)
+  - [x] 구매 상태 관리
+- [x] ReminderLogRepository 테스트 (11개 테스트)
+  - [x] 중복 발송 체크 테스트 (24시간)
+  - [x] 이벤트별 리마인더 로그 조회
+  - [x] 기간별 필터링
+  - [x] 실패 리마인더 조회
+  - [x] 상태 변경 테스트
+- [x] EventReminderRepository 테스트 (12개 테스트)
+  - [x] 활성 리마인더 조회
+  - [x] 일수별 리마인더 조회
+  - [x] 활성화/비활성화 토글
+  - [x] Cascade 삭제 검증
+- [x] VerificationTokenRepository 테스트 (15개 테스트)
+  - [x] 토큰 조회 (성공/실패)
+  - [x] 사용자 및 타입별 토큰 조회
+  - [x] 토큰 사용 처리
+  - [x] 만료 토큰 확인
+- [x] N+1 쿼리 검증 테스트
+  - [x] EventRepository Fetch Join 검증
+  - [x] GiftItemRepository Fetch Join 검증
+  - [x] ReminderLogRepository Fetch Join 검증
+- [x] 테스트 설정 파일 (application-test.properties)
 
 ---
 
