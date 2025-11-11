@@ -24,7 +24,11 @@
       "Bash(chmod:*)",
       "Bash(./gradlew:*)",
       "Bash(xargs -0 git ls-files --error-unmatch)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(npm create:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)"
     ],
     "deny": [],
     "ask": []

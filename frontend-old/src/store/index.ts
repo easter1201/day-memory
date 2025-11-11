@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import eventReducer from './slices/eventSlice';
+import giftReducer from './slices/giftSlice';
 
 export const store = configureStore({
   reducer: {
-    // Add your reducers here
+    events: eventReducer,
+    gifts: giftReducer,
   },
 });
 

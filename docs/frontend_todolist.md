@@ -8,24 +8,24 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 📊 전체 진행 상황
 
 ### Phase별 진행률
-- **Phase 1 (MVP)**: 0/45 (0%)
+- **Phase 1 (MVP)**: 8/45 (17.8%)
 - **Phase 2 (확장 기능)**: 0/20 (0%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 0/80 (0%)
+- **전체**: 8/80 (10%)
 
 ---
 
 ## 🎯 Phase 1: MVP (Core Features)
 
 ### 1. 프로젝트 초기 설정
-- [ ] Vite + React + TypeScript 프로젝트 생성
-- [ ] TailwindCSS 3 설치 및 설정
-- [ ] shadcn/ui 초기화 및 테마 설정
-- [ ] Redux Toolkit + RTK Query 설정
-- [ ] React Router v6 설정
-- [ ] ESLint + Prettier 설정
-- [ ] Git 저장소 설정 및 .gitignore 구성
-- [ ] 환경 변수 설정 (.env.example 작성)
+- [x] Vite + React + TypeScript 프로젝트 생성
+- [x] TailwindCSS 3 설치 및 설정
+- [x] shadcn/ui 초기화 및 테마 설정
+- [x] Redux Toolkit + RTK Query 설정
+- [x] React Router v6 설정
+- [x] ESLint + Prettier 설정
+- [x] Git 저장소 설정 및 .gitignore 구성
+- [x] 환경 변수 설정 (.env.example 작성)
 
 ### 2. 공통 레이아웃 및 네비게이션 (우선순위: 높음)
 - [ ] Header 컴포넌트 구현
