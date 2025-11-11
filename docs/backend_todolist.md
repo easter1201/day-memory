@@ -589,31 +589,31 @@
 현재 완료된 기능 (이벤트/선물/리마인더 기본 구조)을 기반으로 다음 작업을 진행하세요:
 
 ### 1. **사용자 인증 시스템** 구현 시작
-   - [ ] User 엔티티 및 Repository 생성
-   - [ ] JWT 토큰 발급 및 검증 로직 (JwtTokenProvider)
-   - [ ] Spring Security 설정 (SecurityConfig)
-   - [ ] 로그인/회원가입 API (UserController, UserService)
-   - [ ] JWT 필터 적용 (JwtAuthenticationFilter)
+   - [x] User 엔티티 및 Repository 생성
+   - [x] JWT 토큰 발급 및 검증 로직 (JwtTokenProvider)
+   - [x] Spring Security 설정 (SecurityConfig)
+   - [x] 로그인/회원가입 API (UserController, UserService)
+   - [x] JWT 필터 적용 (JwtAuthenticationFilter)
 
 ### 2. **이메일 시스템** 완성
-   - [ ] JavaMailSender 설정 (application.properties)
-   - [ ] EmailService 구현 (sendEmail 메서드)
-   - [ ] 이메일 템플릿 작성 (reminder-email.html)
-   - [ ] 실제 이메일 발송 테스트 (Gmail SMTP)
-   - [ ] 발송 실패 처리 및 재시도 로직
+   - [x] JavaMailSender 설정 (application.properties)
+   - [x] EmailService 구현 (sendEmail 메서드)
+   - [x] 이메일 템플릿 작성 (reminder-email.html)
+   - [x] 실제 이메일 발송 테스트 (Gmail SMTP)
+   - [x] 발송 실패 처리 및 재시도 로직
 
 ### 3. **예외 처리** 구조 구축
-   - [ ] CustomException 및 ErrorCode 정의
-   - [ ] GlobalExceptionHandler 작성
-   - [ ] 모든 Service에 예외 처리 적용
-   - [ ] DTO Validation 적용 (@Valid)
-   - [ ] 일관된 에러 응답 형식 확인
+   - [x] CustomException 및 ErrorCode 정의
+   - [x] GlobalExceptionHandler 작성
+   - [x] 모든 Service에 예외 처리 적용
+   - [x] DTO Validation 적용 (@Valid)
+   - [x] 일관된 에러 응답 형식 확인
 
 ### 4. **테스트 코드** 작성 시작
-   - [ ] 핵심 기능부터 단위 테스트 작성 (EventService, GiftItemService)
-   - [ ] Repository 테스트 (N+1 확인)
-   - [ ] Controller 통합 테스트 (MockMvc)
-   - [ ] 통합 테스트 준비 (@SpringBootTest)
+   - [x] 핵심 기능부터 단위 테스트 작성 (EventService, GiftItemService)
+   - [x] Repository 테스트 (N+1 확인)
+   - [x] Controller 통합 테스트 (MockMvc)
+   - [x] 통합 테스트 준비 (@SpringBootTest)
 
 ---
 
