@@ -2,10 +2,10 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 169개
+- **완료**: 191개
 - **진행중**: 0개
 - **대기**: 0개
-- **전체**: 169개
+- **전체**: 191개
 - **진행률**: 100%
 
 ---
@@ -415,38 +415,38 @@
 ### Controller 테스트
 
 #### 통합 테스트 (MockMvc)
-- [ ] EventController 테스트
-  - [ ] POST /api/events (201 Created)
-  - [ ] GET /api/events (200 OK)
-  - [ ] GET /api/events/{eventId} (200 OK, 404 Not Found)
-  - [ ] PUT /api/events/{eventId} (200 OK)
-  - [ ] DELETE /api/events/{eventId} (204 No Content)
-- [ ] GiftItemController 테스트
-  - [ ] POST /api/gifts (201 Created)
-  - [ ] GET /api/gifts (200 OK)
-  - [ ] PUT /api/gifts/{giftId}/purchase (200 OK)
-- [ ] UserController 테스트
-  - [ ] POST /api/users/signup (201 Created)
-  - [ ] POST /api/users/login (200 OK)
-  - [ ] POST /api/users/refresh (200 OK)
-- [ ] MockMvc 활용 API 테스트
-- [ ] JWT 인증 테스트
+- [x] EventController 테스트
+  - [x] POST /api/events (201 Created)
+  - [x] GET /api/events (200 OK)
+  - [x] GET /api/events/{eventId} (200 OK, 404 Not Found)
+  - [x] PUT /api/events/{eventId} (200 OK)
+  - [x] DELETE /api/events/{eventId} (204 No Content)
+- [x] GiftItemController 테스트
+  - [x] POST /api/gifts (201 Created)
+  - [x] GET /api/gifts (200 OK)
+  - [x] PATCH /api/gifts/{giftId}/purchase (200 OK)
+- [x] UserController 테스트
+  - [x] POST /api/users/signup (201 Created)
+  - [x] POST /api/users/login (200 OK)
+  - [x] POST /api/users/refresh (200 OK)
+- [x] MockMvc 활용 API 테스트
+- [x] JWT 인증 테스트
 
 ---
 
 ### 통합 테스트
 
 #### @SpringBootTest
-- [ ] 전체 통합 테스트
-  - [ ] 애플리케이션 컨텍스트 로드 확인
-  - [ ] Bean 주입 확인
-- [ ] 스케줄러 동작 테스트
-  - [ ] @Scheduled 메서드 실행 확인
-- [ ] 트랜잭션 롤백 테스트
-  - [ ] @Transactional 동작 확인
-- [ ] 예외 처리 테스트
-  - [ ] CustomException 발생 및 처리 확인
-  - [ ] GlobalExceptionHandler 동작 확인
+- [x] 전체 통합 테스트
+  - [x] 애플리케이션 컨텍스트 로드 확인
+  - [x] Bean 주입 확인
+- [x] 스케줄러 동작 테스트
+  - [x] @Scheduled 메서드 실행 확인
+- [x] 트랜잭션 롤백 테스트
+  - [x] @Transactional 동작 확인
+- [x] 예외 처리 테스트
+  - [x] CustomException 발생 및 처리 확인
+  - [x] GlobalExceptionHandler 동작 확인
 
 ---
 
