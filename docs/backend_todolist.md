@@ -2,10 +2,10 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 201개
+- **완료**: 209개
 - **진행중**: 0개
 - **대기**: 0개
-- **전체**: 201개
+- **전체**: 209개
 - **진행률**: 100%
 
 ---
@@ -473,15 +473,15 @@
 ### CI/CD
 
 #### GitHub Actions
-- [ ] GitHub Actions 워크플로우 작성 (.github/workflows)
-- [ ] 자동 테스트 실행 설정
-  - [ ] mvn test 실행
-  - [ ] 테스트 결과 리포트
-- [ ] 자동 빌드 설정
-  - [ ] mvn package 실행
-  - [ ] Docker 이미지 빌드
-- [ ] 자동 배포 스크립트
-  - [ ] Docker Hub 푸시
+- [x] GitHub Actions 워크플로우 작성 (.github/workflows)
+- [x] 자동 테스트 실행 설정
+  - [x] gradle test 실행
+  - [x] 테스트 결과 리포트
+- [x] 자동 빌드 설정
+  - [x] gradle bootJar 실행
+  - [x] Docker 이미지 빌드
+- [x] 자동 배포 스크립트
+  - [x] GitHub Container Registry 푸시
   - [ ] AWS EC2 배포
 - [ ] 배포 롤백 전략
 
