@@ -8,6 +8,7 @@ import { dashboardApi } from "./services/dashboardApi";
 import { eventsApi } from "./services/eventsApi";
 import { giftsApi } from "./services/giftsApi";
 import { recommendationsApi } from "./services/recommendationsApi";
+import { remindersApi } from "./services/remindersApi";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     [eventsApi.reducerPath]: eventsApi.reducer,
     [giftsApi.reducerPath]: giftsApi.reducer,
     [recommendationsApi.reducerPath]: recommendationsApi.reducer,
+    [remindersApi.reducerPath]: remindersApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -27,7 +29,8 @@ export const store = configureStore({
       dashboardApi.middleware,
       eventsApi.middleware,
       giftsApi.middleware,
-      recommendationsApi.middleware
+      recommendationsApi.middleware,
+      remindersApi.middleware
     ),
 });
 

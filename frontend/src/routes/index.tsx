@@ -26,6 +26,15 @@ import { GiftCreatePage } from "../pages/GiftCreatePage";
 import { GiftDetailPage } from "../pages/GiftDetailPage";
 import { GiftEditPage } from "../pages/GiftEditPage";
 
+// Recommendation Pages
+import { RecommendationsListPage } from "../pages/RecommendationsListPage";
+import { RecommendationRequestPage } from "../pages/RecommendationRequestPage";
+import { RecommendationResultPage } from "../pages/RecommendationResultPage";
+
+// Reminder Pages
+import { RemindersPage } from "../pages/RemindersPage";
+import { ReminderLogsPage } from "../pages/ReminderLogsPage";
+
 // Error Pages
 import { NotFoundPage } from "../pages/NotFoundPage";
 
@@ -112,6 +121,40 @@ export const router = createBrowserRouter([
           {
             path: ":id/edit",
             element: <GiftEditPage />,
+          },
+        ],
+      },
+
+      // Recommendations Routes
+      {
+        path: "/recommendations",
+        children: [
+          {
+            index: true,
+            element: <RecommendationsListPage />,
+          },
+          {
+            path: "new",
+            element: <RecommendationRequestPage />,
+          },
+          {
+            path: ":id",
+            element: <RecommendationResultPage />,
+          },
+        ],
+      },
+
+      // Reminders Routes
+      {
+        path: "/reminders",
+        children: [
+          {
+            index: true,
+            element: <RemindersPage />,
+          },
+          {
+            path: "logs",
+            element: <ReminderLogsPage />,
           },
         ],
       },
