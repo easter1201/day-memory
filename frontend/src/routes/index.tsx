@@ -35,6 +35,9 @@ import { RecommendationResultPage } from "../pages/RecommendationResultPage";
 import { RemindersPage } from "../pages/RemindersPage";
 import { ReminderLogsPage } from "../pages/ReminderLogsPage";
 
+// Calendar Page
+import { CalendarPage } from "../pages/CalendarPage";
+
 // Error Pages
 import { NotFoundPage } from "../pages/NotFoundPage";
 
@@ -157,6 +160,12 @@ export const router = createBrowserRouter([
             element: <ReminderLogsPage />,
           },
         ],
+      },
+
+      // Calendar Route
+      {
+        path: "/calendar",
+        element: <CalendarPage />,
       },
     ],
   },

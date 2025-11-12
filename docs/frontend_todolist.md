@@ -9,9 +9,9 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 
 ### Phase별 진행률
 - **Phase 1 (MVP)**: 221/221 (100%) ✅
-- **Phase 2 (확장 기능)**: 30/30 (100%) ✅
+- **Phase 2 (확장 기능)**: 36/36 (100%) ✅
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 251/266 (94.4%)
+- **전체**: 257/272 (94.5%)
 
 ---
 
@@ -336,12 +336,12 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 - [x] API 연동 (remindersApi.getLogs)
 
 ### 13. 캘린더 뷰 페이지 (/calendar)
-- [ ] 페이지 레이아웃 구성
-- [ ] CalendarView 컴포넌트 (react-big-calendar)
-- [ ] 월별 이벤트 마커 표시
-- [ ] EventPopup 컴포넌트 (날짜 클릭 시)
-- [ ] 월 이동 버튼
-- [ ] API 연동 (eventsApi.getEventsByMonth)
+- [x] 페이지 레이아웃 구성
+- [x] CalendarView 컴포넌트 (react-big-calendar)
+- [x] 월별 이벤트 마커 표시
+- [x] EventPopup 컴포넌트 (날짜 클릭 시)
+- [x] 월 이동 버튼
+- [x] API 연동 (eventsApi.getEventsByMonth)
 
 ### 14. 설정 페이지
 #### 14.1 프로필 설정 (/settings/profile)

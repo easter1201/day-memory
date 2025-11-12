@@ -56,7 +56,11 @@ export const eventsApi = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Events", id }, "Events"],
     }),
+    getEventsByMonth: builder.query<Event[], { year: number; month: number }>({
+      query: ({ year, month }) => `/events/calendar?year=${year}&month=${month}`,
+      providesTags: ["Events"],
+    }),
   }),
 });
 
-export const { useGetEventsQuery, useGetEventByIdQuery, useCreateEventMutation, useDeleteEventMutation, useUpdateEventMutation } = eventsApi;
+export const { useGetEventsQuery, useGetEventByIdQuery, useCreateEventMutation, useDeleteEventMutation, useUpdateEventMutation, useGetEventsByMonthQuery } = eventsApi;
