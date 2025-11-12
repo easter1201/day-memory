@@ -8,10 +8,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 📊 전체 진행 상황
 
 ### Phase별 진행률
-- **Phase 1 (MVP)**: 201/204 (98.5%)
+- **Phase 1 (MVP)**: 206/209 (98.6%)
 - **Phase 2 (확장 기능)**: 0/20 (0%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 201/239 (84.1%)
+- **전체**: 206/244 (84.4%)
 
 ---
 
@@ -268,11 +268,11 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
   - [x] getDashboardData query (통합)
 
 ### 9. 라우팅 및 가드
-- [ ] 라우트 정의 (routes/index.tsx)
-- [ ] PrivateRoute 컴포넌트 (인증 가드)
-- [ ] PublicRoute 컴포넌트 (비인증 사용자만)
-- [ ] 404 NotFound 페이지
-- [ ] 리다이렉트 로직 구현
+- [x] 라우트 정의 (routes/index.tsx)
+- [x] PrivateRoute 컴포넌트 (인증 가드)
+- [x] PublicRoute 컴포넌트 (비인증 사용자만)
+- [x] 404 NotFound 페이지
+- [x] 리다이렉트 로직 구현
 
 ### 10. 유틸리티 및 헬퍼
 - [ ] dateUtils 구현
