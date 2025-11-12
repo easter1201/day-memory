@@ -9,6 +9,7 @@ import { eventsApi } from "./services/eventsApi";
 import { giftsApi } from "./services/giftsApi";
 import { recommendationsApi } from "./services/recommendationsApi";
 import { remindersApi } from "./services/remindersApi";
+import { usersApi } from "./services/usersApi";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     [giftsApi.reducerPath]: giftsApi.reducer,
     [recommendationsApi.reducerPath]: recommendationsApi.reducer,
     [remindersApi.reducerPath]: remindersApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -30,7 +32,8 @@ export const store = configureStore({
       eventsApi.middleware,
       giftsApi.middleware,
       recommendationsApi.middleware,
-      remindersApi.middleware
+      remindersApi.middleware,
+      usersApi.middleware
     ),
 });
 

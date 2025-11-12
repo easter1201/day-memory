@@ -9,9 +9,9 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 
 ### Phase별 진행률
 - **Phase 1 (MVP)**: 221/221 (100%) ✅
-- **Phase 2 (확장 기능)**: 36/36 (100%) ✅
+- **Phase 2 (확장 기능)**: 57/57 (100%) ✅
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 257/272 (94.5%)
+- **전체**: 278/293 (94.9%)
 
 ---
 
@@ -345,32 +345,32 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 
 ### 14. 설정 페이지
 #### 14.1 프로필 설정 (/settings/profile)
-- [ ] 페이지 레이아웃 구성
-- [ ] SettingsTabs 컴포넌트 (프로필, 알림, 계정)
-- [ ] ProfileForm 컴포넌트
-  - [ ] 프로필 사진 업로드
-  - [ ] 닉네임 수정
-  - [ ] 이메일 표시 (읽기 전용)
-- [ ] 저장 버튼
-- [ ] API 연동 (usersApi.updateProfile)
+- [x] 페이지 레이아웃 구성
+- [x] SettingsTabs 컴포넌트 (프로필, 알림, 계정)
+- [x] ProfileForm 컴포넌트
+  - [x] 프로필 사진 업로드
+  - [x] 닉네임 수정
+  - [x] 이메일 표시 (읽기 전용)
+- [x] 저장 버튼
+- [x] API 연동 (usersApi.updateProfile)
 
 #### 14.2 알림 설정 (/settings/notifications)
-- [ ] 페이지 레이아웃 구성
-- [ ] NotificationSettings 컴포넌트
-  - [ ] 이메일 알림 on/off 토글
-  - [ ] 리마인더 발송 시간 선택
-- [ ] 저장 버튼
-- [ ] API 연동 (usersApi.updateNotificationSettings)
+- [x] 페이지 레이아웃 구성
+- [x] NotificationSettings 컴포넌트
+  - [x] 이메일 알림 on/off 토글
+  - [x] 리마인더 발송 시간 선택
+- [x] 저장 버튼
+- [x] API 연동 (usersApi.updateNotificationSettings)
 
 #### 14.3 계정 관리 (/settings/account)
-- [ ] 페이지 레이아웃 구성
-- [ ] PasswordChangeForm 컴포넌트
-  - [ ] 현재 비밀번호 입력
-  - [ ] 새 비밀번호 입력
-  - [ ] 새 비밀번호 확인
-- [ ] 로그아웃 버튼
-- [ ] 계정 삭제 버튼 (확인 다이얼로그)
-- [ ] API 연동 (usersApi.changePassword, usersApi.deleteAccount)
+- [x] 페이지 레이아웃 구성
+- [x] PasswordChangeForm 컴포넌트
+  - [x] 현재 비밀번호 입력
+  - [x] 새 비밀번호 입력
+  - [x] 새 비밀번호 확인
+- [x] 로그아웃 버튼
+- [x] 계정 삭제 버튼 (확인 다이얼로그)
+- [x] API 연동 (usersApi.changePassword, usersApi.deleteAccount)
 
 ### 15. 랜딩 페이지 (/) - 공개 홈
 - [ ] 페이지 레이아웃 구성

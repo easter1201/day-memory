@@ -38,6 +38,11 @@ import { ReminderLogsPage } from "../pages/ReminderLogsPage";
 // Calendar Page
 import { CalendarPage } from "../pages/CalendarPage";
 
+// Settings Pages
+import { ProfileSettingsPage } from "../pages/ProfileSettingsPage";
+import { NotificationSettingsPage } from "../pages/NotificationSettingsPage";
+import { AccountSettingsPage } from "../pages/AccountSettingsPage";
+
 // Error Pages
 import { NotFoundPage } from "../pages/NotFoundPage";
 
@@ -166,6 +171,29 @@ export const router = createBrowserRouter([
       {
         path: "/calendar",
         element: <CalendarPage />,
+      },
+
+      // Settings Routes
+      {
+        path: "/settings",
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/settings/profile" replace />,
+          },
+          {
+            path: "profile",
+            element: <ProfileSettingsPage />,
+          },
+          {
+            path: "notifications",
+            element: <NotificationSettingsPage />,
+          },
+          {
+            path: "account",
+            element: <AccountSettingsPage />,
+          },
+        ],
       },
     ],
   },
