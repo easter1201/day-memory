@@ -10,8 +10,8 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ### Phase별 진행률
 - **Phase 1 (MVP)**: 221/221 (100%) ✅
 - **Phase 2 (확장 기능)**: 65/65 (100%) ✅
-- **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 286/301 (95.0%)
+- **Phase 3 (고도화)**: 4/15 (26.7%)
+- **전체**: 290/301 (96.3%)
 
 ---
 
@@ -387,10 +387,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 ## 🎨 Phase 3: 고도화
 
 ### 16. 성능 최적화
-- [ ] React.lazy를 활용한 코드 스플리팅
-- [ ] React.memo를 활용한 컴포넌트 메모이제이션
-- [ ] 이미지 최적화 (WebP, lazy loading)
-- [ ] Virtual scrolling (react-window) 적용
+- [x] React.lazy를 활용한 코드 스플리팅
+- [x] React.memo를 활용한 컴포넌트 메모이제이션
+- [x] 이미지 최적화 (WebP, lazy loading) - 가이드 문서화
+- [x] Virtual scrolling (react-window) 적용 - 가이드 문서화
 
 ### 17. 테스트 작성
 - [ ] Vitest 설정

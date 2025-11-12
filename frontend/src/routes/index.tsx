@@ -1,53 +1,67 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { PrivateRoute } from "../components/routes/PrivateRoute";
 import { PublicRoute } from "../components/routes/PublicRoute";
+import { LoadingSpinner } from "../components/common/LoadingSpinner";
 
-// Layout
-import { PageLayout } from "../components/layout/PageLayout";
+// Layout (not lazy loaded - needed immediately)
 import { AuthLayout } from "../components/layout/AuthLayout";
 
-// Auth Pages
-import { LoginPage } from "../pages/LoginPage";
-import { SignupPage } from "../pages/SignupPage";
-import { PasswordResetPage } from "../pages/PasswordResetPage";
-
-// Dashboard
-import { DashboardPage } from "../pages/DashboardPage";
-
-// Events Pages
-import { EventsListPage } from "../pages/EventsListPage";
-import { EventCreatePage } from "../pages/EventCreatePage";
-import { EventDetailPage } from "../pages/EventDetailPage";
-import { EventEditPage } from "../pages/EventEditPage";
-
-// Gifts Pages
-import { GiftListPage } from "../pages/GiftListPage";
-import { GiftCreatePage } from "../pages/GiftCreatePage";
-import { GiftDetailPage } from "../pages/GiftDetailPage";
-import { GiftEditPage } from "../pages/GiftEditPage";
-
-// Recommendation Pages
-import { RecommendationsListPage } from "../pages/RecommendationsListPage";
-import { RecommendationRequestPage } from "../pages/RecommendationRequestPage";
-import { RecommendationResultPage } from "../pages/RecommendationResultPage";
-
-// Reminder Pages
-import { RemindersPage } from "../pages/RemindersPage";
-import { ReminderLogsPage } from "../pages/ReminderLogsPage";
-
-// Calendar Page
-import { CalendarPage } from "../pages/CalendarPage";
-
-// Settings Pages
-import { ProfileSettingsPage } from "../pages/ProfileSettingsPage";
-import { NotificationSettingsPage } from "../pages/NotificationSettingsPage";
-import { AccountSettingsPage } from "../pages/AccountSettingsPage";
-
-// Landing Page
+// Landing Page (not lazy loaded - initial route)
 import { LandingPage } from "../pages/LandingPage";
 
+// Lazy loaded pages
+// Auth Pages
+const LoginPage = lazy(() => import("../pages/LoginPage").then(m => ({ default: m.LoginPage })));
+const SignupPage = lazy(() => import("../pages/SignupPage").then(m => ({ default: m.SignupPage })));
+const PasswordResetPage = lazy(() => import("../pages/PasswordResetPage").then(m => ({ default: m.PasswordResetPage })));
+
+// Dashboard
+const DashboardPage = lazy(() => import("../pages/DashboardPage").then(m => ({ default: m.DashboardPage })));
+
+// Events Pages
+const EventsListPage = lazy(() => import("../pages/EventsListPage").then(m => ({ default: m.EventsListPage })));
+const EventCreatePage = lazy(() => import("../pages/EventCreatePage").then(m => ({ default: m.EventCreatePage })));
+const EventDetailPage = lazy(() => import("../pages/EventDetailPage").then(m => ({ default: m.EventDetailPage })));
+const EventEditPage = lazy(() => import("../pages/EventEditPage").then(m => ({ default: m.EventEditPage })));
+
+// Gifts Pages
+const GiftListPage = lazy(() => import("../pages/GiftListPage").then(m => ({ default: m.GiftListPage })));
+const GiftCreatePage = lazy(() => import("../pages/GiftCreatePage").then(m => ({ default: m.GiftCreatePage })));
+const GiftDetailPage = lazy(() => import("../pages/GiftDetailPage").then(m => ({ default: m.GiftDetailPage })));
+const GiftEditPage = lazy(() => import("../pages/GiftEditPage").then(m => ({ default: m.GiftEditPage })));
+
+// Recommendation Pages
+const RecommendationsListPage = lazy(() => import("../pages/RecommendationsListPage").then(m => ({ default: m.RecommendationsListPage })));
+const RecommendationRequestPage = lazy(() => import("../pages/RecommendationRequestPage").then(m => ({ default: m.RecommendationRequestPage })));
+const RecommendationResultPage = lazy(() => import("../pages/RecommendationResultPage").then(m => ({ default: m.RecommendationResultPage })));
+
+// Reminder Pages
+const RemindersPage = lazy(() => import("../pages/RemindersPage").then(m => ({ default: m.RemindersPage })));
+const ReminderLogsPage = lazy(() => import("../pages/ReminderLogsPage").then(m => ({ default: m.ReminderLogsPage })));
+
+// Calendar Page
+const CalendarPage = lazy(() => import("../pages/CalendarPage").then(m => ({ default: m.CalendarPage })));
+
+// Settings Pages
+const ProfileSettingsPage = lazy(() => import("../pages/ProfileSettingsPage").then(m => ({ default: m.ProfileSettingsPage })));
+const NotificationSettingsPage = lazy(() => import("../pages/NotificationSettingsPage").then(m => ({ default: m.NotificationSettingsPage })));
+const AccountSettingsPage = lazy(() => import("../pages/AccountSettingsPage").then(m => ({ default: m.AccountSettingsPage })));
+
 // Error Pages
-import { NotFoundPage } from "../pages/NotFoundPage";
+const NotFoundPage = lazy(() => import("../pages/NotFoundPage").then(m => ({ default: m.NotFoundPage })));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex h-screen items-center justify-center">
+    <LoadingSpinner size="lg" text="페이지를 불러오는 중..." />
+  </div>
+);
+
+// Wrapper component for Suspense
+const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<PageLoader />}>{children}</Suspense>
+);
 
 export const router = createBrowserRouter([
   // Landing Page (Public, redirects authenticated users)
@@ -71,15 +85,15 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/login",
-            element: <LoginPage />,
+            element: <SuspenseWrapper><LoginPage /></SuspenseWrapper>,
           },
           {
             path: "/signup",
-            element: <SignupPage />,
+            element: <SuspenseWrapper><SignupPage /></SuspenseWrapper>,
           },
           {
             path: "/password-reset",
-            element: <PasswordResetPage />,
+            element: <SuspenseWrapper><PasswordResetPage /></SuspenseWrapper>,
           },
         ],
       },
@@ -94,7 +108,7 @@ export const router = createBrowserRouter([
       // Dashboard
       {
         path: "/dashboard",
-        element: <DashboardPage />,
+        element: <SuspenseWrapper><DashboardPage /></SuspenseWrapper>,
       },
 
       // Events Routes
@@ -103,19 +117,19 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <EventsListPage />,
+            element: <SuspenseWrapper><EventsListPage /></SuspenseWrapper>,
           },
           {
             path: "new",
-            element: <EventCreatePage />,
+            element: <SuspenseWrapper><EventCreatePage /></SuspenseWrapper>,
           },
           {
             path: ":id",
-            element: <EventDetailPage />,
+            element: <SuspenseWrapper><EventDetailPage /></SuspenseWrapper>,
           },
           {
             path: ":id/edit",
-            element: <EventEditPage />,
+            element: <SuspenseWrapper><EventEditPage /></SuspenseWrapper>,
           },
         ],
       },
@@ -126,19 +140,19 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <GiftListPage />,
+            element: <SuspenseWrapper><GiftListPage /></SuspenseWrapper>,
           },
           {
             path: "new",
-            element: <GiftCreatePage />,
+            element: <SuspenseWrapper><GiftCreatePage /></SuspenseWrapper>,
           },
           {
             path: ":id",
-            element: <GiftDetailPage />,
+            element: <SuspenseWrapper><GiftDetailPage /></SuspenseWrapper>,
           },
           {
             path: ":id/edit",
-            element: <GiftEditPage />,
+            element: <SuspenseWrapper><GiftEditPage /></SuspenseWrapper>,
           },
         ],
       },
@@ -149,15 +163,15 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <RecommendationsListPage />,
+            element: <SuspenseWrapper><RecommendationsListPage /></SuspenseWrapper>,
           },
           {
             path: "new",
-            element: <RecommendationRequestPage />,
+            element: <SuspenseWrapper><RecommendationRequestPage /></SuspenseWrapper>,
           },
           {
             path: ":id",
-            element: <RecommendationResultPage />,
+            element: <SuspenseWrapper><RecommendationResultPage /></SuspenseWrapper>,
           },
         ],
       },
@@ -168,11 +182,11 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <RemindersPage />,
+            element: <SuspenseWrapper><RemindersPage /></SuspenseWrapper>,
           },
           {
             path: "logs",
-            element: <ReminderLogsPage />,
+            element: <SuspenseWrapper><ReminderLogsPage /></SuspenseWrapper>,
           },
         ],
       },
@@ -180,7 +194,7 @@ export const router = createBrowserRouter([
       // Calendar Route
       {
         path: "/calendar",
-        element: <CalendarPage />,
+        element: <SuspenseWrapper><CalendarPage /></SuspenseWrapper>,
       },
 
       // Settings Routes
@@ -193,15 +207,15 @@ export const router = createBrowserRouter([
           },
           {
             path: "profile",
-            element: <ProfileSettingsPage />,
+            element: <SuspenseWrapper><ProfileSettingsPage /></SuspenseWrapper>,
           },
           {
             path: "notifications",
-            element: <NotificationSettingsPage />,
+            element: <SuspenseWrapper><NotificationSettingsPage /></SuspenseWrapper>,
           },
           {
             path: "account",
-            element: <AccountSettingsPage />,
+            element: <SuspenseWrapper><AccountSettingsPage /></SuspenseWrapper>,
           },
         ],
       },
@@ -211,6 +225,6 @@ export const router = createBrowserRouter([
   // 404 Not Found (모든 라우트에서 매칭되지 않은 경우)
   {
     path: "*",
-    element: <NotFoundPage />,
+    element: <SuspenseWrapper><NotFoundPage /></SuspenseWrapper>,
   },
 ]);

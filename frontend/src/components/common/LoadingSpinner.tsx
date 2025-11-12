@@ -13,7 +13,7 @@ const sizeClasses = {
   lg: "h-12 w-12",
 };
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({
   size = "md",
   className,
   text,
@@ -43,4 +43,6 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       {text && <p className="text-sm text-muted-foreground">{text}</p>}
     </div>
   );
-};
+});
+
+LoadingSpinner.displayName = "LoadingSpinner";
