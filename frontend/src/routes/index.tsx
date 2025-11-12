@@ -43,13 +43,28 @@ import { ProfileSettingsPage } from "../pages/ProfileSettingsPage";
 import { NotificationSettingsPage } from "../pages/NotificationSettingsPage";
 import { AccountSettingsPage } from "../pages/AccountSettingsPage";
 
+// Landing Page
+import { LandingPage } from "../pages/LandingPage";
+
 // Error Pages
 import { NotFoundPage } from "../pages/NotFoundPage";
 
 export const router = createBrowserRouter([
-  // Public Routes (인증된 사용자는 접근 불가)
+  // Landing Page (Public, redirects authenticated users)
   {
-    element: <PublicRoute restricted />,
+    path: "/",
+    element: <PublicRoute restricted redirectTo="/dashboard" />,
+    children: [
+      {
+        index: true,
+        element: <LandingPage />,
+      },
+    ],
+  },
+
+  // Auth Pages (Public, restricted for authenticated users)
+  {
+    element: <PublicRoute restricted redirectTo="/dashboard" />,
     children: [
       {
         element: <AuthLayout />,
@@ -75,11 +90,6 @@ export const router = createBrowserRouter([
   {
     element: <PrivateRoute />,
     children: [
-      // Root redirect
-      {
-        path: "/",
-        element: <Navigate to="/dashboard" replace />,
-      },
 
       // Dashboard
       {
