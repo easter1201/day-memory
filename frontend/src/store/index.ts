@@ -7,6 +7,7 @@ import { authApi } from "./services/authApi";
 import { dashboardApi } from "./services/dashboardApi";
 import { eventsApi } from "./services/eventsApi";
 import { giftsApi } from "./services/giftsApi";
+import { recommendationsApi } from "./services/recommendationsApi";
 
 export const store = configureStore({
   reducer: {
@@ -18,13 +19,15 @@ export const store = configureStore({
     [dashboardApi.reducerPath]: dashboardApi.reducer,
     [eventsApi.reducerPath]: eventsApi.reducer,
     [giftsApi.reducerPath]: giftsApi.reducer,
+    [recommendationsApi.reducerPath]: recommendationsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authApi.middleware,
       dashboardApi.middleware,
       eventsApi.middleware,
-      giftsApi.middleware
+      giftsApi.middleware,
+      recommendationsApi.middleware
     ),
 });
 

@@ -9,9 +9,9 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 
 ### Phase별 진행률
 - **Phase 1 (MVP)**: 218/221 (98.6%)
-- **Phase 2 (확장 기능)**: 0/20 (0%)
+- **Phase 2 (확장 기능)**: 20/20 (100%)
 - **Phase 3 (고도화)**: 0/15 (0%)
-- **전체**: 218/256 (85.2%)
+- **전체**: 238/256 (93.0%)
 
 ---
 
@@ -294,31 +294,31 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 
 ### 11. AI 선물 추천 기능
 #### 11.1 추천 요청 페이지 (/recommendations/new)
-- [ ] 페이지 레이아웃 구성
-- [ ] RecommendationForm 컴포넌트
-  - [ ] 이벤트 선택
-  - [ ] 예산 입력
-  - [ ] 선호 카테고리 선택 (다중)
-  - [ ] 추가 메시지 입력
-- [ ] API 연동 (recommendationsApi.createRequest)
-- [ ] 로딩 상태 표시 (AI 처리 중)
-- [ ] 추천 완료 시 /recommendations/:id 리다이렉트
+- [x] 페이지 레이아웃 구성
+- [x] RecommendationForm 컴포넌트
+  - [x] 이벤트 선택
+  - [x] 예산 입력
+  - [x] 선호 카테고리 선택 (다중)
+  - [x] 추가 메시지 입력
+- [x] API 연동 (recommendationsApi.createRequest)
+- [x] 로딩 상태 표시 (AI 처리 중)
+- [x] 추천 완료 시 /recommendations/:id 리다이렉트
 
 #### 11.2 추천 결과 페이지 (/recommendations/:id)
-- [ ] 페이지 레이아웃 구성
-- [ ] RequestInfoSection 컴포넌트
-- [ ] UserSavedGiftsSection 컴포넌트 (우선 표시)
-- [ ] AIRecommendationsSection 컴포넌트
-  - [ ] 추천 선물 카드
-  - [ ] 추천 이유 표시
-  - [ ] 선물 리스트에 저장 버튼
-- [ ] API 연동 (recommendationsApi.getRecommendationById)
+- [x] 페이지 레이아웃 구성
+- [x] RequestInfoSection 컴포넌트
+- [x] UserSavedGiftsSection 컴포넌트 (우선 표시)
+- [x] AIRecommendationsSection 컴포넌트
+  - [x] 추천 선물 카드
+  - [x] 추천 이유 표시
+  - [x] 선물 리스트에 저장 버튼
+- [x] API 연동 (recommendationsApi.getRecommendationById)
 
 #### 11.3 추천 내역 페이지 (/recommendations)
-- [ ] 페이지 레이아웃 구성
-- [ ] RecommendationCardList 컴포넌트
-- [ ] 새 추천 요청 버튼
-- [ ] API 연동 (recommendationsApi.getRecommendations)
+- [x] 페이지 레이아웃 구성
+- [x] RecommendationCardList 컴포넌트
+- [x] 새 추천 요청 버튼
+- [x] API 연동 (recommendationsApi.getRecommendations)
 
 ### 12. 리마인더 페이지
 #### 12.1 리마인더 설정 페이지 (/reminders)
