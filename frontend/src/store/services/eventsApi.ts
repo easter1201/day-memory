@@ -57,10 +57,18 @@ export const eventsApi = createApi({
       invalidatesTags: (result, error, { id }) => [{ type: "Events", id }, "Events"],
     }),
     getEventsByMonth: builder.query<Event[], { year: number; month: number }>({
-      query: ({ year, month }) => `/events/calendar?year=${year}&month=${month}`,
+      query: ({ year, month }) => `/statistics/calendar?year=${year}&month=${month}`,
       providesTags: ["Events"],
+    }),
+    toggleTracking: builder.mutation<Event, { id: number; isTracking: boolean }>({
+      query: ({ id, isTracking }) => ({
+        url: `/events/${id}/tracking`,
+        method: "PUT",
+        body: { isTracking },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Events", id }, "Events"],
     }),
   }),
 });
 
-export const { useGetEventsQuery, useGetEventByIdQuery, useCreateEventMutation, useDeleteEventMutation, useUpdateEventMutation, useGetEventsByMonthQuery } = eventsApi;
+export const { useGetEventsQuery, useGetEventByIdQuery, useCreateEventMutation, useDeleteEventMutation, useUpdateEventMutation, useGetEventsByMonthQuery, useToggleTrackingMutation } = eventsApi;

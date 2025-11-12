@@ -64,7 +64,7 @@ public class VerificationService {
 
         // 이메일 발송
         String verificationLink = "http://localhost:3000/verify-email?token=" + token;
-        String emailBody = buildEmailVerificationHtml(user.getName(), verificationLink);
+        String emailBody = buildEmailVerificationHtml(user.getNickname(), verificationLink);
 
         try {
             emailService.sendReminderEmail(
@@ -147,7 +147,7 @@ public class VerificationService {
 
         // 이메일 발송
         String resetLink = "http://localhost:3000/reset-password?token=" + token;
-        String emailBody = buildPasswordResetHtml(user.getName(), resetLink);
+        String emailBody = buildPasswordResetHtml(user.getNickname(), resetLink);
 
         try {
             emailService.sendReminderEmail(

@@ -26,7 +26,10 @@ public class User extends BaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private String name;
+    private String nickname;
+
+    @Column
+    private String profileImageUrl;
 
     @Column(nullable = false)
     @Builder.Default

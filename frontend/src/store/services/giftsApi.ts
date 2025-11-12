@@ -17,16 +17,14 @@ export const giftsApi = createApi({
   }),
   tagTypes: ["Gifts"],
   endpoints: (builder) => ({
-    getGifts: builder.query<GiftsResponse, GiftsQueryParams>({
+    getGifts: builder.query<Gift[], GiftsQueryParams>({
       query: (params) => {
         const searchParams = new URLSearchParams();
-        if (params.page !== undefined) searchParams.append("page", params.page.toString());
-        if (params.size !== undefined) searchParams.append("size", params.size.toString());
         if (params.category) searchParams.append("category", params.category);
-        if (params.isPurchased !== undefined) searchParams.append("isPurchased", params.isPurchased.toString());
-        if (params.search) searchParams.append("search", params.search);
+        if (params.isPurchased !== undefined) searchParams.append("purchased", params.isPurchased.toString());
 
-        return `/gifts?${searchParams.toString()}`;
+        const queryString = searchParams.toString();
+        return queryString ? `/gifts?${queryString}` : '/gifts';
       },
       providesTags: ["Gifts"],
     }),
@@ -59,7 +57,7 @@ export const giftsApi = createApi({
     }),
     togglePurchased: builder.mutation<Gift, number>({
       query: (id) => ({
-        url: `/gifts/${id}/toggle-purchased`,
+        url: `/gifts/${id}/purchase`,
         method: "PATCH",
       }),
       invalidatesTags: (result, error, id) => [{ type: "Gifts", id }, "Gifts"],

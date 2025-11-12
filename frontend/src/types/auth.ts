@@ -12,8 +12,7 @@ export interface LoginResponse {
 export interface User {
   id: number;
   email: string;
-  nickname: string;
-  createdAt: string;
+  name: string;
 }
 
 export interface SignupRequest {
@@ -31,6 +30,14 @@ export interface SignupResponse {
 
 export interface PasswordResetRequest {
   email: string;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface RefreshTokenResponse {
+  accessToken: string;
 }
 
 export interface AuthState {

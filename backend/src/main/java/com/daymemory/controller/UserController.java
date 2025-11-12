@@ -137,4 +137,76 @@ public class UserController {
         userService.changePassword(userId, request);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * 로그아웃
+     */
+    @Operation(summary = "로그아웃", description = "현재 로그인한 사용자를 로그아웃합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "로그아웃 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        Long userId = userService.getCurrentUserId();
+        userService.logout(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 회원 탈퇴
+     */
+    @Operation(summary = "회원 탈퇴", description = "현재 로그인한 사용자의 계정을 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "회원 탈퇴 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    @DeleteMapping("/account")
+    public ResponseEntity<Void> deleteAccount() {
+        Long userId = userService.getCurrentUserId();
+        userService.deleteAccount(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 알림 설정 조회
+     */
+    @Operation(summary = "알림 설정 조회", description = "현재 로그인한 사용자의 알림 설정을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(schema = @Schema(implementation = UserDto.NotificationSettingsResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    @GetMapping("/notification-settings")
+    public ResponseEntity<UserDto.NotificationSettingsResponse> getNotificationSettings() {
+        Long userId = userService.getCurrentUserId();
+        UserDto.NotificationSettingsResponse response = userService.getNotificationSettings(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 알림 설정 수정
+     */
+    @Operation(summary = "알림 설정 수정", description = "현재 로그인한 사용자의 알림 설정을 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "수정 성공",
+                    content = @Content(schema = @Schema(implementation = UserDto.NotificationSettingsResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    @PutMapping("/notification-settings")
+    public ResponseEntity<UserDto.NotificationSettingsResponse> updateNotificationSettings(
+            @Valid @RequestBody UserDto.NotificationSettingsRequest request
+    ) {
+        Long userId = userService.getCurrentUserId();
+        UserDto.NotificationSettingsResponse response = userService.updateNotificationSettings(userId, request);
+        return ResponseEntity.ok(response);
+    }
 }

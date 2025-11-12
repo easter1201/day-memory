@@ -31,10 +31,10 @@ public class UserDto {
         @Size(min = 8, max = 20, message = "비밀번호는 8~20자 이내로 입력해주세요.")
         private String password;
 
-        @Schema(description = "사용자 이름", example = "홍길동", requiredMode = Schema.RequiredMode.REQUIRED)
-        @NotBlank(message = "이름은 필수입니다.")
-        @Size(max = 100, message = "이름은 100자 이내로 입력해주세요.")
-        private String name;
+        @Schema(description = "닉네임", example = "홍길동", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank(message = "닉네임은 필수입니다.")
+        @Size(min = 2, max = 20, message = "닉네임은 2~20자 이내로 입력해주세요.")
+        private String nickname;
     }
 
     /**
@@ -130,9 +130,12 @@ public class UserDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateRequest {
-        @Schema(description = "변경할 사용자 이름", example = "김철수")
-        @Size(max = 100, message = "이름은 100자 이내로 입력해주세요.")
-        private String name;
+        @Schema(description = "변경할 닉네임", example = "김철수")
+        @Size(min = 2, max = 20, message = "닉네임은 2~20자 이내로 입력해주세요.")
+        private String nickname;
+
+        @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
+        private String profileImageUrl;
     }
 
     /**
@@ -150,15 +153,59 @@ public class UserDto {
         @Schema(description = "이메일 주소", example = "user@example.com")
         private String email;
 
-        @Schema(description = "사용자 이름", example = "홍길동")
-        private String name;
+        @Schema(description = "닉네임", example = "홍길동")
+        private String nickname;
+
+        @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
+        private String profileImageUrl;
+
+        @Schema(description = "생성일시", example = "2024-01-01T00:00:00")
+        private String createdAt;
+
+        @Schema(description = "수정일시", example = "2024-01-01T00:00:00")
+        private String updatedAt;
 
         public static Response from(User user) {
             return Response.builder()
                     .id(user.getId())
                     .email(user.getEmail())
-                    .name(user.getName())
+                    .nickname(user.getNickname())
+                    .profileImageUrl(user.getProfileImageUrl())
+                    .createdAt(user.getCreatedAt() != null ? user.getCreatedAt().toString() : null)
+                    .updatedAt(user.getUpdatedAt() != null ? user.getUpdatedAt().toString() : null)
                     .build();
         }
+    }
+
+    /**
+     * 알림 설정 요청 DTO
+     */
+    @Schema(description = "알림 설정 요청")
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class NotificationSettingsRequest {
+        @Schema(description = "이메일 알림 활성화 여부", example = "true")
+        private Boolean emailNotificationsEnabled;
+
+        @Schema(description = "알림 시간 (HH:mm 형식)", example = "09:00")
+        private String reminderTime;
+    }
+
+    /**
+     * 알림 설정 응답 DTO
+     */
+    @Schema(description = "알림 설정 응답")
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class NotificationSettingsResponse {
+        @Schema(description = "이메일 알림 활성화 여부", example = "true")
+        private Boolean emailNotificationsEnabled;
+
+        @Schema(description = "알림 시간 (HH:mm 형식)", example = "09:00")
+        private String reminderTime;
     }
 }

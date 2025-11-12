@@ -217,7 +217,7 @@ public class OAuthService {
             // 새로운 사용자 생성
             user = User.builder()
                     .email(userInfo.getEmail())
-                    .name(userInfo.getName())
+                    .nickname(userInfo.getName())
                     .password("OAUTH_USER_NO_PASSWORD")  // OAuth 사용자는 비밀번호 불필요
                     .oauthProvider(userInfo.getProvider())
                     .oauthProviderId(userInfo.getProviderId())
@@ -237,7 +237,7 @@ public class OAuthService {
                 .refreshToken(refreshToken)
                 .userId(user.getId())
                 .email(user.getEmail())
-                .name(user.getName())
+                .name(user.getNickname())
                 .isNewUser(isNewUser)
                 .build();
     }

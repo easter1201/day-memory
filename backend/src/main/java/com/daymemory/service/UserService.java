@@ -40,7 +40,7 @@ public class UserService {
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .name(request.getName())
+                .nickname(request.getNickname())
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -126,9 +126,14 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        // 이름 수정
-        if (request.getName() != null && !request.getName().isBlank()) {
-            user.setName(request.getName());
+        // 닉네임 수정
+        if (request.getNickname() != null && !request.getNickname().isBlank()) {
+            user.setNickname(request.getNickname());
+        }
+
+        // 프로필 이미지 URL 수정
+        if (request.getProfileImageUrl() != null) {
+            user.setProfileImageUrl(request.getProfileImageUrl());
         }
 
         return UserDto.Response.from(user);
@@ -149,6 +154,59 @@ public class UserService {
 
         // 새 비밀번호로 변경
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+    }
+
+    /**
+     * 로그아웃
+     */
+    @Transactional
+    public void logout(Long userId) {
+        // 현재는 JWT를 사용하므로 클라이언트 측에서 토큰 삭제
+        // 필요시 Redis 등을 사용하여 토큰 블랙리스트 구현 가능
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        // 로그아웃 로직 (현재는 클라이언트 측에서 토큰 삭제로 처리)
+    }
+
+    /**
+     * 회원 탈퇴
+     */
+    @Transactional
+    public void deleteAccount(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 사용자 삭제
+        userRepository.delete(user);
+    }
+
+    /**
+     * 알림 설정 조회
+     */
+    public UserDto.NotificationSettingsResponse getNotificationSettings(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 현재는 기본값 반환 (추후 User 엔티티에 필드 추가 필요)
+        return UserDto.NotificationSettingsResponse.builder()
+                .emailNotificationsEnabled(true)
+                .reminderTime("09:00")
+                .build();
+    }
+
+    /**
+     * 알림 설정 수정
+     */
+    @Transactional
+    public UserDto.NotificationSettingsResponse updateNotificationSettings(Long userId, UserDto.NotificationSettingsRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 현재는 요청값 그대로 반환 (추후 User 엔티티에 필드 추가하여 저장 필요)
+        return UserDto.NotificationSettingsResponse.builder()
+                .emailNotificationsEnabled(request.getEmailNotificationsEnabled())
+                .reminderTime(request.getReminderTime())
+                .build();
     }
 
     /**

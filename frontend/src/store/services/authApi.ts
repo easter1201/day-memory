@@ -5,6 +5,8 @@ import type {
   SignupRequest,
   SignupResponse,
   PasswordResetRequest,
+  RefreshTokenRequest,
+  RefreshTokenResponse,
 } from "../../types/auth";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
@@ -24,33 +26,40 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: "/auth/login",
+        url: "/users/login",
         method: "POST",
         body: credentials,
       }),
     }),
     signup: builder.mutation<SignupResponse, SignupRequest>({
       query: (data) => ({
-        url: "/auth/signup",
+        url: "/users/signup",
         method: "POST",
         body: data,
       }),
     }),
     passwordReset: builder.mutation<void, PasswordResetRequest>({
       query: (data) => ({
-        url: "/auth/password-reset",
+        url: "/verification/password-reset",
         method: "POST",
         body: data,
       }),
     }),
     logout: builder.mutation<void, void>({
       query: () => ({
-        url: "/auth/logout",
+        url: "/users/logout",
         method: "POST",
+      }),
+    }),
+    refreshToken: builder.mutation<RefreshTokenResponse, RefreshTokenRequest>({
+      query: (data) => ({
+        url: "/users/refresh",
+        method: "POST",
+        body: data,
       }),
     }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation, usePasswordResetMutation, useLogoutMutation } =
+export const { useLoginMutation, useSignupMutation, usePasswordResetMutation, useLogoutMutation, useRefreshTokenMutation } =
   authApi;
