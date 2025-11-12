@@ -1,6 +1,7 @@
 package com.daymemory.controller;
 
 import com.daymemory.domain.dto.StatisticsDto;
+import com.daymemory.security.SecurityUtils;
 import com.daymemory.service.StatisticsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -36,8 +37,8 @@ public class StatisticsController {
     })
     @GetMapping("/events")
     public ResponseEntity<StatisticsDto.EventStatistics> getEventStatistics(
-            @RequestParam Long userId,
             @RequestParam(defaultValue = "2025") int year) {
+        Long userId = SecurityUtils.getCurrentUserId();
         StatisticsDto.EventStatistics statistics = statisticsService.getEventStatistics(userId, year);
         return ResponseEntity.ok(statistics);
     }
@@ -54,7 +55,8 @@ public class StatisticsController {
                     content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
     })
     @GetMapping("/gifts")
-    public ResponseEntity<StatisticsDto.GiftStatistics> getGiftStatistics(@RequestParam Long userId) {
+    public ResponseEntity<StatisticsDto.GiftStatistics> getGiftStatistics() {
+        Long userId = SecurityUtils.getCurrentUserId();
         StatisticsDto.GiftStatistics statistics = statisticsService.getGiftStatistics(userId);
         return ResponseEntity.ok(statistics);
     }
@@ -88,9 +90,9 @@ public class StatisticsController {
     })
     @GetMapping("/calendar")
     public ResponseEntity<List<StatisticsDto.CalendarEvent>> getCalendarEvents(
-            @RequestParam Long userId,
             @RequestParam int year,
             @RequestParam int month) {
+        Long userId = SecurityUtils.getCurrentUserId();
         List<StatisticsDto.CalendarEvent> events = statisticsService.getCalendarEvents(userId, year, month);
         return ResponseEntity.ok(events);
     }

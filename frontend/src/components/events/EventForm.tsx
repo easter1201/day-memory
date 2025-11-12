@@ -10,13 +10,12 @@ import type { CreateEventRequest } from "../../types/event";
 
 const eventSchema = z.object({
   title: z.string().min(1, "이벤트명은 필수입니다"),
+  description: z.string().optional(),
   eventDate: z.string().min(1, "날짜는 필수입니다"),
   eventType: z.string().min(1, "이벤트 타입은 필수입니다"),
-  recipientName: z.string().min(1, "대상자명은 필수입니다"),
-  relationship: z.string().optional(),
-  memo: z.string().optional(),
-  isTracked: z.boolean(),
-  reminders: z.array(z.number()).optional(),
+  isRecurring: z.boolean().optional(),
+  isTracking: z.boolean().optional(),
+  reminderDays: z.array(z.number()).optional(),
 });
 
 type EventFormData = z.infer<typeof eventSchema>;
@@ -31,18 +30,16 @@ interface EventFormProps {
 const EVENT_TYPE_OPTIONS = [
   { value: "", label: "선택하세요" },
   { value: "BIRTHDAY", label: "생일" },
-  { value: "ANNIVERSARY", label: "기념일" },
-  { value: "HOLIDAY", label: "명절" },
-  { value: "OTHER", label: "기타" },
-];
-
-const RELATIONSHIP_OPTIONS = [
-  { value: "", label: "선택하세요" },
-  { value: "FAMILY", label: "가족" },
-  { value: "FRIEND", label: "친구" },
-  { value: "COLLEAGUE", label: "동료" },
-  { value: "ACQUAINTANCE", label: "지인" },
-  { value: "OTHER", label: "기타" },
+  { value: "ANNIVERSARY_100", label: "100일 기념일" },
+  { value: "ANNIVERSARY_200", label: "200일 기념일" },
+  { value: "ANNIVERSARY_1YEAR", label: "1주년" },
+  { value: "ANNIVERSARY_CUSTOM", label: "커스텀 기념일" },
+  { value: "VALENTINES_DAY", label: "발렌타인데이" },
+  { value: "WHITE_DAY", label: "화이트데이" },
+  { value: "PEPERO_DAY", label: "빼빼로데이" },
+  { value: "CHRISTMAS", label: "크리스마스" },
+  { value: "HOLIDAY", label: "기타 공휴일" },
+  { value: "CUSTOM", label: "사용자 정의" },
 ];
 
 const REMINDER_OPTIONS = [
@@ -64,32 +61,37 @@ export const EventForm = ({ onSubmit, onCancel, isLoading, defaultValues }: Even
     resolver: zodResolver(eventSchema),
     defaultValues: {
       title: defaultValues?.title || "",
+      description: defaultValues?.description || "",
       eventDate: defaultValues?.eventDate || "",
       eventType: defaultValues?.eventType || "",
-      recipientName: defaultValues?.recipientName || "",
-      relationship: defaultValues?.relationship || "",
-      memo: defaultValues?.memo || "",
-      isTracked: defaultValues?.isTracked !== undefined ? defaultValues.isTracked : true,
-      reminders: defaultValues?.reminders || [],
+      isRecurring: defaultValues?.isRecurring || false,
+      isTracking: defaultValues?.isTracking !== undefined ? defaultValues.isTracking : true,
+      reminderDays: defaultValues?.reminderDays || [],
     },
   });
 
-  const selectedReminders = watch("reminders") || [];
+  const selectedReminders = watch("reminderDays") || [];
 
   const handleReminderToggle = (value: number) => {
     const currentReminders = selectedReminders;
     if (currentReminders.includes(value)) {
       setValue(
-        "reminders",
+        "reminderDays",
         currentReminders.filter((r) => r !== value)
       );
     } else {
-      setValue("reminders", [...currentReminders, value]);
+      setValue("reminderDays", [...currentReminders, value]);
     }
   };
 
   const handleFormSubmit = (data: EventFormData) => {
-    onSubmit(data);
+    // isRecurring과 isTracking의 기본값 명시적으로 설정
+    const submitData = {
+      ...data,
+      isRecurring: data.isRecurring ?? false,
+      isTracking: data.isTracking ?? true,
+    };
+    onSubmit(submitData);
   };
 
   return (
@@ -115,33 +117,24 @@ export const EventForm = ({ onSubmit, onCancel, isLoading, defaultValues }: Even
         {...register("eventType")}
       />
 
-      <Input
-        label="대상자 *"
-        placeholder="예: 홍길동"
-        error={errors.recipientName?.message}
-        {...register("recipientName")}
-      />
-
-      <Select
-        label="관계"
-        options={RELATIONSHIP_OPTIONS}
-        error={errors.relationship?.message}
-        {...register("relationship")}
-      />
-
       <Textarea
-        label="메모"
-        placeholder="메모를 입력하세요..."
+        label="설명"
+        placeholder="이벤트 설명을 입력하세요..."
         rows={4}
-        error={errors.memo?.message}
-        {...register("memo")}
+        error={errors.description?.message}
+        {...register("description")}
       />
 
       <div className="space-y-3">
         <Checkbox
-          id="isTracked"
+          id="isRecurring"
+          label="매년 반복"
+          {...register("isRecurring")}
+        />
+        <Checkbox
+          id="isTracking"
           label="이 이벤트 추적하기"
-          {...register("isTracked")}
+          {...register("isTracking")}
         />
       </div>
 

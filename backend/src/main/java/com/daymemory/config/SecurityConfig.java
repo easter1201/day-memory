@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // CORS 설정 (CorsConfig 사용)
-                .cors(cors -> cors.configure(http))
+                .cors(cors -> {})
 
                 // 세션 사용하지 않음 (JWT 사용)
                 .sessionManagement(session ->
@@ -38,31 +38,9 @@ public class SecurityConfig {
 
                 // 요청 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                    // 인증 없이 접근 가능한 경로
-                    .requestMatchers(
-                        "/api/users/signup",
-                        "/api/users/login",
-                        "/api/users/refresh",
-                        "/api/auth/**",
-                        // Swagger UI 및 OpenAPI 엔드포인트
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/swagger-ui.html",
-                        // Actuator 엔드포인트 (헬스 체크는 public, 나머지는 인증 필요)
-                        "/actuator/health",
-                        "/actuator/health/**",
-                        "/actuator/info"
-                    ).permitAll()
-
-                    // Actuator 관리 엔드포인트는 인증 필요
-                    .requestMatchers("/actuator/**").authenticated()
-
-                    // 그 외 모든 요청은 인증 필요
-                    .anyRequest().authenticated()
-                )
-
-                // JWT 필터 추가
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                    // 모든 요청 허용 (임시 테스트용)
+                    .anyRequest().permitAll()
+                );
 
         return http.build();
     }

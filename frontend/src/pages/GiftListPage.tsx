@@ -26,27 +26,15 @@ const PURCHASE_FILTERS = [
 
 export const GiftListPage = () => {
   const navigate = useNavigate();
-  const [page, setPage] = useState(0);
   const [category, setCategory] = useState("");
   const [purchaseFilter, setPurchaseFilter] = useState<"all" | "purchased" | "unpurchased">("all");
-  const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
 
   const isPurchased = purchaseFilter === "purchased" ? true : purchaseFilter === "unpurchased" ? false : undefined;
 
   const { data, isLoading, error } = useGetGiftsQuery({
-    page,
-    size: 12,
     category: category || undefined,
     isPurchased,
-    search: search || undefined,
   });
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSearch(searchInput);
-    setPage(0);
-  };
 
   const handleAddGift = () => {
     navigate("/gifts/new");
@@ -54,12 +42,10 @@ export const GiftListPage = () => {
 
   const handleCategoryChange = (value: string) => {
     setCategory(value);
-    setPage(0);
   };
 
   const handlePurchaseFilterChange = (value: "all" | "purchased" | "unpurchased") => {
     setPurchaseFilter(value);
-    setPage(0);
   };
 
   return (
@@ -71,16 +57,6 @@ export const GiftListPage = () => {
             선물 추가
           </Button>
         </div>
-
-        <form onSubmit={handleSearchSubmit} className="flex space-x-2">
-          <Input
-            placeholder="선물명으로 검색..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            className="flex-1"
-          />
-          <Button type="submit">검색</Button>
-        </form>
 
         <div className="space-y-3">
           <div>
@@ -134,7 +110,7 @@ export const GiftListPage = () => {
           </div>
         )}
 
-        {data && data.content.length === 0 && (
+        {data && data.length === 0 && (
           <div className="flex h-64 items-center justify-center">
             <div className="text-center">
               <p className="text-muted-foreground">선물이 없습니다.</p>
@@ -145,36 +121,12 @@ export const GiftListPage = () => {
           </div>
         )}
 
-        {data && data.content.length > 0 && (
-          <>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {data.content.map((gift) => (
-                <GiftCard key={gift.id} gift={gift} />
-              ))}
-            </div>
-
-            {data.totalPages > 1 && (
-              <div className="flex items-center justify-center space-x-2">
-                <Button
-                  onClick={() => setPage(page - 1)}
-                  disabled={page === 0}
-                  variant="outline"
-                >
-                  이전
-                </Button>
-                <span className="text-sm text-muted-foreground">
-                  {page + 1} / {data.totalPages}
-                </span>
-                <Button
-                  onClick={() => setPage(page + 1)}
-                  disabled={page >= data.totalPages - 1}
-                  variant="outline"
-                >
-                  다음
-                </Button>
-              </div>
-            )}
-          </>
+        {data && data.length > 0 && (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {data.map((gift) => (
+              <GiftCard key={gift.id} gift={gift} />
+            ))}
+          </div>
         )}
       </div>
 

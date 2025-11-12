@@ -111,7 +111,7 @@ export const ProfileSettingsPage = () => {
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-2xl font-semibold text-muted-foreground">
-                      {profile?.nickname.charAt(0).toUpperCase()}
+                      {profile?.nickname?.charAt(0)?.toUpperCase() || "?"}
                     </div>
                   )}
                 </div>

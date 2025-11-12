@@ -1,15 +1,18 @@
 export interface Event {
   id: number;
   title: string;
+  description?: string;
   eventDate: string;
   eventType: string;
-  recipientName: string;
-  relationship?: string;
-  memo?: string;
-  isTracked: boolean;
-  reminders?: number[];
-  createdAt: string;
-  updatedAt: string;
+  isRecurring: boolean;
+  isActive: boolean;
+  isTracking: boolean;
+  dDay: number;
+  reminders?: {
+    id: number;
+    daysBeforeEvent: number;
+    isActive: boolean;
+  }[];
 }
 
 export interface EventsResponse {
@@ -29,22 +32,20 @@ export interface EventsQueryParams {
 
 export interface CreateEventRequest {
   title: string;
+  description?: string;
   eventDate: string;
   eventType: string;
-  recipientName: string;
-  relationship?: string;
-  memo?: string;
-  isTracked: boolean;
-  reminders?: number[];
+  isRecurring?: boolean;
+  isTracking?: boolean;
+  reminderDays?: number[];
 }
 
 export interface UpdateEventRequest {
   title: string;
+  description?: string;
   eventDate: string;
   eventType: string;
-  recipientName: string;
-  relationship?: string;
-  memo?: string;
-  isTracked: boolean;
-  reminders?: number[];
+  isRecurring?: boolean;
+  isTracking?: boolean;
+  reminderDays?: number[];
 }

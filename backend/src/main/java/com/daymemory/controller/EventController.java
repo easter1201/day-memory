@@ -2,6 +2,7 @@ package com.daymemory.controller;
 
 import com.daymemory.domain.dto.EventDto;
 import com.daymemory.domain.entity.Event;
+import com.daymemory.security.SecurityUtils;
 import com.daymemory.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -35,8 +36,8 @@ public class EventController {
     })
     @PostMapping
     public ResponseEntity<EventDto.Response> createEvent(
-            @RequestParam Long userId,
             @RequestBody EventDto.Request request) {
+        Long userId = SecurityUtils.getCurrentUserId();
         EventDto.Response response = eventService.createEvent(userId, request);
         return ResponseEntity.ok(response);
     }
@@ -50,8 +51,8 @@ public class EventController {
     })
     @GetMapping
     public ResponseEntity<List<EventDto.Response>> getEvents(
-            @RequestParam Long userId,
             @RequestParam(required = false) Event.EventType type) {
+        Long userId = SecurityUtils.getCurrentUserId();
         List<EventDto.Response> events;
         if (type != null) {
             events = eventService.getEventsByUserAndType(userId, type);
@@ -112,8 +113,8 @@ public class EventController {
     })
     @GetMapping("/upcoming")
     public ResponseEntity<List<EventDto.Response>> getUpcomingEvents(
-            @RequestParam Long userId,
             @RequestParam(defaultValue = "30") int days) {
+        Long userId = SecurityUtils.getCurrentUserId();
         List<EventDto.Response> events = eventService.getUpcomingEvents(userId, days);
         return ResponseEntity.ok(events);
     }

@@ -26,6 +26,7 @@ export type GiftCategory = (typeof GIFT_CATEGORIES)[number]["value"];
 export const RELATIONSHIPS = [
   { value: "FAMILY", label: "가족" },
   { value: "FRIEND", label: "친구" },
+  { value: "LOVER", label: "연인" },
   { value: "COLLEAGUE", label: "동료" },
   { value: "ACQUAINTANCE", label: "지인" },
   { value: "OTHER", label: "기타" },

@@ -26,35 +26,33 @@ export const remindersApi = createApi({
   }),
   tagTypes: ["Reminders", "ReminderLogs", "ReminderSettings"],
   endpoints: (builder) => ({
-    getReminders: builder.query<RemindersResponse, RemindersQueryParams>({
+    getReminders: builder.query<ReminderLog[], { eventId?: number }>({
       query: (params) => {
         const searchParams = new URLSearchParams();
-        if (params.page !== undefined) searchParams.append("page", params.page.toString());
-        if (params.size !== undefined) searchParams.append("size", params.size.toString());
-        if (params.status) searchParams.append("status", params.status);
+        if (params.eventId !== undefined) searchParams.append("eventId", params.eventId.toString());
 
-        return `/reminders?${searchParams.toString()}`;
+        const queryString = searchParams.toString();
+        return queryString ? `/reminders/logs?${queryString}` : '/reminders/logs';
       },
       providesTags: ["Reminders"],
     }),
-    getReminderLogs: builder.query<ReminderLogsResponse, ReminderLogsQueryParams>({
+    getReminderLogs: builder.query<ReminderLog[], { eventId?: number }>({
       query: (params) => {
         const searchParams = new URLSearchParams();
-        if (params.page !== undefined) searchParams.append("page", params.page.toString());
-        if (params.size !== undefined) searchParams.append("size", params.size.toString());
-        if (params.status) searchParams.append("status", params.status);
+        if (params.eventId !== undefined) searchParams.append("eventId", params.eventId.toString());
 
-        return `/reminders/logs?${searchParams.toString()}`;
+        const queryString = searchParams.toString();
+        return queryString ? `/reminders/logs?${queryString}` : '/reminders/logs';
       },
       providesTags: ["ReminderLogs"],
     }),
     getGlobalSettings: builder.query<GlobalReminderSettings, void>({
-      query: () => "/reminders/settings",
+      query: () => "/users/reminder-settings",
       providesTags: ["ReminderSettings"],
     }),
     updateGlobalSettings: builder.mutation<GlobalReminderSettings, UpdateGlobalReminderSettingsRequest>({
       query: (data) => ({
-        url: "/reminders/settings",
+        url: "/users/reminder-settings",
         method: "PUT",
         body: data,
       }),
@@ -62,7 +60,7 @@ export const remindersApi = createApi({
     }),
     retryReminder: builder.mutation<void, number>({
       query: (logId) => ({
-        url: `/reminders/logs/${logId}/retry`,
+        url: `/reminders/retry/${logId}`,
         method: "POST",
       }),
       invalidatesTags: ["ReminderLogs"],

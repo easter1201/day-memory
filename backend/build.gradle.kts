@@ -41,6 +41,9 @@ dependencies {
 	// Springdoc OpenAPI (Swagger)
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
+	// Jackson Java 8 Date/Time
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
+
 	// Lombok
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
@@ -63,4 +66,13 @@ tasks.withType<JavaCompile> {
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
 	archiveFileName.set("${project.name}.jar")
+}
+
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+	// 개발 환경 변수 설정
+	environment("SPRING_PROFILES_ACTIVE", "dev")
+	environment("DB_URL", "jdbc:postgresql://localhost:54320/daymemory")
+	environment("DB_USERNAME", "postgres")
+	environment("DB_PASSWORD", "postgres")
+	environment("JWT_SECRET", "your-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm-development-only")
 }

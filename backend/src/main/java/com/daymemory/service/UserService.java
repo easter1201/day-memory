@@ -210,6 +210,90 @@ public class UserService {
     }
 
     /**
+     * 전역 리마인더 설정 조회
+     */
+    public UserDto.ReminderSettingsResponse getReminderSettings(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // JSON 파싱
+        java.util.List<Integer> defaultDaysBefore = parseDefaultDaysBefore(user.getDefaultDaysBeforeJson());
+
+        return UserDto.ReminderSettingsResponse.builder()
+                .enabled(user.getReminderEnabled())
+                .defaultDaysBefore(defaultDaysBefore)
+                .notificationMethod(user.getNotificationMethod().name())
+                .build();
+    }
+
+    /**
+     * 전역 리마인더 설정 수정
+     */
+    @Transactional
+    public UserDto.ReminderSettingsResponse updateReminderSettings(Long userId, UserDto.ReminderSettingsRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 설정 업데이트
+        if (request.getEnabled() != null) {
+            user.setReminderEnabled(request.getEnabled());
+        }
+
+        if (request.getDefaultDaysBefore() != null && !request.getDefaultDaysBefore().isEmpty()) {
+            String json = convertToJson(request.getDefaultDaysBefore());
+            user.setDefaultDaysBeforeJson(json);
+        }
+
+        if (request.getNotificationMethod() != null) {
+            user.setNotificationMethod(User.NotificationMethod.valueOf(request.getNotificationMethod()));
+        }
+
+        // 응답 생성
+        java.util.List<Integer> defaultDaysBefore = parseDefaultDaysBefore(user.getDefaultDaysBeforeJson());
+
+        return UserDto.ReminderSettingsResponse.builder()
+                .enabled(user.getReminderEnabled())
+                .defaultDaysBefore(defaultDaysBefore)
+                .notificationMethod(user.getNotificationMethod().name())
+                .build();
+    }
+
+    /**
+     * JSON 문자열을 List<Integer>로 파싱
+     */
+    private java.util.List<Integer> parseDefaultDaysBefore(String json) {
+        if (json == null || json.trim().isEmpty()) {
+            return java.util.Arrays.asList(1, 7); // 기본값
+        }
+
+        try {
+            // 간단한 JSON 파싱: "[1, 7, 30]" -> [1, 7, 30]
+            String trimmed = json.trim().replaceAll("[\\[\\]]", "");
+            if (trimmed.isEmpty()) {
+                return java.util.Arrays.asList(1, 7);
+            }
+            return java.util.Arrays.stream(trimmed.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(java.util.stream.Collectors.toList());
+        } catch (Exception e) {
+            return java.util.Arrays.asList(1, 7); // 파싱 실패 시 기본값
+        }
+    }
+
+    /**
+     * List<Integer>를 JSON 문자열로 변환
+     */
+    private String convertToJson(java.util.List<Integer> list) {
+        if (list == null || list.isEmpty()) {
+            return "[1, 7]";
+        }
+        return "[" + list.stream()
+                .map(String::valueOf)
+                .collect(java.util.stream.Collectors.joining(", ")) + "]";
+    }
+
+    /**
      * 현재 로그인한 사용자 ID 가져오기
      */
     public Long getCurrentUserId() {

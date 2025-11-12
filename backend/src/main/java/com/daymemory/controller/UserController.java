@@ -209,4 +209,42 @@ public class UserController {
         UserDto.NotificationSettingsResponse response = userService.updateNotificationSettings(userId, request);
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * 전역 리마인더 설정 조회
+     */
+    @Operation(summary = "전역 리마인더 설정 조회", description = "현재 로그인한 사용자의 전역 리마인더 설정을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(schema = @Schema(implementation = UserDto.ReminderSettingsResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    @GetMapping("/reminder-settings")
+    public ResponseEntity<UserDto.ReminderSettingsResponse> getReminderSettings() {
+        Long userId = userService.getCurrentUserId();
+        UserDto.ReminderSettingsResponse response = userService.getReminderSettings(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 전역 리마인더 설정 수정
+     */
+    @Operation(summary = "전역 리마인더 설정 수정", description = "현재 로그인한 사용자의 전역 리마인더 설정을 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "수정 성공",
+                    content = @Content(schema = @Schema(implementation = UserDto.ReminderSettingsResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    @PutMapping("/reminder-settings")
+    public ResponseEntity<UserDto.ReminderSettingsResponse> updateReminderSettings(
+            @Valid @RequestBody UserDto.ReminderSettingsRequest request
+    ) {
+        Long userId = userService.getCurrentUserId();
+        UserDto.ReminderSettingsResponse response = userService.updateReminderSettings(userId, request);
+        return ResponseEntity.ok(response);
+    }
 }

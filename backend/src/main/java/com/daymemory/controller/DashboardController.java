@@ -1,6 +1,7 @@
 package com.daymemory.controller;
 
 import com.daymemory.domain.dto.DashboardDto;
+import com.daymemory.security.SecurityUtils;
 import com.daymemory.service.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,9 +23,9 @@ public class DashboardController {
 
     /**
      * 대시보드 요약 정보 조회
-     * GET /api/dashboard?userId={userId}
+     * GET /api/dashboard
      */
-    @Operation(summary = "대시보드 요약 정보 조회", description = "사용자의 이벤트, 선물, 리마인더 등의 요약 정보를 조회합니다.")
+    @Operation(summary = "대시보드 요약 정보 조회", description = "로그인한 사용자의 이벤트, 선물, 리마인더 등의 요약 정보를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "대시보드 조회 성공",
                     content = @Content(schema = @Schema(implementation = DashboardDto.class))),
@@ -32,7 +33,8 @@ public class DashboardController {
                     content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
     })
     @GetMapping
-    public ResponseEntity<DashboardDto> getDashboardSummary(@RequestParam Long userId) {
+    public ResponseEntity<DashboardDto> getDashboardSummary() {
+        Long userId = SecurityUtils.getCurrentUserId();
         DashboardDto dashboard = dashboardService.getDashboardSummary(userId);
         return ResponseEntity.ok(dashboard);
     }

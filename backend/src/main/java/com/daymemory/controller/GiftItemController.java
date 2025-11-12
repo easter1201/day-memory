@@ -2,6 +2,7 @@ package com.daymemory.controller;
 
 import com.daymemory.domain.dto.GiftItemDto;
 import com.daymemory.domain.entity.GiftItem;
+import com.daymemory.security.SecurityUtils;
 import com.daymemory.service.GiftItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -36,8 +37,8 @@ public class GiftItemController {
     })
     @PostMapping
     public ResponseEntity<GiftItemDto.Response> createGiftItem(
-            @RequestParam Long userId,
             @RequestBody GiftItemDto.Request request) {
+        Long userId = SecurityUtils.getCurrentUserId();
         GiftItemDto.Response response = giftItemService.createGiftItem(userId, request);
         return ResponseEntity.ok(response);
     }
@@ -51,9 +52,9 @@ public class GiftItemController {
     })
     @GetMapping
     public ResponseEntity<List<GiftItemDto.Response>> getGiftItems(
-            @RequestParam Long userId,
             @RequestParam(required = false) Boolean purchased,
             @RequestParam(required = false) GiftItem.GiftCategory category) {
+        Long userId = SecurityUtils.getCurrentUserId();
 
         // 미구매 선물 조회
         if (purchased != null && !purchased) {
@@ -138,8 +139,8 @@ public class GiftItemController {
     })
     @GetMapping("/search")
     public ResponseEntity<List<GiftItemDto.Response>> searchGiftItems(
-            @RequestParam Long userId,
             @RequestParam String keyword) {
+        Long userId = SecurityUtils.getCurrentUserId();
         List<GiftItemDto.Response> giftItems = giftItemService.searchGiftItems(userId, keyword);
         return ResponseEntity.ok(giftItems);
     }

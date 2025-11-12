@@ -42,6 +42,19 @@ public class User extends BaseEntity {
     @Column
     private String oauthProviderId;
 
+    // 전역 리마인더 설정
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean reminderEnabled = true;
+
+    @Column
+    private String defaultDaysBeforeJson; // JSON 형태로 저장: "[1, 7, 30]"
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private NotificationMethod notificationMethod = NotificationMethod.EMAIL;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Event> events = new ArrayList<>();
@@ -56,5 +69,9 @@ public class User extends BaseEntity {
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
+    }
+
+    public enum NotificationMethod {
+        EMAIL, SMS, BOTH
     }
 }

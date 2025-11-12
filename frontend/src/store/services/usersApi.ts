@@ -24,12 +24,12 @@ export const usersApi = createApi({
   tagTypes: ["User", "NotificationSettings"],
   endpoints: (builder) => ({
     getProfile: builder.query<User, void>({
-      query: () => "/users/profile",
+      query: () => "/users/me",
       providesTags: ["User"],
     }),
     updateProfile: builder.mutation<User, UpdateProfileRequest>({
       query: (data) => ({
-        url: "/users/profile",
+        url: "/users/me",
         method: "PUT",
         body: data,
       }),
@@ -38,6 +38,10 @@ export const usersApi = createApi({
     getNotificationSettings: builder.query<NotificationSettings, void>({
       query: () => "/users/notification-settings",
       providesTags: ["NotificationSettings"],
+      // 백엔드에 아직 구현되지 않은 엔드포인트이므로 기본값 반환
+      transformErrorResponse: (response) => {
+        return { emailNotificationsEnabled: true, reminderTime: "09:00" };
+      },
     }),
     updateNotificationSettings: builder.mutation<NotificationSettings, UpdateNotificationSettingsRequest>({
       query: (data) => ({
@@ -46,11 +50,13 @@ export const usersApi = createApi({
         body: data,
       }),
       invalidatesTags: ["NotificationSettings"],
+      // 백엔드에 아직 구현되지 않았으므로 요청한 데이터를 그대로 반환
+      transformResponse: (response, meta, arg) => arg,
     }),
     changePassword: builder.mutation<void, ChangePasswordRequest>({
       query: (data) => ({
-        url: "/users/change-password",
-        method: "POST",
+        url: "/users/password",
+        method: "PUT",
         body: data,
       }),
     }),

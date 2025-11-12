@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
         // Rate Limit 인터셉터
         registry.addInterceptor(rateLimitInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**")
+                .excludePathPatterns("/api/auth/**", "/api/users/signup", "/api/users/login", "/api/users/refresh")
                 .order(2); // 로깅 다음 실행
     }
 }

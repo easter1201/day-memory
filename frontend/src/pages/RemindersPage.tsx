@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../components/layout/PageLayout";
 import { Button } from "../components/ui/Button";
@@ -6,7 +6,6 @@ import { Switch } from "../components/ui/Switch";
 import { Badge } from "../components/ui/Badge";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { EmptyState } from "../components/common/EmptyState";
-import { Pagination } from "../components/common/Pagination";
 import {
   useGetRemindersQuery,
   useGetGlobalSettingsQuery,
@@ -31,26 +30,30 @@ const STATUS_COLORS = {
 
 export const RemindersPage = () => {
   const navigate = useNavigate();
-  const [page, setPage] = useState(0);
-  const [selectedDays, setSelectedDays] = useState<number[]>([]);
-  const [notificationMethod, setNotificationMethod] = useState<"EMAIL" | "SMS" | "BOTH">("EMAIL");
 
-  const { data: reminders, isLoading: remindersLoading } = useGetRemindersQuery({
-    page,
-    size: 10,
-  });
+  // 기본 설정값 (백엔드에 설정 기능이 구현되지 않은 경우 사용)
+  const defaultSettings = {
+    enabled: true,
+    defaultDaysBefore: [1, 7],
+    notificationMethod: "EMAIL" as const,
+  };
 
-  const { data: settings, isLoading: settingsLoading } = useGetGlobalSettingsQuery();
+  const [selectedDays, setSelectedDays] = useState<number[]>(defaultSettings.defaultDaysBefore);
+  const [notificationMethod, setNotificationMethod] = useState<"EMAIL" | "SMS" | "BOTH">(defaultSettings.notificationMethod);
+
+  const { data: reminders, isLoading: remindersLoading } = useGetRemindersQuery({});
+
+  const { data: settings, isLoading: settingsLoading, error: settingsError } = useGetGlobalSettingsQuery();
   const [updateSettings, { isLoading: isUpdating }] = useUpdateGlobalSettingsMutation();
   const [deleteReminder] = useDeleteReminderMutation();
 
   // 설정 로드 완료 시 초기값 설정
-  useState(() => {
+  useEffect(() => {
     if (settings) {
       setSelectedDays(settings.defaultDaysBefore);
       setNotificationMethod(settings.notificationMethod);
     }
-  });
+  }, [settings]);
 
   const handleToggleDay = (day: number) => {
     if (selectedDays.includes(day)) {
@@ -61,11 +64,11 @@ export const RemindersPage = () => {
   };
 
   const handleSaveSettings = async () => {
-    if (!settings) return;
+    const settingsToUse = settings || defaultSettings;
 
     try {
       await updateSettings({
-        enabled: settings.enabled,
+        enabled: settingsToUse.enabled,
         defaultDaysBefore: selectedDays,
         notificationMethod,
       }).unwrap();
@@ -77,13 +80,13 @@ export const RemindersPage = () => {
   };
 
   const handleToggleEnabled = async (enabled: boolean) => {
-    if (!settings) return;
+    const settingsToUse = settings || defaultSettings;
 
     try {
       await updateSettings({
         enabled,
-        defaultDaysBefore: settings.defaultDaysBefore,
-        notificationMethod: settings.notificationMethod,
+        defaultDaysBefore: settingsToUse.defaultDaysBefore,
+        notificationMethod: settingsToUse.notificationMethod,
       }).unwrap();
       Toast.success(enabled ? "리마인더가 활성화되었습니다" : "리마인더가 비활성화되었습니다");
     } catch (error) {
@@ -131,24 +134,23 @@ export const RemindersPage = () => {
         </div>
 
         {/* Global Settings */}
-        {settings && (
-          <div className="rounded-lg border bg-card p-6 shadow-sm">
-            <h2 className="mb-4 text-xl font-semibold">전역 리마인더 설정</h2>
+        <div className="rounded-lg border bg-card p-6 shadow-sm">
+          <h2 className="mb-4 text-xl font-semibold">전역 리마인더 설정</h2>
 
-            <div className="space-y-6">
-              {/* Enable/Disable */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium">리마인더 활성화</h3>
-                  <p className="text-sm text-muted-foreground">
-                    모든 이벤트에 대한 리마인더를 활성화/비활성화합니다
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.enabled}
-                  onCheckedChange={handleToggleEnabled}
-                />
+          <div className="space-y-6">
+            {/* Enable/Disable */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-medium">리마인더 활성화</h3>
+                <p className="text-sm text-muted-foreground">
+                  모든 이벤트에 대한 리마인더를 활성화/비활성화합니다
+                </p>
               </div>
+              <Switch
+                checked={(settings || defaultSettings).enabled}
+                onCheckedChange={handleToggleEnabled}
+              />
+            </div>
 
               {/* Default Days Before */}
               <div>
@@ -163,7 +165,7 @@ export const RemindersPage = () => {
                       type="button"
                       onClick={() => handleToggleDay(option.value)}
                       className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
-                        selectedDays.includes(option.value)
+                        selectedDays?.includes(option.value)
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-input bg-background hover:bg-accent"
                       }`}
@@ -199,18 +201,17 @@ export const RemindersPage = () => {
                 </div>
               </div>
 
-              <Button onClick={handleSaveSettings} disabled={isUpdating}>
-                {isUpdating ? "저장 중..." : "설정 저장"}
-              </Button>
-            </div>
+            <Button onClick={handleSaveSettings} disabled={isUpdating}>
+              {isUpdating ? "저장 중..." : "설정 저장"}
+            </Button>
           </div>
-        )}
+        </div>
 
         {/* Reminders List */}
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <h2 className="mb-4 text-xl font-semibold">예정된 리마인더</h2>
 
-          {!reminders || reminders.content.length === 0 ? (
+          {!reminders || reminders.length === 0 ? (
             <EmptyState
               title="예정된 리마인더가 없습니다"
               description="이벤트를 생성하면 자동으로 리마인더가 등록됩니다"
@@ -218,7 +219,7 @@ export const RemindersPage = () => {
           ) : (
             <>
               <div className="space-y-3">
-                {reminders.content.map((reminder) => (
+                {reminders.map((reminder) => (
                   <div
                     key={reminder.id}
                     className="flex items-center justify-between rounded-lg border p-4"
@@ -248,16 +249,6 @@ export const RemindersPage = () => {
                   </div>
                 ))}
               </div>
-
-              {reminders.totalPages > 1 && (
-                <div className="mt-4">
-                  <Pagination
-                    currentPage={page + 1}
-                    totalPages={reminders.totalPages}
-                    onPageChange={(newPage) => setPage(newPage - 1)}
-                  />
-                </div>
-              )}
             </>
           )}
         </div>

@@ -35,7 +35,7 @@ export const LoginPage = () => {
       const response = await login(data).unwrap();
       dispatch(setCredentials(response));
       toast.success("로그인에 성공했습니다!");
-      navigate("/dashboard");
+      navigate("/");
     } catch (error: any) {
       const message =
         error?.data?.message || "로그인에 실패했습니다. 다시 시도해주세요.";

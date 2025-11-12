@@ -48,24 +48,6 @@ public class ReminderController {
     }
 
     /**
-     * 실패한 리마인더 목록 조회
-     * GET /api/reminders/failed - 최근 30일간 실패한 리마인더
-     */
-    @Operation(summary = "실패한 리마인더 목록 조회", description = "최근 30일간 발송에 실패한 리마인더 목록을 조회합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "실패 목록 조회 성공",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ReminderDto.LogResponse.class))))
-    })
-    @GetMapping("/failed")
-    public ResponseEntity<List<ReminderDto.LogResponse>> getFailedReminders() {
-        List<ReminderLog> logs = reminderService.getFailedReminders();
-        List<ReminderDto.LogResponse> responses = logs.stream()
-                .map(ReminderDto.LogResponse::from)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(responses);
-    }
-
-    /**
      * 실패한 리마인더 재발송
      * POST /api/reminders/retry/{reminderLogId}
      */

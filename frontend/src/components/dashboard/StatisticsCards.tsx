@@ -1,14 +1,14 @@
-import type { DashboardStatistics } from "../../types/dashboard";
+import type { DashboardData } from "../../types/dashboard";
 
 interface StatisticsCardsProps {
-  statistics: DashboardStatistics;
+  data: DashboardData;
 }
 
-export const StatisticsCards = ({ statistics }: StatisticsCardsProps) => {
+export const StatisticsCards = ({ data }: StatisticsCardsProps) => {
   const stats = [
-    { label: "총 이벤트", value: statistics.totalEvents, color: "bg-blue-500" },
-    { label: "총 선물", value: statistics.totalGifts, color: "bg-green-500" },
-    { label: "이번 달 이벤트", value: statistics.thisMonthEvents, color: "bg-purple-500" },
+    { label: "다가오는 이벤트", value: data.upcomingEventsCount, color: "bg-blue-500" },
+    { label: "미구매 선물", value: data.unpurchasedGiftsCount, color: "bg-green-500" },
+    { label: "이번 달 이벤트", value: data.thisMonthEventsCount, color: "bg-purple-500" },
   ];
 
   return (

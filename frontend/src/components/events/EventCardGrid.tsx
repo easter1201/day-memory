@@ -6,7 +6,7 @@ interface EventCardGridProps {
 }
 
 export const EventCardGrid = ({ events }: EventCardGridProps) => {
-  if (events.length === 0) {
+  if (!events || events.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center text-muted-foreground">
         <p>등록된 이벤트가 없습니다.</p>

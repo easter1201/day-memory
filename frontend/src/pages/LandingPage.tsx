@@ -1,11 +1,23 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "../components/ui/Button";
 import { HeroSection } from "../components/landing/HeroSection";
 import { FeaturesSection } from "../components/landing/FeaturesSection";
 import { Footer } from "../components/landing/Footer";
+import type { RootState } from "../store";
+import { logout } from "../store/slices/authSlice";
+import toast from "react-hot-toast";
 
 export const LandingPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, accessToken } = useSelector((state: RootState) => state.auth);
+  const isLoggedIn = !!accessToken;
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("로그아웃되었습니다");
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -16,10 +28,26 @@ export const LandingPage = () => {
             <h1 className="text-xl font-bold text-primary">Day Memory</h1>
           </div>
           <nav className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate("/login")}>
-              로그인
-            </Button>
-            <Button onClick={() => navigate("/signup")}>회원가입</Button>
+            {isLoggedIn ? (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  {user?.name}님 환영합니다
+                </span>
+                <Button onClick={() => navigate("/dashboard")}>
+                  대시보드
+                </Button>
+                <Button variant="ghost" onClick={handleLogout}>
+                  로그아웃
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={() => navigate("/login")}>
+                  로그인
+                </Button>
+                <Button onClick={() => navigate("/signup")}>회원가입</Button>
+              </>
+            )}
           </nav>
         </div>
       </header>

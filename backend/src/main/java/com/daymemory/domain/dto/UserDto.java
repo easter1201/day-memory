@@ -208,4 +208,42 @@ public class UserDto {
         @Schema(description = "알림 시간 (HH:mm 형식)", example = "09:00")
         private String reminderTime;
     }
+
+    /**
+     * 전역 리마인더 설정 요청 DTO
+     */
+    @Schema(description = "전역 리마인더 설정 요청")
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReminderSettingsRequest {
+        @Schema(description = "리마인더 활성화 여부", example = "true")
+        private Boolean enabled;
+
+        @Schema(description = "기본 알림 시점 (일 수)", example = "[1, 7, 30]")
+        private java.util.List<Integer> defaultDaysBefore;
+
+        @Schema(description = "알림 방법 (EMAIL, SMS, BOTH)", example = "EMAIL")
+        private String notificationMethod;
+    }
+
+    /**
+     * 전역 리마인더 설정 응답 DTO
+     */
+    @Schema(description = "전역 리마인더 설정 응답")
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReminderSettingsResponse {
+        @Schema(description = "리마인더 활성화 여부", example = "true")
+        private Boolean enabled;
+
+        @Schema(description = "기본 알림 시점 (일 수)", example = "[1, 7, 30]")
+        private java.util.List<Integer> defaultDaysBefore;
+
+        @Schema(description = "알림 방법 (EMAIL, SMS, BOTH)", example = "EMAIL")
+        private String notificationMethod;
+    }
 }

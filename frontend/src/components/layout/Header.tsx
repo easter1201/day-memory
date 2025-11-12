@@ -1,21 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store";
+import { logout } from "../../store/slices/authSlice";
 import { cn } from "../../utils/cn";
 import { ThemeToggle } from "../common/ThemeToggle";
 
 export const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // TODO: Replace with actual user data from Redux store
-  const user = {
-    name: "사용자",
-    email: "user@example.com",
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const handleLogout = () => {
-    // TODO: Implement logout logic
-    console.log("Logout");
+    dispatch(logout());
+    navigate("/login");
   };
 
   return (
@@ -72,10 +72,10 @@ export const Header = () => {
               aria-haspopup="true"
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <span className="text-sm font-medium">{user.name[0]}</span>
+                <span className="text-sm font-medium">{user?.name?.[0] || "U"}</span>
               </div>
               <span className="hidden text-sm font-medium md:inline-block">
-                {user.name}
+                {user?.name || "사용자"}
               </span>
             </button>
 
@@ -88,8 +88,8 @@ export const Header = () => {
                 />
                 <div className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-popover p-1 shadow-md" role="menu">
                   <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{user.name}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                    <p className="text-sm font-medium">{user?.name || "사용자"}</p>
+                    <p className="text-xs text-muted-foreground">{user?.email || "user@example.com"}</p>
                   </div>
                   <div className="my-1 h-px bg-border" />
                   <Link

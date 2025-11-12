@@ -1,4 +1,4 @@
-import { Event } from "../../types/event";
+import type { Event } from "../../types/event";
 import { Modal } from "../common/Modal";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";

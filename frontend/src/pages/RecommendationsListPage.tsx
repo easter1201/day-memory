@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../components/layout/PageLayout";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { EmptyState } from "../components/common/EmptyState";
-import { Pagination } from "../components/common/Pagination";
 import { useGetRecommendationsQuery } from "../store/services/recommendationsApi";
 
 const STATUS_LABELS = {
@@ -22,12 +20,8 @@ const STATUS_COLORS = {
 
 export const RecommendationsListPage = () => {
   const navigate = useNavigate();
-  const [page, setPage] = useState(0);
 
-  const { data, isLoading } = useGetRecommendationsQuery({
-    page,
-    size: 12,
-  });
+  const { data, isLoading } = useGetRecommendationsQuery();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ko-KR", {
@@ -71,7 +65,7 @@ export const RecommendationsListPage = () => {
         </div>
 
         {/* Recommendations List */}
-        {!data || data.content.length === 0 ? (
+        {!data || data.length === 0 ? (
           <EmptyState
             title="아직 추천 내역이 없습니다"
             description="AI에게 선물 추천을 요청해보세요"
@@ -83,7 +77,7 @@ export const RecommendationsListPage = () => {
         ) : (
           <>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {data.content.map((recommendation) => (
+              {data.map((recommendation) => (
                 <div
                   key={recommendation.id}
                   onClick={() => navigate(`/recommendations/${recommendation.id}`)}
@@ -132,17 +126,6 @@ export const RecommendationsListPage = () => {
                 </div>
               ))}
             </div>
-
-            {/* Pagination */}
-            {data.totalPages > 1 && (
-              <div className="mt-6">
-                <Pagination
-                  currentPage={page + 1}
-                  totalPages={data.totalPages}
-                  onPageChange={(newPage) => setPage(newPage - 1)}
-                />
-              </div>
-            )}
           </>
         )}
       </div>

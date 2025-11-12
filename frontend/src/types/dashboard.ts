@@ -16,13 +16,16 @@ export interface GiftItem {
   createdAt: string;
 }
 
-export interface DashboardStatistics {
-  totalEvents: number;
-  totalGifts: number;
-  thisMonthEvents: number;
+export interface ReminderStatus {
+  sentCount: number;
+  failedCount: number;
+  lastSentAt: string;
 }
 
 export interface DashboardData {
-  statistics: DashboardStatistics;
+  upcomingEventsCount: number;
+  unpurchasedGiftsCount: number;
+  recentReminderStatus: ReminderStatus;
+  thisMonthEventsCount: number;
   upcomingEvents: Event[];
 }

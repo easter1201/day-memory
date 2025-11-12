@@ -33,7 +33,7 @@ export const DashboardPage = () => {
       <div className="space-y-6">
         <WelcomeBanner />
 
-        <StatisticsCards statistics={data.statistics} />
+        <StatisticsCards data={data} />
 
         <div className="grid gap-6 lg:grid-cols-2">
           <UpcomingEventsWidget events={data.upcomingEvents} />

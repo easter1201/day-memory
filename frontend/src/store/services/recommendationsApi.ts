@@ -24,24 +24,17 @@ export const recommendationsApi = createApi({
   }),
   tagTypes: ["Recommendations"],
   endpoints: (builder) => ({
-    getRecommendations: builder.query<RecommendationsResponse, RecommendationsQueryParams>({
-      query: (params) => {
-        const searchParams = new URLSearchParams();
-        if (params.page !== undefined) searchParams.append("page", params.page.toString());
-        if (params.size !== undefined) searchParams.append("size", params.size.toString());
-        if (params.status) searchParams.append("status", params.status);
-
-        return `/recommendations?${searchParams.toString()}`;
-      },
+    getRecommendations: builder.query<Recommendation[], void>({
+      query: () => `/ai/recommendations`,
       providesTags: ["Recommendations"],
     }),
     getRecommendationById: builder.query<Recommendation, number>({
-      query: (id) => `/recommendations/${id}`,
+      query: (id) => `/ai/recommendations/${id}`,
       providesTags: (result, error, id) => [{ type: "Recommendations", id }],
     }),
     createRecommendation: builder.mutation<Recommendation, RecommendationRequest>({
       query: (data) => ({
-        url: "/recommendations",
+        url: "/ai/recommendations",
         method: "POST",
         body: data,
       }),
@@ -49,14 +42,14 @@ export const recommendationsApi = createApi({
     }),
     saveRecommendedGift: builder.mutation<Gift, SaveRecommendedGiftRequest>({
       query: (data) => ({
-        url: `/recommendations/${data.recommendationId}/gifts/${data.recommendedGiftId}/save`,
+        url: `/ai/recommendations/${data.recommendationId}/gifts/${data.recommendedGiftId}/save`,
         method: "POST",
       }),
       invalidatesTags: ["Recommendations"],
     }),
     deleteRecommendation: builder.mutation<void, number>({
       query: (id) => ({
-        url: `/recommendations/${id}`,
+        url: `/ai/recommendations/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Recommendations"],
