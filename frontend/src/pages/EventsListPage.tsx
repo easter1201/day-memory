@@ -14,11 +14,35 @@ export const EventsListPage = () => {
   const pageSize = 12;
 
   const { data, isLoading, error } = useGetEventsQuery({
-    page: page - 1,
-    size: pageSize,
-    filter,
-    search: search || undefined,
+    page: 0,
+    size: 1000, // Get all events for client-side filtering
   });
+
+  // Client-side filtering
+  const filteredEvents = data?.content.filter(event => {
+    // Search filter
+    if (search && !event.title.toLowerCase().includes(search.toLowerCase())) {
+      return false;
+    }
+
+    // Date filter
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const eventDate = new Date(event.eventDate);
+    eventDate.setHours(0, 0, 0, 0);
+
+    if (filter === "upcoming") {
+      return eventDate >= today;
+    } else if (filter === "past") {
+      return eventDate < today;
+    }
+
+    return true; // "all" filter
+  }) || [];
+
+  // Pagination
+  const totalPages = Math.ceil(filteredEvents.length / pageSize);
+  const paginatedEvents = filteredEvents.slice((page - 1) * pageSize, page * pageSize);
 
   const handleFilterChange = (newFilter: "all" | "upcoming" | "past") => {
     setFilter(newFilter);
@@ -65,12 +89,12 @@ export const EventsListPage = () => {
 
         <SearchBar onSearch={handleSearch} />
 
-        <EventCardGrid events={data.content} />
+        <EventCardGrid events={paginatedEvents} />
 
-        {data.totalPages > 1 && (
+        {totalPages > 1 && (
           <Pagination
             currentPage={page}
-            totalPages={data.totalPages}
+            totalPages={totalPages}
             onPageChange={handlePageChange}
           />
         )}

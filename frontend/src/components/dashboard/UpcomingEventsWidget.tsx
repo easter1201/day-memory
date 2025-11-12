@@ -22,7 +22,7 @@ export const UpcomingEventsWidget = ({ events }: UpcomingEventsWidgetProps) => {
   return (
     <div className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="text-lg font-semibold">다가오는 이벤트</h2>
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 max-h-96 space-y-3 overflow-y-auto">
         {events.length === 0 ? (
           <p className="text-sm text-muted-foreground">다가오는 이벤트가 없습니다.</p>
         ) : (
@@ -35,7 +35,7 @@ export const UpcomingEventsWidget = ({ events }: UpcomingEventsWidgetProps) => {
               <div>
                 <p className="font-medium">{event.title}</p>
                 <p className="text-sm text-muted-foreground">
-                  {event.recipientName} · {new Date(event.eventDate).toLocaleDateString()}
+                  {new Date(event.eventDate).toLocaleDateString()}
                 </p>
               </div>
               <div className="flex-shrink-0">

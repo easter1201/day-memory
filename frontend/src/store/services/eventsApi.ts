@@ -27,6 +27,19 @@ export const eventsApi = createApi({
 
         return `/events?${searchParams.toString()}`;
       },
+      transformResponse: (response: Event[], meta, arg) => {
+        // Backend returns array, but frontend expects paginated response
+        const pageSize = arg.size || 12;
+        const currentPage = arg.page || 0;
+
+        return {
+          content: response,
+          totalElements: response.length,
+          totalPages: Math.ceil(response.length / pageSize),
+          currentPage: currentPage,
+          pageSize: pageSize,
+        };
+      },
       providesTags: ["Events"],
     }),
     getEventById: builder.query<Event, number>({
@@ -58,6 +71,21 @@ export const eventsApi = createApi({
     }),
     getEventsByMonth: builder.query<Event[], { year: number; month: number }>({
       query: ({ year, month }) => `/statistics/calendar?year=${year}&month=${month}`,
+      transformResponse: (response: any[]) => {
+        // Backend returns CalendarEvent[], transform to Event[]
+        return response.map((calEvent) => ({
+          id: calEvent.eventId,
+          title: calEvent.title,
+          description: "",
+          eventDate: calEvent.date,
+          eventType: calEvent.type,
+          isRecurring: false,
+          isActive: true,
+          isTracking: calEvent.tracking,
+          dDay: calEvent.daysRemaining,
+          reminders: [],
+        }));
+      },
       providesTags: ["Events"],
     }),
     toggleTracking: builder.mutation<Event, { id: number; isTracking: boolean }>({

@@ -35,10 +35,10 @@ public class DashboardService {
      */
     public DashboardDto getDashboardSummary(Long userId) {
         LocalDate today = LocalDate.now();
-        LocalDate next30Days = today.plusDays(30);
+        LocalDate next90Days = today.plusDays(90);
 
-        // 다가오는 이벤트 조회 (30일 이내)
-        List<Event> upcomingEventsList = eventRepository.findUpcomingEvents(userId, today, next30Days);
+        // 다가오는 이벤트 조회 (90일 이내)
+        List<Event> upcomingEventsList = eventRepository.findUpcomingEvents(userId, today, next90Days);
 
         // 미구매 선물 조회
         List<GiftItem> unpurchasedGifts = giftItemRepository.findByUserIdAndIsPurchasedFalse(userId);
@@ -52,9 +52,8 @@ public class DashboardService {
         LocalDate monthEnd = currentMonth.atEndOfMonth();
         List<Event> thisMonthEvents = eventRepository.findUpcomingEvents(userId, monthStart, monthEnd);
 
-        // 상위 5개 이벤트만 반환
+        // 모든 다가오는 이벤트 반환 (프론트엔드에서 스크롤 처리)
         List<EventDto.Response> upcomingEventsDto = upcomingEventsList.stream()
-                .limit(5)
                 .map(EventDto.Response::from)
                 .collect(Collectors.toList());
 

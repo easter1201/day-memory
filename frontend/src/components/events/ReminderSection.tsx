@@ -22,18 +22,22 @@ export const ReminderSection = ({ event }: ReminderSectionProps) => {
     );
   }
 
-  const sortedReminders = [...event.reminders].sort((a, b) => b - a);
+  const sortedReminders = [...event.reminders].sort(
+    (a, b) => b.daysBeforeEvent - a.daysBeforeEvent
+  );
 
   return (
     <div className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="text-lg font-semibold">리마인더</h2>
       <div className="mt-4 space-y-2">
-        {sortedReminders.map((days) => (
+        {sortedReminders.map((reminder) => (
           <div
-            key={days}
+            key={reminder.id}
             className="flex items-center rounded-md border border-muted bg-muted/50 px-3 py-2"
           >
-            <span className="text-sm">{REMINDER_LABELS[days] || `${days}일 전`}</span>
+            <span className="text-sm">
+              {REMINDER_LABELS[reminder.daysBeforeEvent] || `${reminder.daysBeforeEvent}일 전`}
+            </span>
           </div>
         ))}
       </div>

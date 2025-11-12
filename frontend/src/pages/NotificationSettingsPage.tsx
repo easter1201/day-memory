@@ -27,11 +27,17 @@ const TIME_OPTIONS = [
 ];
 
 export const NotificationSettingsPage = () => {
-  const { data: settings, isLoading } = useGetNotificationSettingsQuery();
+  // 기본 설정값 (백엔드에 알림 설정 기능이 구현되지 않은 경우 사용)
+  const defaultSettings = {
+    emailNotificationsEnabled: true,
+    reminderTime: "09:00",
+  };
+
+  const { data: settings, isLoading, error } = useGetNotificationSettingsQuery();
   const [updateSettings, { isLoading: isUpdating }] = useUpdateNotificationSettingsMutation();
 
-  const [emailEnabled, setEmailEnabled] = useState(false);
-  const [reminderTime, setReminderTime] = useState("09:00");
+  const [emailEnabled, setEmailEnabled] = useState(defaultSettings.emailNotificationsEnabled);
+  const [reminderTime, setReminderTime] = useState(defaultSettings.reminderTime);
 
   useEffect(() => {
     if (settings) {
@@ -81,16 +87,23 @@ export const NotificationSettingsPage = () => {
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <h2 className="mb-4 text-xl font-semibold">알림 설정</h2>
 
+          {error && (
+            <div className="mb-4 rounded-md bg-yellow-50 p-4 text-sm text-yellow-800">
+              백엔드에 알림 설정 API가 아직 구현되지 않았습니다. 현재는 임시 설정을 사용합니다.
+            </div>
+          )}
+
           <div className="space-y-6">
             {/* Email Notifications Toggle */}
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label>이메일 알림</Label>
+                <Label htmlFor="email-notifications">이메일 알림</Label>
                 <p className="text-sm text-muted-foreground">
                   이벤트 및 리마인더 알림을 이메일로 받습니다
                 </p>
               </div>
               <Switch
+                id="email-notifications"
                 checked={emailEnabled}
                 onCheckedChange={setEmailEnabled}
               />

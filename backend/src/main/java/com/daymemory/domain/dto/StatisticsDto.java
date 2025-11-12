@@ -2,6 +2,11 @@ package com.daymemory.domain.dto;
 
 import com.daymemory.domain.entity.Event;
 import com.daymemory.domain.entity.GiftItem;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -96,6 +101,9 @@ public class StatisticsDto {
         private String title;
 
         @Schema(description = "이벤트 날짜", example = "2025-12-25")
+        @JsonDeserialize(using = LocalDateDeserializer.class)
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate date;
 
         @Schema(description = "이벤트 타입", example = "BIRTHDAY")

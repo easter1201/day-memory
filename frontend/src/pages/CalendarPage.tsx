@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
-import { Calendar, dateFnsLocalizer, View } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import type { View } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay, addMonths, subMonths } from "date-fns";
 import { ko } from "date-fns/locale";
 import { PageLayout } from "../components/layout/PageLayout";
@@ -7,7 +8,7 @@ import { Button } from "../components/ui/Button";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { EventPopup } from "../components/calendar/EventPopup";
 import { useGetEventsByMonthQuery } from "../store/services/eventsApi";
-import { Event } from "../types/event";
+import type { Event } from "../types/event";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 // date-fns localizer 설정
@@ -67,7 +68,7 @@ export const CalendarPage = () => {
       const eventDate = new Date(event.eventDate);
       return {
         id: event.id,
-        title: `${event.title} - ${event.recipientName}`,
+        title: event.title,
         start: eventDate,
         end: eventDate,
         resource: event,
