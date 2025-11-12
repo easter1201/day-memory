@@ -3,6 +3,7 @@ import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
 import { SkipLink } from "../common/SkipLink";
+import { OfflineNotice } from "../common/OfflineNotice";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <div className="flex min-h-screen flex-col">
       <SkipLink />
+      <OfflineNotice />
       <Header />
 
       <div className="flex flex-1">

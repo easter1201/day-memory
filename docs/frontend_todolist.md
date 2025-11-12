@@ -412,10 +412,10 @@ Day Memory 프론트엔드 개발 계획 및 진행 상황을 추적하는 문�
 - [x] 색상 대비 검증
 
 ### 20. PWA 지원
-- [ ] manifest.json 작성
-- [ ] Service Worker 등록
-- [ ] 오프라인 지원
-- [ ] 푸시 알림 (선택)
+- [x] manifest.json 작성
+- [x] Service Worker 등록
+- [x] 오프라인 지원
+- [x] 푸시 알림 (선택)
 
 ---
 
