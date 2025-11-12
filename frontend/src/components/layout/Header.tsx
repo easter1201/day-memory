@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "../../utils/cn";
+import { ThemeToggle } from "../common/ThemeToggle";
 
 export const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -58,6 +59,9 @@ export const Header = () => {
 
         {/* Right side */}
         <div className="flex flex-1 items-center justify-end space-x-4">
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
           {/* Profile Dropdown */}
           <div className="relative">
             <button
