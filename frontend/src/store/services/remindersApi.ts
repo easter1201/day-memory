@@ -24,18 +24,8 @@ export const remindersApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Reminders", "ReminderLogs", "ReminderSettings"],
+  tagTypes: ["ReminderLogs", "ReminderSettings"],
   endpoints: (builder) => ({
-    getReminders: builder.query<ReminderLog[], { eventId?: number }>({
-      query: (params) => {
-        const searchParams = new URLSearchParams();
-        if (params.eventId !== undefined) searchParams.append("eventId", params.eventId.toString());
-
-        const queryString = searchParams.toString();
-        return queryString ? `/reminders/logs?${queryString}` : '/reminders/logs';
-      },
-      providesTags: ["Reminders"],
-    }),
     getReminderLogs: builder.query<ReminderLog[], { eventId?: number }>({
       query: (params) => {
         const searchParams = new URLSearchParams();
@@ -58,28 +48,27 @@ export const remindersApi = createApi({
       }),
       invalidatesTags: ["ReminderSettings"],
     }),
-    retryReminder: builder.mutation<void, number>({
+    retryReminder: builder.mutation<{ success: boolean; message: string }, number>({
       query: (logId) => ({
         url: `/reminders/retry/${logId}`,
         method: "POST",
       }),
       invalidatesTags: ["ReminderLogs"],
     }),
-    deleteReminder: builder.mutation<void, number>({
-      query: (id) => ({
-        url: `/reminders/${id}`,
-        method: "DELETE",
+    sendImmediateReminder: builder.mutation<string, number>({
+      query: (eventId) => ({
+        url: `/reminders/immediate/${eventId}`,
+        method: "POST",
       }),
-      invalidatesTags: ["Reminders"],
+      invalidatesTags: ["ReminderLogs"],
     }),
   }),
 });
 
 export const {
-  useGetRemindersQuery,
   useGetReminderLogsQuery,
   useGetGlobalSettingsQuery,
   useUpdateGlobalSettingsMutation,
   useRetryReminderMutation,
-  useDeleteReminderMutation,
+  useSendImmediateReminderMutation,
 } = remindersApi;
