@@ -19,7 +19,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" role="banner">
       <div className="container flex h-16 items-center">
         {/* Logo */}
         <Link to="/dashboard" className="mr-6 flex items-center space-x-2">
@@ -30,7 +30,7 @@ export const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex md:flex-1 md:items-center md:space-x-6">
+        <nav className="hidden md:flex md:flex-1 md:items-center md:space-x-6" aria-label="주요 메뉴">
           <Link
             to="/dashboard"
             className="text-sm font-medium transition-colors hover:text-primary"
@@ -67,6 +67,9 @@ export const Header = () => {
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               className="flex items-center space-x-2 rounded-md p-2 hover:bg-accent"
+              aria-label="프로필 메뉴"
+              aria-expanded={isProfileOpen}
+              aria-haspopup="true"
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
                 <span className="text-sm font-medium">{user.name[0]}</span>
@@ -83,7 +86,7 @@ export const Header = () => {
                   className="fixed inset-0 z-40"
                   onClick={() => setIsProfileOpen(false)}
                 />
-                <div className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-popover p-1 shadow-md">
+                <div className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-popover p-1 shadow-md" role="menu">
                   <div className="px-2 py-1.5">
                     <p className="text-sm font-medium">{user.name}</p>
                     <p className="text-xs text-muted-foreground">{user.email}</p>
@@ -111,12 +114,16 @@ export const Header = () => {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="inline-flex h-10 w-10 items-center justify-center rounded-md md:hidden"
+            aria-label="메뉴 열기"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <svg
               className="h-6 w-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               {isMobileMenuOpen ? (
                 <path
@@ -140,8 +147,8 @@ export const Header = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="border-t md:hidden">
-          <nav className="container space-y-1 py-4">
+        <div id="mobile-menu" className="border-t md:hidden">
+          <nav className="container space-y-1 py-4" aria-label="모바일 메뉴">
             <Link
               to="/dashboard"
               className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
