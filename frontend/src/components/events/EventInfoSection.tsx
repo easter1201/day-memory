@@ -35,7 +35,7 @@ export const EventInfoSection = ({ event }: EventInfoSectionProps) => {
 
         <div className="flex items-start">
           <span className="w-24 text-sm font-medium text-muted-foreground">추적 여부</span>
-          <span className="flex-1 text-sm">{event.isTracked ? "추적 중" : "추적 안 함"}</span>
+          <span className="flex-1 text-sm">{event.isTracking ? "추적 중" : "추적 안 함"}</span>
         </div>
       </div>
     </div>
