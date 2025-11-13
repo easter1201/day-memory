@@ -51,6 +51,9 @@ public class GiftItemDto {
         @Schema(description = "연결된 이벤트 ID", example = "1")
         private Long eventId;
 
+        @Schema(description = "연결된 이벤트 제목", example = "생일 파티")
+        private String eventTitle;
+
         @Schema(description = "선물 이름", example = "에어팟 프로")
         private String name;
 
@@ -82,6 +85,7 @@ public class GiftItemDto {
             return Response.builder()
                     .id(giftItem.getId())
                     .eventId(giftItem.getEvent() != null ? giftItem.getEvent().getId() : null)
+                    .eventTitle(giftItem.getEvent() != null ? giftItem.getEvent().getTitle() : null)
                     .name(giftItem.getName())
                     .description(giftItem.getDescription())
                     .price(giftItem.getPrice())

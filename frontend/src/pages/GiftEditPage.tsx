@@ -63,8 +63,7 @@ export const GiftEditPage = () => {
             category: gift.category,
             price: gift.price,
             url: gift.url,
-            memo: gift.memo,
-            isPurchased: gift.isPurchased,
+            description: gift.description,
             eventId: gift.eventId,
           }}
         />
