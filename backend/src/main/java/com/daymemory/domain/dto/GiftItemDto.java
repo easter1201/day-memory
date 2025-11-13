@@ -73,10 +73,10 @@ public class GiftItemDto {
         private Boolean isPurchased;
 
         @Schema(description = "생성일시", example = "2025-11-13T10:30:00")
-        private java.time.LocalDateTime createdAt;
+        private String createdAt;
 
         @Schema(description = "수정일시", example = "2025-11-13T10:30:00")
-        private java.time.LocalDateTime updatedAt;
+        private String updatedAt;
 
         public static Response from(GiftItem giftItem) {
             return Response.builder()
@@ -89,8 +89,8 @@ public class GiftItemDto {
                     .imageUrl(giftItem.getImageUrl())
                     .category(giftItem.getCategory())
                     .isPurchased(giftItem.getIsPurchased())
-                    .createdAt(giftItem.getCreatedAt())
-                    .updatedAt(giftItem.getUpdatedAt())
+                    .createdAt(giftItem.getCreatedAt() != null ? giftItem.getCreatedAt().toString() : null)
+                    .updatedAt(giftItem.getUpdatedAt() != null ? giftItem.getUpdatedAt().toString() : null)
                     .build();
         }
     }
