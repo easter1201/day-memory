@@ -55,13 +55,14 @@ export const EventEditPage = () => {
           isLoading={isUpdating}
           defaultValues={{
             title: event.title,
-            eventDate: event.eventDate,
-            eventType: event.eventType,
+            description: event.description,
             recipientName: event.recipientName,
             relationship: event.relationship,
-            memo: event.memo,
-            isTracked: event.isTracked,
-            reminders: event.reminders,
+            eventDate: event.eventDate,
+            eventType: event.eventType,
+            isRecurring: event.isRecurring,
+            isTracking: event.isTracking,
+            reminderDays: event.reminders?.map((r) => r.daysBeforeEvent) || [],
           }}
         />
       </div>
