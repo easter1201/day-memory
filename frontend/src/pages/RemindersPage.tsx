@@ -7,24 +7,21 @@ import { Badge } from "../components/ui/Badge";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { EmptyState } from "../components/common/EmptyState";
 import {
-  useGetRemindersQuery,
+  useGetReminderLogsQuery,
   useGetGlobalSettingsQuery,
   useUpdateGlobalSettingsMutation,
-  useDeleteReminderMutation,
 } from "../store/services/remindersApi";
 import { REMINDER_OPTIONS } from "../constants";
-import { calculateDDay, formatDate } from "../utils/dateUtils";
+import { formatDate } from "../utils/dateUtils";
 import Toast from "../components/common/Toast";
 
 const STATUS_LABELS = {
-  PENDING: "대기 중",
-  SENT: "발송 완료",
+  SUCCESS: "발송 완료",
   FAILED: "발송 실패",
 };
 
 const STATUS_COLORS = {
-  PENDING: "bg-yellow-100 text-yellow-800",
-  SENT: "bg-green-100 text-green-800",
+  SUCCESS: "bg-green-100 text-green-800",
   FAILED: "bg-red-100 text-red-800",
 };
 
@@ -41,11 +38,10 @@ export const RemindersPage = () => {
   const [selectedDays, setSelectedDays] = useState<number[]>(defaultSettings.defaultDaysBefore);
   const [notificationMethod, setNotificationMethod] = useState<"EMAIL" | "SMS" | "BOTH">(defaultSettings.notificationMethod);
 
-  const { data: reminders, isLoading: remindersLoading } = useGetRemindersQuery({});
+  const { data: reminders, isLoading: remindersLoading } = useGetReminderLogsQuery({});
 
-  const { data: settings, isLoading: settingsLoading, error: settingsError } = useGetGlobalSettingsQuery();
+  const { data: settings, isLoading: settingsLoading } = useGetGlobalSettingsQuery();
   const [updateSettings, { isLoading: isUpdating }] = useUpdateGlobalSettingsMutation();
-  const [deleteReminder] = useDeleteReminderMutation();
 
   // 설정 로드 완료 시 초기값 설정
   useEffect(() => {
@@ -95,17 +91,6 @@ export const RemindersPage = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm("이 리마인더를 삭제하시겠습니까?")) return;
-
-    try {
-      await deleteReminder(id).unwrap();
-      Toast.success("리마인더가 삭제되었습니다");
-    } catch (error) {
-      console.error("Failed to delete reminder:", error);
-      Toast.error("삭제에 실패했습니다");
-    }
-  };
 
   if (remindersLoading || settingsLoading) {
     return (
@@ -207,45 +192,43 @@ export const RemindersPage = () => {
           </div>
         </div>
 
-        {/* Reminders List */}
+        {/* Recent Reminder Logs */}
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h2 className="mb-4 text-xl font-semibold">예정된 리마인더</h2>
+          <h2 className="mb-4 text-xl font-semibold">최근 리마인더 발송 내역</h2>
 
           {!reminders || reminders.length === 0 ? (
             <EmptyState
-              title="예정된 리마인더가 없습니다"
-              description="이벤트를 생성하면 자동으로 리마인더가 등록됩니다"
+              title="발송된 리마인더가 없습니다"
+              description="이벤트를 생성하고 리마인더가 발송되면 여기에 표시됩니다"
             />
           ) : (
             <>
               <div className="space-y-3">
-                {reminders.map((reminder) => (
+                {reminders.map((log) => (
                   <div
-                    key={reminder.id}
+                    key={log.id}
                     className="flex items-center justify-between rounded-lg border p-4"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">{reminder.eventTitle}</h3>
-                        <Badge className={`text-xs ${STATUS_COLORS[reminder.status]}`}>
-                          {STATUS_LABELS[reminder.status]}
+                        <h3 className="font-semibold">{log.eventTitle}</h3>
+                        <Badge className={`text-xs ${STATUS_COLORS[log.status]}`}>
+                          {STATUS_LABELS[log.status]}
                         </Badge>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        {reminder.recipientName} - {formatDate(reminder.eventDate)}
+                        {log.recipientName} - {formatDate(log.eventDate)}
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {reminder.daysBeforeEvent}일 전 알림 -{" "}
-                        {formatDate(reminder.reminderDate)} ({calculateDDay(reminder.reminderDate)})
+                        발송 시각: {formatDate(log.sentAt)}
+                        {log.retryCount > 0 && ` (재시도: ${log.retryCount}회)`}
                       </p>
+                      {log.errorMessage && (
+                        <p className="mt-1 text-xs text-red-600">
+                          오류: {log.errorMessage}
+                        </p>
+                      )}
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDelete(reminder.id)}
-                    >
-                      삭제
-                    </Button>
                   </div>
                 ))}
               </div>
