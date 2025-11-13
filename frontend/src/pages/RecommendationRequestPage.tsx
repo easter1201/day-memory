@@ -12,8 +12,9 @@ export const RecommendationRequestPage = () => {
   const handleSubmit = async (data: RecommendationRequest) => {
     try {
       const result = await createRecommendation(data).unwrap();
-      Toast.success("AI 선물 추천 요청이 완료되었습니다");
-      navigate(`/recommendations/${result.id}`);
+      Toast.success("AI 선물 추천이 완료되었습니다");
+      // 추천 결과를 state로 전달하며 결과 페이지로 이동
+      navigate("/recommendations/result", { state: { recommendation: result, request: data } });
     } catch (error) {
       console.error("Failed to create recommendation:", error);
       Toast.error("추천 요청에 실패했습니다. 다시 시도해주세요");

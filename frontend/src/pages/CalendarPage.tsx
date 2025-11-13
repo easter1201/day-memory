@@ -108,16 +108,42 @@ export const CalendarPage = () => {
 
     switch (eventType) {
       case "BIRTHDAY":
-        backgroundColor = "#ec4899"; // pink
+        backgroundColor = "#ec4899"; // pink - 생일
         break;
-      case "ANNIVERSARY":
-        backgroundColor = "#8b5cf6"; // purple
+      case "ANNIVERSARY_100":
+      case "ANNIVERSARY_200":
+      case "ANNIVERSARY_300":
+      case "ANNIVERSARY_1YEAR":
+      case "ANNIVERSARY_CUSTOM":
+        backgroundColor = "#8b5cf6"; // purple - 기념일
         break;
       case "HOLIDAY":
-        backgroundColor = "#f59e0b"; // amber
+      case "LUNAR_NEW_YEAR":
+      case "CHUSEOK":
+      case "CHRISTMAS":
+      case "CHILDRENS_DAY":
+      case "PARENTS_DAY":
+      case "TEACHERS_DAY":
+        backgroundColor = "#f59e0b"; // amber - 명절/기념일
         break;
+      case "DIARY_DAY":
+      case "VALENTINES_DAY":
+      case "WHITE_DAY":
+      case "BLACK_DAY":
+      case "ROSE_DAY":
+      case "KISS_DAY":
+      case "SILVER_DAY":
+      case "GREEN_DAY":
+      case "MUSIC_DAY":
+      case "WINE_DAY":
+      case "MOVIE_DAY":
+      case "HUG_DAY":
+      case "COUPLE_DAY":
+        backgroundColor = "#f43f5e"; // rose - 커플 기념일
+        break;
+      case "CUSTOM":
       default:
-        backgroundColor = "#3174ad"; // blue
+        backgroundColor = "#3174ad"; // blue - 사용자 정의
     }
 
     return {
@@ -208,7 +234,7 @@ export const CalendarPage = () => {
 
         {/* Event Legend */}
         <div className="rounded-lg border bg-card p-4 shadow-sm">
-          <h3 className="mb-2 font-semibold">이벤트 타입</h3>
+          <h3 className="mb-3 font-semibold">이벤트 타입</h3>
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <div className="h-4 w-4 rounded" style={{ backgroundColor: "#ec4899" }}></div>
@@ -216,11 +242,19 @@ export const CalendarPage = () => {
             </div>
             <div className="flex items-center gap-2">
               <div className="h-4 w-4 rounded" style={{ backgroundColor: "#8b5cf6" }}></div>
-              <span className="text-sm">기념일</span>
+              <span className="text-sm">연애 기념일 (100일/200일/1주년 등)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 rounded" style={{ backgroundColor: "#f43f5e" }}></div>
+              <span className="text-sm">커플 데이 (발렌타인/화이트/키스 등)</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="h-4 w-4 rounded" style={{ backgroundColor: "#f59e0b" }}></div>
-              <span className="text-sm">명절</span>
+              <span className="text-sm">명절 (설날/추석/크리스마스 등)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 rounded" style={{ backgroundColor: "#3174ad" }}></div>
+              <span className="text-sm">사용자 정의</span>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { PageLayout } from "../components/layout/PageLayout";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
@@ -8,15 +8,28 @@ import {
   useGetRecommendationByIdQuery,
   useSaveRecommendedGiftMutation,
 } from "../store/services/recommendationsApi";
+import { useCreateGiftMutation } from "../store/services/giftsApi";
 import { GIFT_CATEGORY_COLORS } from "../constants";
 import Toast from "../components/common/Toast";
+import { useState } from "react";
 
 export const RecommendationResultPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { data: recommendation, isLoading, error } = useGetRecommendationByIdQuery(Number(id));
+  // state로 전달된 추천 결과 확인
+  const stateData = location.state as { recommendation?: any; request?: any } | null;
+
+  const { data: recommendation, isLoading, error } = useGetRecommendationByIdQuery(Number(id), {
+    skip: !!stateData?.recommendation || !id || isNaN(Number(id))
+  });
   const [saveGift, { isLoading: isSaving }] = useSaveRecommendedGiftMutation();
+  const [createGift, { isLoading: isCreatingGift }] = useCreateGiftMutation();
+  const [savedGiftIds, setSavedGiftIds] = useState<Set<number>>(new Set());
+
+  // state 데이터 또는 API 데이터 사용
+  const displayData = stateData?.recommendation || recommendation;
 
   const handleSaveGift = async (giftId: number) => {
     try {
@@ -31,6 +44,32 @@ export const RecommendationResultPage = () => {
     }
   };
 
+  const handleSaveToGiftList = async (recommendation: any, index: number) => {
+    try {
+      // Get the event ID from the state data if available
+      const eventId = stateData?.request?.eventId;
+
+      // Get the budget from request if available
+      const budget = stateData?.request?.budget;
+
+      await createGift({
+        name: recommendation.name,
+        category: recommendation.category,
+        price: budget || recommendation.estimatedPrice, // Use budget if available, otherwise estimatedPrice
+        estimatedPrice: recommendation.estimatedPrice,
+        url: recommendation.purchaseLink || undefined,
+        description: recommendation.reason || undefined,
+        eventId: eventId || undefined,
+      }).unwrap();
+
+      setSavedGiftIds(prev => new Set(prev).add(index));
+      Toast.success("선물이 선물 탭에 저장되었습니다");
+    } catch (error) {
+      console.error("Failed to save gift to gift list:", error);
+      Toast.error("선물 저장에 실패했습니다");
+    }
+  };
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("ko-KR", {
       style: "currency",
@@ -38,7 +77,7 @@ export const RecommendationResultPage = () => {
     }).format(price);
   };
 
-  if (isLoading) {
+  if (isLoading && !stateData) {
     return (
       <PageLayout>
         <div className="flex h-64 items-center justify-center">
@@ -48,14 +87,14 @@ export const RecommendationResultPage = () => {
     );
   }
 
-  if (error || !recommendation) {
+  if (!displayData) {
     return (
       <PageLayout>
         <div className="flex h-64 items-center justify-center">
           <ErrorMessage
             title="추천 결과를 불러올 수 없습니다"
             message="잠시 후 다시 시도해주세요"
-            onRetry={() => window.location.reload()}
+            onRetry={() => navigate("/recommendations")}
           />
         </div>
       </PageLayout>
@@ -79,43 +118,61 @@ export const RecommendationResultPage = () => {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">이벤트</span>
-              <span className="font-medium">{recommendation.eventTitle}</span>
+              <span className="font-medium">{displayData.eventTitle}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">받는 사람</span>
-              <span className="font-medium">{recommendation.recipientName}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">예산</span>
-              <span className="font-medium">{formatPrice(recommendation.budget)}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">선호 카테고리</span>
-              <div className="flex flex-wrap gap-1">
-                {recommendation.preferredCategories.map((cat) => (
-                  <Badge key={cat} className="text-xs">
-                    {cat}
-                  </Badge>
-                ))}
+            {displayData.daysUntilEvent !== undefined && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">D-Day</span>
+                <span className="font-medium">{displayData.daysUntilEvent}일 남음</span>
               </div>
-            </div>
-            {recommendation.additionalMessage && (
-              <div className="border-t pt-2">
-                <span className="text-sm text-muted-foreground">추가 메시지</span>
-                <p className="mt-1 text-sm">{recommendation.additionalMessage}</p>
-              </div>
+            )}
+            {stateData?.request && (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">예산</span>
+                  <span className="font-medium">{formatPrice(stateData.request.budget)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">선호 카테고리</span>
+                  <div className="flex flex-wrap gap-1">
+                    {stateData.request.preferredCategories.map((cat: string) => (
+                      <Badge key={cat} className="text-xs">
+                        {cat}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                {stateData.request.recipientGender && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">성별</span>
+                    <span className="font-medium">{stateData.request.recipientGender === "MALE" ? "남성" : "여성"}</span>
+                  </div>
+                )}
+                {stateData.request.recipientAge && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">나이</span>
+                    <span className="font-medium">{stateData.request.recipientAge}세</span>
+                  </div>
+                )}
+                {stateData.request.additionalMessage && (
+                  <div className="border-t pt-2">
+                    <span className="text-sm text-muted-foreground">제외할 선물</span>
+                    <p className="mt-1 text-sm">{stateData.request.additionalMessage}</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
 
         {/* User Saved Gifts Section */}
-        {recommendation.userSavedGifts.length > 0 && (
+        {displayData.userSavedGifts && displayData.userSavedGifts.length > 0 && (
           <div className="rounded-lg border bg-card p-6 shadow-sm">
             <h2 className="mb-4 text-xl font-semibold">
-              내가 저장한 선물 ({recommendation.userSavedGifts.length}개)
+              내가 저장한 선물 ({displayData.userSavedGifts.length}개)
             </h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {recommendation.userSavedGifts.map((gift) => (
+              {displayData.userSavedGifts.map((gift: any) => (
                 <div key={gift.id} className="rounded-lg border p-4">
                   <div className="mb-2 flex items-start justify-between">
                     <h3 className="font-medium">{gift.name}</h3>
@@ -136,21 +193,37 @@ export const RecommendationResultPage = () => {
         {/* AI Recommendations Section */}
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <h2 className="mb-4 text-xl font-semibold">
-            AI 추천 선물 ({recommendation.aiRecommendations.length}개)
+            AI 추천 선물 ({displayData.recommendations?.length || 0}개)
           </h2>
-          {recommendation.status === "PENDING" ? (
-            <div className="flex items-center justify-center py-8">
-              <LoadingSpinner text="AI가 선물을 분석하고 있습니다..." />
+
+          {/* Warning Notice */}
+          <div className="mb-6 rounded-md bg-amber-50 border border-amber-200 p-4">
+            <div className="flex items-start">
+              <svg
+                className="h-5 w-5 text-amber-500 mt-0.5 mr-3 flex-shrink-0"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-amber-800">주의사항</h3>
+                <p className="mt-1 text-sm text-amber-700">
+                  AI가 추천한 제품명과 가격은 예상값으로, 실제와 다를 수 있습니다.
+                  구매 전 반드시 정확한 정보를 확인해주세요.
+                </p>
+              </div>
             </div>
-          ) : recommendation.status === "FAILED" ? (
-            <ErrorMessage
-              title="추천 생성 실패"
-              message="AI 추천을 생성하는 중 오류가 발생했습니다"
-            />
-          ) : (
+          </div>
+
+          {displayData.recommendations && displayData.recommendations.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2">
-              {recommendation.aiRecommendations.map((gift) => (
-                <div key={gift.id} className="rounded-lg border p-4">
+              {displayData.recommendations.map((gift: any, index: number) => (
+                <div key={gift.id || index} className="rounded-lg border p-4">
                   <div className="mb-3 flex items-start justify-between">
                     <div>
                       <h3 className="text-lg font-semibold">{gift.name}</h3>
@@ -166,7 +239,7 @@ export const RecommendationResultPage = () => {
                   </div>
 
                   <p className="mb-3 text-lg font-bold text-primary">
-                    약 {formatPrice(gift.estimatedPrice)}
+                    {formatPrice(gift.estimatedPrice)}
                   </p>
 
                   <div className="mb-3 rounded-md bg-muted p-3">
@@ -174,9 +247,9 @@ export const RecommendationResultPage = () => {
                     <p className="mt-1 text-sm">{gift.reason}</p>
                   </div>
 
-                  {gift.url && (
+                  {gift.purchaseLink && (
                     <a
-                      href={gift.url}
+                      href={gift.purchaseLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mb-2 block text-sm text-primary hover:underline"
@@ -186,16 +259,22 @@ export const RecommendationResultPage = () => {
                   )}
 
                   <Button
-                    onClick={() => handleSaveGift(gift.id)}
-                    disabled={isSaving}
-                    className="w-full"
+                    variant={savedGiftIds.has(index) ? "outline" : "default"}
                     size="sm"
+                    onClick={() => handleSaveToGiftList(gift, index)}
+                    disabled={isCreatingGift || savedGiftIds.has(index)}
+                    className="mt-2 w-full"
                   >
-                    내 리스트에 저장
+                    {savedGiftIds.has(index) ? "✓ 저장됨" : "선물 탭에 저장하기"}
                   </Button>
                 </div>
               ))}
             </div>
+          ) : (
+            <ErrorMessage
+              title="추천 결과 없음"
+              message="추천된 선물이 없습니다"
+            />
           )}
         </div>
       </div>

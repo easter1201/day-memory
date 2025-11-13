@@ -112,6 +112,11 @@ public class NaverShoppingService {
      * 네이버 API 호출
      */
     private String callNaverApi(String apiUrl) throws Exception {
+        // 디버그: Client ID와 Secret이 제대로 로딩되었는지 확인
+        log.debug("Naver API Request - URL: {}", apiUrl);
+        log.debug("Client ID loaded: {}", clientId != null && !clientId.isEmpty() ? "YES (length: " + clientId.length() + ")" : "NO");
+        log.debug("Client Secret loaded: {}", clientSecret != null && !clientSecret.isEmpty() ? "YES (length: " + clientSecret.length() + ")" : "NO");
+
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 

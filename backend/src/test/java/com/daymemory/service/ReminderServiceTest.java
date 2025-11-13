@@ -56,7 +56,7 @@ class ReminderServiceTest {
                 .id(1L)
                 .email("test@example.com")
                 .password("password")
-                .name("테스트 사용자")
+                .nickname("테스트 사용자")
                 .build();
 
         // Given: 테스트용 이벤트 설정
@@ -97,7 +97,7 @@ class ReminderServiceTest {
                 .willReturn(Optional.empty());
 
         String emailContent = "<html>리마인더 내용</html>";
-        given(emailService.buildReminderEmailContent(anyString(), anyInt())).willReturn(emailContent);
+        given(emailService.buildReminderEmailContent(anyString(), anyInt(), anyString())).willReturn(emailContent);
         willDoNothing().given(emailService).sendReminderEmail(anyString(), anyString(), anyString());
         given(reminderLogRepository.save(any(ReminderLog.class))).willAnswer(invocation -> invocation.getArgument(0));
 
@@ -169,7 +169,7 @@ class ReminderServiceTest {
                 .willReturn(Optional.empty());
 
         String emailContent = "<html>리마인더 내용</html>";
-        given(emailService.buildReminderEmailContent(anyString(), anyInt())).willReturn(emailContent);
+        given(emailService.buildReminderEmailContent(anyString(), anyInt(), anyString())).willReturn(emailContent);
         willDoNothing().given(emailService).sendReminderEmail(anyString(), anyString(), anyString());
         given(reminderLogRepository.save(any(ReminderLog.class))).willAnswer(invocation -> invocation.getArgument(0));
 
@@ -196,7 +196,7 @@ class ReminderServiceTest {
                 .willReturn(Optional.empty());
 
         String emailContent = "<html>리마인더 내용</html>";
-        given(emailService.buildReminderEmailContent(anyString(), anyInt())).willReturn(emailContent);
+        given(emailService.buildReminderEmailContent(anyString(), anyInt(), anyString())).willReturn(emailContent);
 
         // 이메일 발송 실패 시뮬레이션
         willThrow(new CustomException(ErrorCode.EMAIL_SEND_FAILED))
@@ -224,7 +224,7 @@ class ReminderServiceTest {
                 .willReturn(Optional.empty());
 
         String emailContent = "<html>리마인더 내용</html>";
-        given(emailService.buildReminderEmailContent(anyString(), anyInt())).willReturn(emailContent);
+        given(emailService.buildReminderEmailContent(anyString(), anyInt(), anyString())).willReturn(emailContent);
         willDoNothing().given(emailService).sendReminderEmail(anyString(), anyString(), anyString());
         given(reminderLogRepository.save(any(ReminderLog.class))).willAnswer(invocation -> invocation.getArgument(0));
 
@@ -293,7 +293,7 @@ class ReminderServiceTest {
         given(reminderLogRepository.findById(1L)).willReturn(Optional.of(failedLog));
 
         String emailContent = "<html>리마인더 내용</html>";
-        given(emailService.buildReminderEmailContent(anyString(), anyInt())).willReturn(emailContent);
+        given(emailService.buildReminderEmailContent(anyString(), anyInt(), anyString())).willReturn(emailContent);
         willDoNothing().given(emailService).sendReminderEmail(anyString(), anyString(), anyString());
         given(reminderLogRepository.save(any(ReminderLog.class))).willAnswer(invocation -> invocation.getArgument(0));
 
@@ -361,7 +361,7 @@ class ReminderServiceTest {
         given(reminderLogRepository.findById(1L)).willReturn(Optional.of(failedLog));
 
         String emailContent = "<html>리마인더 내용</html>";
-        given(emailService.buildReminderEmailContent(anyString(), anyInt())).willReturn(emailContent);
+        given(emailService.buildReminderEmailContent(anyString(), anyInt(), anyString())).willReturn(emailContent);
 
         // 재발송 실패 시뮬레이션
         willThrow(new CustomException(ErrorCode.EMAIL_SEND_FAILED))

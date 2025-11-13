@@ -41,7 +41,7 @@ class VerificationTokenRepositoryTest {
         testUser = User.builder()
                 .email("test@example.com")
                 .password("password")
-                .name("Test User")
+                .nickname("Test User")
                 .emailVerified(false)
                 .build();
         testUser = userRepository.save(testUser);
@@ -472,7 +472,7 @@ class VerificationTokenRepositoryTest {
         User anotherUser = User.builder()
                 .email("another@example.com")
                 .password("password")
-                .name("Another User")
+                .nickname("Another User")
                 .emailVerified(false)
                 .build();
         anotherUser = userRepository.save(anotherUser);

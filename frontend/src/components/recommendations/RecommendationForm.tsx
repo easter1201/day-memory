@@ -22,6 +22,8 @@ const recommendationSchema = z.object({
   preferredCategories: z
     .array(z.string())
     .min(1, "최소 1개 이상의 카테고리를 선택해주세요"),
+  recipientGender: z.string().optional(),
+  recipientAge: z.number().positive("나이는 양수여야 합니다").optional().nullable(),
   additionalMessage: z.string().max(500, "메시지는 최대 500자까지 입력 가능합니다").optional(),
 });
 
@@ -44,6 +46,8 @@ export const RecommendationForm = ({ onSubmit, onCancel, isLoading }: Recommenda
     resolver: zodResolver(recommendationSchema),
     defaultValues: {
       preferredCategories: [],
+      recipientGender: "",
+      recipientAge: undefined,
       additionalMessage: "",
     },
   });
@@ -72,6 +76,8 @@ export const RecommendationForm = ({ onSubmit, onCancel, isLoading }: Recommenda
       eventId: data.eventId,
       budget: data.budget,
       preferredCategories: data.preferredCategories,
+      recipientGender: data.recipientGender || undefined,
+      recipientAge: data.recipientAge || undefined,
       additionalMessage: data.additionalMessage || undefined,
     });
   };
@@ -85,7 +91,9 @@ export const RecommendationForm = ({ onSubmit, onCancel, isLoading }: Recommenda
         </label>
         <select
           id="eventId"
-          {...register("eventId", { valueAsNumber: true })}
+          {...register("eventId", {
+            setValueAs: (value) => value === "" ? undefined : Number(value)
+          })}
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <option value="">이벤트를 선택하세요</option>
@@ -103,13 +111,20 @@ export const RecommendationForm = ({ onSubmit, onCancel, isLoading }: Recommenda
         <label htmlFor="budget" className="mb-2 block text-sm font-medium">
           예산 (원) <span className="text-red-500">*</span>
         </label>
-        <Input
+        <input
           id="budget"
-          type="number"
-          {...register("budget", { valueAsNumber: true })}
-          placeholder="예산을 입력하세요"
-          error={errors.budget?.message}
+          type="text"
+          inputMode="numeric"
+          {...register("budget", {
+            setValueAs: (value) => {
+              const num = parseInt(value.replace(/[^0-9]/g, ""));
+              return isNaN(num) ? undefined : num;
+            }
+          })}
+          placeholder="예: 50000"
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         />
+        {errors.budget && <p className="mt-1 text-sm text-red-500">{errors.budget.message}</p>}
       </div>
 
       {/* 선호 카테고리 선택 */}
@@ -138,15 +153,58 @@ export const RecommendationForm = ({ onSubmit, onCancel, isLoading }: Recommenda
         )}
       </div>
 
-      {/* 추가 메시지 */}
+      {/* 받는 사람 정보 */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="recipientGender" className="mb-2 block text-sm font-medium">
+            성별 (선택)
+          </label>
+          <select
+            id="recipientGender"
+            {...register("recipientGender")}
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <option value="">선택 안함</option>
+            <option value="MALE">남성</option>
+            <option value="FEMALE">여성</option>
+          </select>
+          {errors.recipientGender && (
+            <p className="mt-1 text-sm text-red-500">{errors.recipientGender.message}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="recipientAge" className="mb-2 block text-sm font-medium">
+            나이 (선택)
+          </label>
+          <input
+            id="recipientAge"
+            type="text"
+            inputMode="numeric"
+            {...register("recipientAge", {
+              setValueAs: (value) => {
+                if (value === "" || value === null) return undefined;
+                const num = parseInt(value);
+                return isNaN(num) ? undefined : num;
+              }
+            })}
+            placeholder="예: 25"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          />
+          {errors.recipientAge && (
+            <p className="mt-1 text-sm text-red-500">{errors.recipientAge.message}</p>
+          )}
+        </div>
+      </div>
+
+      {/* 제외 사항 메시지 */}
       <div>
         <label htmlFor="additionalMessage" className="mb-2 block text-sm font-medium">
-          추가 메시지 (선택)
+          제외할 선물 (선택)
         </label>
         <Textarea
           id="additionalMessage"
           {...register("additionalMessage")}
-          placeholder="AI에게 전달할 추가 정보를 입력하세요 (예: 취미, 선호 브랜드 등)"
+          placeholder="이미 선물했거나 제외하고 싶은 선물을 입력하세요 (예: 꽃은 빼줘, 향수는 이미 선물했어)"
           rows={4}
         />
         {errors.additionalMessage && (

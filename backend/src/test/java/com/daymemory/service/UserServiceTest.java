@@ -54,7 +54,7 @@ class UserServiceTest {
                 .id(1L)
                 .email("test@example.com")
                 .password("encodedPassword123")
-                .name("테스트 사용자")
+                .nickname("테스트 사용자")
                 .emailVerified(false)
                 .build();
 
@@ -62,7 +62,7 @@ class UserServiceTest {
         signupRequest = UserDto.SignupRequest.builder()
                 .email("newuser@example.com")
                 .password("password123")
-                .name("새 사용자")
+                .nickname("새 사용자")
                 .build();
     }
 
@@ -280,7 +280,7 @@ class UserServiceTest {
     void testUpdateMyInfo_Success() {
         // Given
         UserDto.UpdateRequest updateRequest = UserDto.UpdateRequest.builder()
-                .name("수정된 이름")
+                .nickname("수정된 이름")
                 .build();
 
         given(userRepository.findById(1L)).willReturn(Optional.of(testUser));
@@ -300,7 +300,7 @@ class UserServiceTest {
     void testUpdateMyInfo_IgnoreBlankName() {
         // Given
         UserDto.UpdateRequest updateRequest = UserDto.UpdateRequest.builder()
-                .name("   ")
+                .nickname("   ")
                 .build();
 
         given(userRepository.findById(1L)).willReturn(Optional.of(testUser));

@@ -43,7 +43,7 @@ class EventRepositoryTest {
         testUser = User.builder()
                 .email("test@example.com")
                 .password("password")
-                .name("Test User")
+                .nickname("Test User")
                 .emailVerified(true)
                 .build();
         testUser = userRepository.save(testUser);

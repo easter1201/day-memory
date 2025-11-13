@@ -64,7 +64,7 @@ class UserControllerTest {
         signupRequest = UserDto.SignupRequest.builder()
                 .email("test@example.com")
                 .password("password123")
-                .name("Test User")
+                .nickname("Test User")
                 .build();
 
         // Given: 로그인 요청 DTO
@@ -77,7 +77,7 @@ class UserControllerTest {
         userResponse = UserDto.Response.builder()
                 .id(1L)
                 .email("test@example.com")
-                .name("Test User")
+                .nickname("Test User")
                 .build();
 
         // Given: 로그인 응답 DTO
@@ -117,7 +117,7 @@ class UserControllerTest {
         UserDto.SignupRequest invalidRequest = UserDto.SignupRequest.builder()
                 .email("")  // 빈 이메일
                 .password("password123")
-                .name("Test User")
+                .nickname("Test User")
                 .build();
 
         // When & Then
@@ -139,7 +139,7 @@ class UserControllerTest {
         UserDto.SignupRequest invalidRequest = UserDto.SignupRequest.builder()
                 .email("invalid-email")  // 잘못된 이메일 형식
                 .password("password123")
-                .name("Test User")
+                .nickname("Test User")
                 .build();
 
         // When & Then
@@ -161,7 +161,7 @@ class UserControllerTest {
         UserDto.SignupRequest invalidRequest = UserDto.SignupRequest.builder()
                 .email("test@example.com")
                 .password("short")  // 8자 미만
-                .name("Test User")
+                .nickname("Test User")
                 .build();
 
         // When & Then
@@ -388,13 +388,13 @@ class UserControllerTest {
     void testUpdateMyInfo_Success() throws Exception {
         // Given
         UserDto.UpdateRequest updateRequest = UserDto.UpdateRequest.builder()
-                .name("Updated Name")
+                .nickname("Updated Name")
                 .build();
 
         UserDto.Response updatedResponse = UserDto.Response.builder()
                 .id(1L)
                 .email("test@example.com")
-                .name("Updated Name")
+                .nickname("Updated Name")
                 .build();
 
         given(userService.getCurrentUserId()).willReturn(1L);
@@ -422,7 +422,7 @@ class UserControllerTest {
     void testUpdateMyInfo_ValidationFailed_NameTooLong() throws Exception {
         // Given
         UserDto.UpdateRequest invalidRequest = UserDto.UpdateRequest.builder()
-                .name("A".repeat(101))  // 100자 초과
+                .nickname("A".repeat(101))  // 100자 초과
                 .build();
 
         // When & Then
@@ -442,7 +442,7 @@ class UserControllerTest {
     void testUpdateMyInfo_Unauthorized() throws Exception {
         // Given
         UserDto.UpdateRequest updateRequest = UserDto.UpdateRequest.builder()
-                .name("Updated Name")
+                .nickname("Updated Name")
                 .build();
 
         // When & Then

@@ -98,8 +98,9 @@ class EmailServiceTest {
         String to = "user@example.com";
         String eventTitle = "친구 생일";
         int daysRemaining = 7;
+        String recipientName = "홍길동";
         String subject = String.format("[Day Memory] '%s' %d일 전 알림", eventTitle, daysRemaining);
-        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining);
+        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining, recipientName);
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
         willDoNothing().given(mailSender).send(any(MimeMessage.class));
@@ -121,7 +122,7 @@ class EmailServiceTest {
         int daysRemaining = 7;
 
         // When
-        String emailContent = emailService.buildReminderEmailContent(eventTitle, daysRemaining);
+        String emailContent = emailService.buildReminderEmailContent(eventTitle, daysRemaining, "테스트사용자");
 
         // Then
         assertThat(emailContent).isNotNull();
@@ -160,7 +161,7 @@ class EmailServiceTest {
         int daysRemaining = 14;
 
         // When
-        String emailContent = emailService.buildReminderEmailContent(eventTitle, daysRemaining);
+        String emailContent = emailService.buildReminderEmailContent(eventTitle, daysRemaining, "테스트사용자");
 
         // Then
         assertThat(emailContent).contains("<!DOCTYPE html>");

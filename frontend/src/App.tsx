@@ -54,6 +54,7 @@ function App() {
         {/* Recommendations */}
         <Route path="/recommendations" element={<ProtectedRoute><RecommendationsListPage /></ProtectedRoute>} />
         <Route path="/recommendations/request" element={<ProtectedRoute><RecommendationRequestPage /></ProtectedRoute>} />
+        <Route path="/recommendations/result" element={<ProtectedRoute><RecommendationResultPage /></ProtectedRoute>} />
         <Route path="/recommendations/:id" element={<ProtectedRoute><RecommendationResultPage /></ProtectedRoute>} />
 
         {/* Reminders */}

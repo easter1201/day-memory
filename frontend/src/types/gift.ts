@@ -3,6 +3,7 @@ export interface Gift {
   name: string;
   category: string;
   price: number;
+  estimatedPrice?: number;
   url?: string;
   description?: string;
   isPurchased: boolean;
@@ -32,6 +33,7 @@ export interface CreateGiftRequest {
   name: string;
   category: string;
   price: number;
+  estimatedPrice?: number;
   url?: string;
   description?: string;
   eventId?: number;

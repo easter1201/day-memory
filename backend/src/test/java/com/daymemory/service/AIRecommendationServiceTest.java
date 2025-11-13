@@ -52,7 +52,7 @@ class AIRecommendationServiceTest {
                 .id(1L)
                 .email("test@example.com")
                 .password("password")
-                .name("테스트 사용자")
+                .nickname("테스트 사용자")
                 .build();
 
         // Given: 테스트용 이벤트 설정
@@ -155,7 +155,7 @@ class AIRecommendationServiceTest {
         GiftItem savedGift1 = GiftItem.builder()
                 .id(1L)
                 .user(testUser)
-                .name("향수")
+                .nickname("향수")
                 .price(100000)
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .build();
@@ -163,7 +163,7 @@ class AIRecommendationServiceTest {
         GiftItem savedGift2 = GiftItem.builder()
                 .id(2L)
                 .user(testUser)
-                .name("꽃다발")
+                .nickname("꽃다발")
                 .price(30000)
                 .category(GiftItem.GiftCategory.FLOWER)
                 .build();
@@ -353,7 +353,7 @@ class AIRecommendationServiceTest {
         GiftItem savedPerfume = GiftItem.builder()
                 .id(1L)
                 .user(testUser)
-                .name("향수 세트")
+                .nickname("향수 세트")
                 .price(100000)
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .build();
@@ -384,7 +384,7 @@ class AIRecommendationServiceTest {
         GiftItem savedCosmetic = GiftItem.builder()
                 .id(1L)
                 .user(testUser)
-                .name("스킨케어 세트")
+                .nickname("스킨케어 세트")
                 .price(90000)
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .build();
@@ -415,7 +415,7 @@ class AIRecommendationServiceTest {
         GiftItem savedGift = GiftItem.builder()
                 .id(1L)
                 .user(testUser)
-                .name("생일 케이크")
+                .nickname("생일 케이크")
                 .price(50000)
                 .category(GiftItem.GiftCategory.FOOD)
                 .build();

@@ -66,14 +66,14 @@ class SchedulerIntegrationTest {
         testUser = User.builder()
                 .email("test@example.com")
                 .password(passwordEncoder.encode("password123"))
-                .name("Test User")
+                .nickname("Test User")
                 .emailVerified(true)
                 .build();
         testUser = userRepository.save(testUser);
 
         // EmailService의 실제 메서드가 호출되지 않도록 모킹
         doNothing().when(emailService).sendReminderEmail(anyString(), anyString(), anyString());
-        when(emailService.buildReminderEmailContent(anyString(), anyInt()))
+        when(emailService.buildReminderEmailContent(anyString(), anyInt(), anyString()))
                 .thenReturn("Test reminder email content");
     }
 

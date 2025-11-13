@@ -46,7 +46,18 @@
       "Bash(xargs kill:*)",
       "Bash(pkill:*)",
       "Bash(find:*)",
-      "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2MjkzNTA5MywiZXhwIjoxNzYyOTM4NjkzfQ.ETCpa6Ij--Cbevqniy-PVecJRW0EyXYbgeNdnKdFURfK9SHUqlZTOMotwQEZ3By0r_pfXchJwGlLZdAmDIOgFQ\")"
+      "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2MjkzNTA5MywiZXhwIjoxNzYyOTM4NjkzfQ.ETCpa6Ij--Cbevqniy-PVecJRW0EyXYbgeNdnKdFURfK9SHUqlZTOMotwQEZ3By0r_pfXchJwGlLZdAmDIOgFQ\")",
+      "Bash(open:*)",
+      "Bash(__NEW_LINE__ curl http://localhost:8080/api/users/reminder-settings )",
+      "Bash(PGPASSWORD=daymemory123 psql:*)",
+      "Bash(git reset:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2MzAxNTQwMywiZXhwIjoxNzYzMDE5MDAzfQ.6QNTPwDpfI4VZ9IBnLh9-dBQmlO14Z4ZNQ6bIDngFE5WicOkZeCulPXNVCNEizAz76AiZl3iShD23bJwNMKi1g\")",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2MzAxNTQwMywiZXhwIjoxNzYzMDE5MDAzfQ.6QNTPwDpfI4VZ9IBnLh9-dBQmlO14Z4ZNQ6bIDngFE5WicOkZeCulPXNVCNEizAz76AiZl3iShD23bJwNMKi1g\" curl -s http://localhost:8080/api/events -H \"Authorization: Bearer $TOKEN\")",
+      "Bash(export NAVER_CLIENT_ID=iw9XgEVwrWdEIPtVGEDl)",
+      "Bash(export NAVER_CLIENT_SECRET=DnfZhivL2M)",
+      "Bash(python3 -m json.tool:*)"
     ],
     "deny": [],
     "ask": []

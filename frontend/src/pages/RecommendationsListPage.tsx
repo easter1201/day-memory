@@ -59,7 +59,7 @@ export const RecommendationsListPage = () => {
               AI가 추천한 선물 내역을 확인하세요
             </p>
           </div>
-          <Button onClick={() => navigate("/recommendations/new")}>
+          <Button onClick={() => navigate("/recommendations/request")}>
             새 추천 요청
           </Button>
         </div>
@@ -71,7 +71,7 @@ export const RecommendationsListPage = () => {
             description="AI에게 선물 추천을 요청해보세요"
             action={{
               label: "추천 요청하기",
-              onClick: () => navigate("/recommendations/new"),
+              onClick: () => navigate("/recommendations/request"),
             }}
           />
         ) : (

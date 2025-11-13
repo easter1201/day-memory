@@ -48,7 +48,7 @@ class EventServiceTest {
                 .id(1L)
                 .email("test@example.com")
                 .password("password")
-                .name("테스트 사용자")
+                .nickname("테스트 사용자")
                 .build();
 
         // Given: 테스트용 이벤트 설정

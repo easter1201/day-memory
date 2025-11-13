@@ -64,7 +64,7 @@ class ExceptionHandlingIntegrationTest {
         testUser = User.builder()
                 .email("exception.test@example.com")
                 .password(passwordEncoder.encode("password123"))
-                .name("Exception Test User")
+                .nickname("Exception Test User")
                 .emailVerified(true)
                 .build();
         testUser = userRepository.save(testUser);
@@ -145,7 +145,7 @@ class ExceptionHandlingIntegrationTest {
         UserDto.SignupRequest firstRequest = UserDto.SignupRequest.builder()
                 .email("duplicate@example.com")
                 .password("password123")
-                .name("First User")
+                .nickname("First User")
                 .build();
         userService.signup(firstRequest);
 
@@ -153,7 +153,7 @@ class ExceptionHandlingIntegrationTest {
         UserDto.SignupRequest secondRequest = UserDto.SignupRequest.builder()
                 .email("duplicate@example.com")
                 .password("password456")
-                .name("Second User")
+                .nickname("Second User")
                 .build();
 
         assertThatThrownBy(() -> userService.signup(secondRequest))
@@ -186,7 +186,7 @@ class ExceptionHandlingIntegrationTest {
         UserDto.SignupRequest signupRequest = UserDto.SignupRequest.builder()
                 .email("password.test@example.com")
                 .password("correctPassword")
-                .name("Password Test User")
+                .nickname("Password Test User")
                 .build();
         userService.signup(signupRequest);
 

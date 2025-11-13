@@ -18,23 +18,23 @@ public class AIRecommendationDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RecommendRequest {
-        @Schema(description = "이벤트 ID (특정 이벤트에 대한 추천 시)", example = "1")
+        @Schema(description = "이벤트 ID", example = "1", required = true)
         private Long eventId;
 
-        @Schema(description = "이벤트 타입 (이벤트 ID 없을 경우)", example = "BIRTHDAY")
-        private Event.EventType eventType;
+        @Schema(description = "예산 (원)", example = "50000", required = true)
+        private Integer budget;
 
-        @Schema(description = "관계 (예: 연인, 친구, 가족, 부모님)", example = "어머니")
-        private String relationship;
+        @Schema(description = "선호 카테고리 목록", example = "[\"FLOWER\", \"COSMETICS\"]", required = true)
+        private List<String> preferredCategories;
 
-        @Schema(description = "최소 예산 (원)", example = "50000")
-        private Integer minBudget;
+        @Schema(description = "받는 사람 성별", example = "FEMALE")
+        private String recipientGender;
 
-        @Schema(description = "최대 예산 (원)", example = "200000")
-        private Integer maxBudget;
+        @Schema(description = "받는 사람 나이", example = "25")
+        private Integer recipientAge;
 
-        @Schema(description = "추가 정보 (취미, 선호도 등)", example = "요리를 좋아하시고, 건강에 관심이 많으심")
-        private String additionalInfo;
+        @Schema(description = "제외할 선물 정보", example = "꽃은 빼줘, 향수는 이미 선물했어")
+        private String additionalMessage;
     }
 
     @Schema(description = "AI 선물 추천 응답")

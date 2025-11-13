@@ -32,7 +32,7 @@ class UserRepositoryTest {
         testUser = User.builder()
                 .email("test@example.com")
                 .password("encodedPassword123")
-                .name("Test User")
+                .nickname("Test User")
                 .emailVerified(false)
                 .build();
     }
@@ -106,7 +106,7 @@ class UserRepositoryTest {
         User oauthUser = User.builder()
                 .email("oauth@example.com")
                 .password("dummy")
-                .name("OAuth User")
+                .nickname("OAuth User")
                 .oauthProvider(OAuthProvider.GOOGLE)
                 .oauthProviderId("google-12345")
                 .emailVerified(true)
@@ -175,7 +175,7 @@ class UserRepositoryTest {
         User duplicateUser = User.builder()
                 .email("test@example.com") // 동일한 이메일
                 .password("anotherPassword")
-                .name("Another User")
+                .nickname("Another User")
                 .build();
 
         // when & then
@@ -196,13 +196,13 @@ class UserRepositoryTest {
         User user1 = User.builder()
                 .email("user1@example.com")
                 .password("pass1")
-                .name("User 1")
+                .nickname("User 1")
                 .build();
 
         User user2 = User.builder()
                 .email("user2@example.com")
                 .password("pass2")
-                .name("User 2")
+                .nickname("User 2")
                 .build();
 
         userRepository.save(user1);

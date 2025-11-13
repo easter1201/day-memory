@@ -47,7 +47,7 @@ class GiftItemRepositoryTest {
         testUser = User.builder()
                 .email("test@example.com")
                 .password("password")
-                .name("Test User")
+                .nickname("Test User")
                 .emailVerified(true)
                 .build();
         testUser = userRepository.save(testUser);
@@ -66,7 +66,7 @@ class GiftItemRepositoryTest {
         testGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Test Gift")
+                .nickname("Test Gift")
                 .description("Test Description")
                 .price(50000)
                 .url("https://example.com/gift")
@@ -92,7 +92,7 @@ class GiftItemRepositoryTest {
         GiftItem anotherGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Another Gift")
+                .nickname("Another Gift")
                 .category(GiftItem.GiftCategory.JEWELRY)
                 .isPurchased(false)
                 .build();
@@ -134,7 +134,7 @@ class GiftItemRepositoryTest {
         GiftItem giftForAnotherEvent = GiftItem.builder()
                 .user(testUser)
                 .event(anotherEvent)
-                .name("Anniversary Gift")
+                .nickname("Anniversary Gift")
                 .category(GiftItem.GiftCategory.JEWELRY)
                 .isPurchased(false)
                 .build();
@@ -181,7 +181,7 @@ class GiftItemRepositoryTest {
         GiftItem purchasedGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Purchased Gift")
+                .nickname("Purchased Gift")
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .isPurchased(true)
                 .build();
@@ -232,7 +232,7 @@ class GiftItemRepositoryTest {
         GiftItem jewelryGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Jewelry Gift")
+                .nickname("Jewelry Gift")
                 .category(GiftItem.GiftCategory.JEWELRY)
                 .isPurchased(false)
                 .build();
@@ -241,7 +241,7 @@ class GiftItemRepositoryTest {
         GiftItem cosmeticsGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Cosmetics Gift")
+                .nickname("Cosmetics Gift")
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .isPurchased(false)
                 .build();
@@ -269,7 +269,7 @@ class GiftItemRepositoryTest {
         GiftItem flowerBouquet = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Beautiful Flower Bouquet")
+                .nickname("Beautiful Flower Bouquet")
                 .description("Roses and tulips")
                 .category(GiftItem.GiftCategory.FLOWER)
                 .isPurchased(false)
@@ -294,7 +294,7 @@ class GiftItemRepositoryTest {
         GiftItem gift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Perfume")
+                .nickname("Perfume")
                 .description("Elegant fragrance with floral notes")
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .isPurchased(false)
@@ -399,7 +399,7 @@ class GiftItemRepositoryTest {
         // given
         GiftItem giftWithoutEvent = GiftItem.builder()
                 .user(testUser)
-                .name("Wishlist Item")
+                .nickname("Wishlist Item")
                 .description("General wishlist item")
                 .category(GiftItem.GiftCategory.OTHER)
                 .isPurchased(false)
@@ -421,7 +421,7 @@ class GiftItemRepositoryTest {
         GiftItem giftWithoutPrice = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .name("Priceless Gift")
+                .nickname("Priceless Gift")
                 .description("Special gift with no price")
                 .category(GiftItem.GiftCategory.OTHER)
                 .isPurchased(false)

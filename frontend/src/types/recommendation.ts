@@ -2,6 +2,8 @@ export interface RecommendationRequest {
   eventId: number;
   budget: number;
   preferredCategories: string[];
+  recipientGender?: string;
+  recipientAge?: number;
   additionalMessage?: string;
 }
 
@@ -30,6 +32,8 @@ export interface Recommendation {
   recipientName: string;
   budget: number;
   preferredCategories: string[];
+  recipientGender?: string;
+  recipientAge?: number;
   additionalMessage?: string;
   status: "PENDING" | "COMPLETED" | "FAILED";
   userSavedGifts: UserSavedGift[];

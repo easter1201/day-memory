@@ -75,4 +75,8 @@ tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
 	environment("DB_USERNAME", "postgres")
 	environment("DB_PASSWORD", "postgres")
 	environment("JWT_SECRET", "your-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm-development-only")
+	// AI API 설정 (Gemini)
+	environment("AI_PROVIDER", "gemini")
+	environment("AI_API_KEY", "AIzaSyAnBXOppRPYbiiwmOihxnX8PDuXka9gTF0")
+	environment("AI_MODEL", "gemini-2.5-flash")
 }

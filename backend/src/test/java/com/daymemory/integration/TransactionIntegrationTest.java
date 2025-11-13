@@ -67,7 +67,7 @@ class TransactionIntegrationTest {
         testUser = User.builder()
                 .email("transaction.test@example.com")
                 .password(passwordEncoder.encode("password123"))
-                .name("Transaction Test User")
+                .nickname("Transaction Test User")
                 .emailVerified(true)
                 .build();
         testUser = userRepository.save(testUser);
@@ -133,7 +133,7 @@ class TransactionIntegrationTest {
         UserDto.SignupRequest firstRequest = UserDto.SignupRequest.builder()
                 .email("duplicate@example.com")
                 .password("password123")
-                .name("First User")
+                .nickname("First User")
                 .build();
         userService.signup(firstRequest);
 
@@ -141,7 +141,7 @@ class TransactionIntegrationTest {
         UserDto.SignupRequest secondRequest = UserDto.SignupRequest.builder()
                 .email("duplicate@example.com")
                 .password("password456")
-                .name("Second User")
+                .nickname("Second User")
                 .build();
 
         assertThatThrownBy(() -> userService.signup(secondRequest))
@@ -360,7 +360,7 @@ class TransactionIntegrationTest {
         UserDto.SignupRequest userRequest = UserDto.SignupRequest.builder()
                 .email("nested@example.com")
                 .password("password123")
-                .name("Nested Transaction User")
+                .nickname("Nested Transaction User")
                 .build();
 
         // When: 사용자 생성 (트랜잭션 1)

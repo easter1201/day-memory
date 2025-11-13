@@ -226,7 +226,10 @@ export const GiftDetailPage = () => {
         )}
 
         {/* Product Recommendations Section */}
-        <ProductRecommendations giftName={gift.name} giftPrice={gift.price} />
+        <ProductRecommendations
+          giftName={gift.name}
+          giftPrice={gift.estimatedPrice || gift.price}
+        />
       </div>
     </PageLayout>
   );
@@ -312,14 +315,6 @@ const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; gif
 
   const cleanTitle = (title: string) => {
     return title.replace(/<[^>]*>/g, "").trim();
-  };
-
-  const formatPrice = (price: string) => {
-    const numPrice = parseInt(price, 10);
-    return new Intl.NumberFormat("ko-KR", {
-      style: "currency",
-      currency: "KRW",
-    }).format(numPrice);
   };
 
   return (
