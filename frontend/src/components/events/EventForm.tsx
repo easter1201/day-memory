@@ -11,6 +11,8 @@ import type { CreateEventRequest } from "../../types/event";
 const eventSchema = z.object({
   title: z.string().min(1, "이벤트명은 필수입니다"),
   description: z.string().optional(),
+  recipientName: z.string().optional(),
+  relationship: z.string().optional(),
   eventDate: z.string().min(1, "날짜는 필수입니다"),
   eventType: z.string().min(1, "이벤트 타입은 필수입니다"),
   isRecurring: z.boolean().optional(),
@@ -62,6 +64,8 @@ export const EventForm = ({ onSubmit, onCancel, isLoading, defaultValues }: Even
     defaultValues: {
       title: defaultValues?.title || "",
       description: defaultValues?.description || "",
+      recipientName: defaultValues?.recipientName || "",
+      relationship: defaultValues?.relationship || "",
       eventDate: defaultValues?.eventDate || "",
       eventType: defaultValues?.eventType || "",
       isRecurring: defaultValues?.isRecurring || false,
@@ -101,6 +105,20 @@ export const EventForm = ({ onSubmit, onCancel, isLoading, defaultValues }: Even
         placeholder="예: 엄마 생신"
         error={errors.title?.message}
         {...register("title")}
+      />
+
+      <Input
+        label="대상자명"
+        placeholder="예: 김철수"
+        error={errors.recipientName?.message}
+        {...register("recipientName")}
+      />
+
+      <Input
+        label="관계"
+        placeholder="예: 아버지, 친구"
+        error={errors.relationship?.message}
+        {...register("relationship")}
       />
 
       <Input

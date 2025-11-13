@@ -165,7 +165,7 @@ export const GiftForm = ({ onSubmit, onCancel, isLoading, defaultValues }: GiftF
           <option value="">이벤트를 선택하세요 (선택사항)</option>
           {eventsData?.content.map((event) => (
             <option key={event.id} value={event.id}>
-              {event.title}
+              {event.title} {event.recipientName ? `(${event.recipientName})` : ""}
             </option>
           ))}
         </select>

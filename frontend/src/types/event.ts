@@ -2,6 +2,8 @@ export interface Event {
   id: number;
   title: string;
   description?: string;
+  recipientName?: string;
+  relationship?: string;
   eventDate: string;
   eventType: string;
   isRecurring: boolean;
@@ -33,6 +35,8 @@ export interface EventsQueryParams {
 export interface CreateEventRequest {
   title: string;
   description?: string;
+  recipientName?: string;
+  relationship?: string;
   eventDate: string;
   eventType: string;
   isRecurring?: boolean;
@@ -43,6 +47,8 @@ export interface CreateEventRequest {
 export interface UpdateEventRequest {
   title: string;
   description?: string;
+  recipientName?: string;
+  relationship?: string;
   eventDate: string;
   eventType: string;
   isRecurring?: boolean;

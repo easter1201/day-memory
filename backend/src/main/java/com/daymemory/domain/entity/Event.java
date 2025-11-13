@@ -29,6 +29,12 @@ public class Event extends BaseEntity {
     @Column(length = 1000)
     private String description;
 
+    @Column(length = 100)
+    private String recipientName;
+
+    @Column(length = 50)
+    private String relationship;
+
     @Column(nullable = false)
     private LocalDate eventDate;
 
@@ -90,10 +96,12 @@ public class Event extends BaseEntity {
         CUSTOM              // 사용자 정의
     }
 
-    public void update(String title, String description, LocalDate eventDate,
-                      EventType eventType, Boolean isRecurring) {
+    public void update(String title, String description, String recipientName, String relationship,
+                      LocalDate eventDate, EventType eventType, Boolean isRecurring) {
         this.title = title;
         this.description = description;
+        this.recipientName = recipientName;
+        this.relationship = relationship;
         this.eventDate = eventDate;
         this.eventType = eventType;
         this.isRecurring = isRecurring;

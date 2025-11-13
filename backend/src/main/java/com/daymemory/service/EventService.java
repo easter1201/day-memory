@@ -33,6 +33,8 @@ public class EventService {
                 .user(user)
                 .title(request.getTitle())
                 .description(request.getDescription())
+                .recipientName(request.getRecipientName())
+                .relationship(request.getRelationship())
                 .eventDate(request.getEventDate())
                 .eventType(request.getEventType())
                 .isRecurring(request.getIsRecurring())
@@ -85,6 +87,8 @@ public class EventService {
         event.update(
                 request.getTitle(),
                 request.getDescription(),
+                request.getRecipientName(),
+                request.getRelationship(),
                 request.getEventDate(),
                 request.getEventType(),
                 request.getIsRecurring()

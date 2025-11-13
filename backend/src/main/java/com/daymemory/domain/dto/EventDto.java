@@ -36,6 +36,14 @@ public class EventDto {
         @Size(max = 500, message = "설명은 500자 이하여야 합니다.")
         private String description;
 
+        @Schema(description = "대상자명", example = "김철수")
+        @Size(max = 100, message = "대상자명은 100자 이하여야 합니다.")
+        private String recipientName;
+
+        @Schema(description = "관계", example = "아버지")
+        @Size(max = 50, message = "관계는 50자 이하여야 합니다.")
+        private String relationship;
+
         @Schema(description = "이벤트 날짜", example = "2025-12-25", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull(message = "이벤트 날짜는 필수입니다.")
         @FutureOrPresent(message = "이벤트 날짜는 오늘 이후여야 합니다.")
@@ -73,6 +81,12 @@ public class EventDto {
         @Schema(description = "이벤트 설명", example = "70세 생신 기념")
         private String description;
 
+        @Schema(description = "대상자명", example = "김철수")
+        private String recipientName;
+
+        @Schema(description = "관계", example = "아버지")
+        private String relationship;
+
         @Schema(description = "이벤트 날짜", example = "2025-12-25")
         @JsonDeserialize(using = LocalDateDeserializer.class)
         @JsonSerialize(using = LocalDateSerializer.class)
@@ -108,6 +122,8 @@ public class EventDto {
                     .id(event.getId())
                     .title(event.getTitle())
                     .description(event.getDescription())
+                    .recipientName(event.getRecipientName())
+                    .relationship(event.getRelationship())
                     .eventDate(event.getEventDate())
                     .eventType(event.getEventType())
                     .isRecurring(event.getIsRecurring())
