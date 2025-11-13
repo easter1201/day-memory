@@ -3,6 +3,7 @@ import { PageLayout } from "../components/layout/PageLayout";
 import { Button } from "../components/ui/Button";
 import { Checkbox } from "../components/ui/Checkbox";
 import { useGetGiftByIdQuery, useTogglePurchasedMutation, useDeleteGiftMutation } from "../store/services/giftsApi";
+import { useSearchProductsQuery } from "../store/services/shoppingApi";
 
 const CATEGORY_LABELS: Record<string, string> = {
   FLOWER: "꽃",
@@ -223,7 +224,92 @@ export const GiftDetailPage = () => {
             </div>
           </div>
         )}
+
+        {/* Product Recommendations Section */}
+        <ProductRecommendations giftName={gift.name} giftPrice={gift.price} />
       </div>
     </PageLayout>
+  );
+};
+
+// Product Recommendations Component
+const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; giftPrice: number }) => {
+  const { data: products, isLoading, error } = useSearchProductsQuery({
+    query: giftName,
+    minPrice: Math.floor(giftPrice * 0.7),
+    maxPrice: Math.ceil(giftPrice * 1.3),
+    display: 5,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="rounded-lg border bg-card p-6 shadow-sm">
+        <h2 className="mb-4 text-xl font-semibold">추천 상품</h2>
+        <p className="text-center text-muted-foreground">상품을 검색하는 중...</p>
+      </div>
+    );
+  }
+
+  if (error || !products || products.length === 0) {
+    return null;
+  }
+
+  const cleanTitle = (title: string) => {
+    return title.replace(/<[^>]*>/g, "").trim();
+  };
+
+  const formatPrice = (price: string) => {
+    const numPrice = parseInt(price, 10);
+    return new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency: "KRW",
+    }).format(numPrice);
+  };
+
+  return (
+    <div className="rounded-lg border bg-card p-6 shadow-sm">
+      <h2 className="mb-4 text-xl font-semibold">추천 상품</h2>
+      <p className="mb-4 text-sm text-muted-foreground">
+        네이버 쇼핑에서 찾은 '{giftName}' 관련 상품입니다
+      </p>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {products.slice(0, 5).map((product, index) => (
+          <a
+            key={`${product.productId}-${index}`}
+            href={product.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-lg border bg-white p-4 transition-all hover:shadow-md"
+          >
+            <div className="aspect-square overflow-hidden rounded-md bg-gray-100">
+              <img
+                src={product.image}
+                alt={cleanTitle(product.title)}
+                className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+
+            <div className="mt-3 space-y-1">
+              <h3 className="line-clamp-2 text-sm font-medium text-gray-900">
+                {cleanTitle(product.title)}
+              </h3>
+
+              <p className="text-lg font-bold text-primary">
+                {formatPrice(product.lprice)}
+              </p>
+
+              <p className="text-xs text-muted-foreground">{product.mallName}</p>
+            </div>
+
+            <div className="mt-3 flex items-center text-xs text-primary">
+              <span>상품 보기</span>
+              <span className="ml-1">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
   );
 };

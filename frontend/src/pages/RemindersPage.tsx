@@ -36,7 +36,7 @@ export const RemindersPage = () => {
   };
 
   const [selectedDays, setSelectedDays] = useState<number[]>(defaultSettings.defaultDaysBefore);
-  const [notificationMethod, setNotificationMethod] = useState<"EMAIL" | "SMS" | "BOTH">(defaultSettings.notificationMethod);
+  const [notificationMethod, setNotificationMethod] = useState<"EMAIL" | "PUSH" | "BOTH">(defaultSettings.notificationMethod);
 
   const { data: reminders, isLoading: remindersLoading } = useGetReminderLogsQuery({});
 
@@ -167,8 +167,8 @@ export const RemindersPage = () => {
                 <div className="flex gap-2">
                   {[
                     { value: "EMAIL", label: "이메일" },
-                    { value: "SMS", label: "SMS" },
-                    { value: "BOTH", label: "이메일 + SMS" },
+                    { value: "PUSH", label: "푸시 알림" },
+                    { value: "BOTH", label: "이메일 + 푸시" },
                   ].map((method) => (
                     <button
                       key={method.value}

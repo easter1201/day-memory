@@ -53,13 +53,13 @@ export interface ReminderLogsQueryParams {
 export interface GlobalReminderSettings {
   enabled: boolean;
   defaultDaysBefore: number[];
-  notificationMethod: "EMAIL" | "SMS" | "BOTH";
+  notificationMethod: "EMAIL" | "PUSH" | "BOTH";
 }
 
 export interface UpdateGlobalReminderSettingsRequest {
   enabled: boolean;
   defaultDaysBefore: number[];
-  notificationMethod: "EMAIL" | "SMS" | "BOTH";
+  notificationMethod: "EMAIL" | "PUSH" | "BOTH";
 }
 
 export interface RetryReminderRequest {

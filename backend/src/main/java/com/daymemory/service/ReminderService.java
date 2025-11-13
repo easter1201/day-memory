@@ -89,7 +89,8 @@ public class ReminderService {
             // 이메일 발송
             String subject = String.format("[Day Memory] '%s' %d일 전 알림",
                     event.getTitle(), daysBeforeEvent);
-            String content = emailService.buildReminderEmailContent(event.getTitle(), daysBeforeEvent);
+            String recipientName = event.getUser().getNickname();
+            String content = emailService.buildReminderEmailContent(event.getTitle(), daysBeforeEvent, recipientName);
             emailService.sendReminderEmail(event.getUser().getEmail(), subject, content);
 
             // 로그 저장
@@ -176,7 +177,8 @@ public class ReminderService {
             Event event = failedLog.getEvent();
             String subject = String.format("[Day Memory] '%s' %d일 전 알림 (재발송)",
                     event.getTitle(), failedLog.getDaysBeforeEvent());
-            String content = emailService.buildReminderEmailContent(event.getTitle(), failedLog.getDaysBeforeEvent());
+            String recipientName = event.getUser().getNickname();
+            String content = emailService.buildReminderEmailContent(event.getTitle(), failedLog.getDaysBeforeEvent(), recipientName);
             emailService.sendReminderEmail(event.getUser().getEmail(), subject, content);
 
             // 새로운 성공 로그 저장

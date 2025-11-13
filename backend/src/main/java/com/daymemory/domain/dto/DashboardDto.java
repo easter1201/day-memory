@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Schema(description = "대시보드 정보 응답")
@@ -30,6 +31,9 @@ public class DashboardDto {
     @Schema(description = "다가오는 이벤트 목록 (최대 5개)")
     private List<EventDto.Response> upcomingEvents;
 
+    @Schema(description = "오늘 발송 예정인 리마인더 목록")
+    private List<TodayReminderDto> todayReminders;
+
     @Schema(description = "최근 리마인더 발송 현황")
     @Getter
     @Builder
@@ -44,5 +48,27 @@ public class DashboardDto {
 
         @Schema(description = "마지막 발송 시간", example = "2025-11-11T09:00:00")
         private String lastSentAt;
+    }
+
+    @Schema(description = "오늘 발송 예정인 리마인더")
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TodayReminderDto {
+        @Schema(description = "이벤트 ID", example = "1")
+        private Long eventId;
+
+        @Schema(description = "이벤트 제목", example = "어머니 생신")
+        private String eventTitle;
+
+        @Schema(description = "받는 사람 이름", example = "어머니")
+        private String recipientName;
+
+        @Schema(description = "이벤트 날짜", example = "2025-11-20")
+        private String eventDate;
+
+        @Schema(description = "이벤트까지 남은 일수", example = "7")
+        private int daysUntilEvent;
     }
 }

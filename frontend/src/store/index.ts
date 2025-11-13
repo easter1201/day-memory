@@ -9,6 +9,7 @@ import { eventsApi } from "./services/eventsApi";
 import { giftsApi } from "./services/giftsApi";
 import { recommendationsApi } from "./services/recommendationsApi";
 import { remindersApi } from "./services/remindersApi";
+import { shoppingApi } from "./services/shoppingApi";
 import { usersApi } from "./services/usersApi";
 
 export const store = configureStore({
@@ -23,6 +24,7 @@ export const store = configureStore({
     [giftsApi.reducerPath]: giftsApi.reducer,
     [recommendationsApi.reducerPath]: recommendationsApi.reducer,
     [remindersApi.reducerPath]: remindersApi.reducer,
+    [shoppingApi.reducerPath]: shoppingApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -33,6 +35,7 @@ export const store = configureStore({
       giftsApi.middleware,
       recommendationsApi.middleware,
       remindersApi.middleware,
+      shoppingApi.middleware,
       usersApi.middleware
     ),
 });

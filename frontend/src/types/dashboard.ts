@@ -22,10 +22,19 @@ export interface ReminderStatus {
   lastSentAt: string;
 }
 
+export interface TodayReminder {
+  eventId: number;
+  eventTitle: string;
+  recipientName: string;
+  eventDate: string;
+  daysUntilEvent: number;
+}
+
 export interface DashboardData {
   upcomingEventsCount: number;
   unpurchasedGiftsCount: number;
   recentReminderStatus: ReminderStatus;
   thisMonthEventsCount: number;
   upcomingEvents: Event[];
+  todayReminders: TodayReminder[];
 }

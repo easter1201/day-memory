@@ -72,6 +72,6 @@ public class User extends BaseEntity {
     }
 
     public enum NotificationMethod {
-        EMAIL, SMS, BOTH
+        EMAIL, PUSH, BOTH
     }
 }

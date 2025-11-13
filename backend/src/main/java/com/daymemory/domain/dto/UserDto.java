@@ -224,7 +224,7 @@ public class UserDto {
         @Schema(description = "기본 알림 시점 (일 수)", example = "[1, 7, 30]")
         private java.util.List<Integer> defaultDaysBefore;
 
-        @Schema(description = "알림 방법 (EMAIL, SMS, BOTH)", example = "EMAIL")
+        @Schema(description = "알림 방법 (EMAIL, PUSH, BOTH)", example = "EMAIL")
         private String notificationMethod;
     }
 
@@ -243,7 +243,7 @@ public class UserDto {
         @Schema(description = "기본 알림 시점 (일 수)", example = "[1, 7, 30]")
         private java.util.List<Integer> defaultDaysBefore;
 
-        @Schema(description = "알림 방법 (EMAIL, SMS, BOTH)", example = "EMAIL")
+        @Schema(description = "알림 방법 (EMAIL, PUSH, BOTH)", example = "EMAIL")
         private String notificationMethod;
     }
 }

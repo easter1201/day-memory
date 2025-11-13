@@ -39,11 +39,11 @@ public class EmailService {
         }
     }
 
-    public String buildReminderEmailContent(String eventTitle, int daysRemaining) {
-        return buildHtmlEmailTemplate(eventTitle, daysRemaining);
+    public String buildReminderEmailContent(String eventTitle, int daysRemaining, String recipientName) {
+        return buildHtmlEmailTemplate(eventTitle, daysRemaining, recipientName);
     }
 
-    private String buildHtmlEmailTemplate(String eventTitle, int daysRemaining) {
+    private String buildHtmlEmailTemplate(String eventTitle, int daysRemaining, String recipientName) {
         return """
                 <!DOCTYPE html>
                 <html lang="ko">
@@ -131,14 +131,19 @@ public class EmailService {
                             <h1>🎉 Day Memory</h1>
                         </div>
                         <div class="content">
+                            <p class="message" style="margin-bottom: 20px;">
+                                안녕하세요, <strong>%s</strong>님!
+                            </p>
                             <div class="event-info">
                                 <div class="event-title">%s</div>
                             </div>
                             <div class="days-remaining">D-%d</div>
                             <div class="days-label">%d일 남았습니다</div>
                             <p class="message">
-                                소중한 날을 위한 준비는 잘 되어가고 계신가요?<br>
-                                특별한 날을 위해 미리 준비하시는 것을 추천드립니다!
+                                소중한 날이 다가오고 있습니다.<br>
+                                특별한 순간을 위해 미리 준비해보세요!<br>
+                                <br>
+                                Day Memory가 여러분의 소중한 기억을 함께 지켜드리겠습니다.
                             </p>
                         </div>
                         <div class="footer">
@@ -151,6 +156,6 @@ public class EmailService {
                     </div>
                 </body>
                 </html>
-                """.formatted(eventTitle, daysRemaining, daysRemaining);
+                """.formatted(recipientName, eventTitle, daysRemaining, daysRemaining);
     }
 }

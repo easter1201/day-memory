@@ -3,6 +3,7 @@ import { WelcomeBanner } from "../components/dashboard/WelcomeBanner";
 import { StatisticsCards } from "../components/dashboard/StatisticsCards";
 import { UpcomingEventsWidget } from "../components/dashboard/UpcomingEventsWidget";
 import { QuickActionButtons } from "../components/dashboard/QuickActionButtons";
+import { TodayRemindersWidget } from "../components/dashboard/TodayRemindersWidget";
 import { useGetDashboardDataQuery } from "../store/services/dashboardApi";
 
 export const DashboardPage = () => {
@@ -34,6 +35,8 @@ export const DashboardPage = () => {
         <WelcomeBanner />
 
         <StatisticsCards data={data} />
+
+        <TodayRemindersWidget reminders={data.todayReminders} />
 
         <div className="grid gap-6 lg:grid-cols-2">
           <UpcomingEventsWidget events={data.upcomingEvents} />

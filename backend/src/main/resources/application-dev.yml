@@ -13,6 +13,23 @@ spring:
       hibernate:
         format_sql: true
 
+  # 메일 설정 (Gmail SMTP)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:kite1201kr@gmail.com}
+    password: ${MAIL_PASSWORD:ckimofxhgocstvwu}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
 logging:
   level:
     com.daymemory: DEBUG
@@ -42,3 +59,14 @@ cors:
 # 파일 업로드 디렉토리 (개발)
 file:
   upload-dir: uploads-dev/gifts
+
+# AI API 설정 (개발 환경)
+ai:
+  provider: ${AI_PROVIDER:gemini}  # gemini 또는 openai
+  api-key: ${AI_API_KEY:}  # Gemini 또는 OpenAI API 키
+  model: ${AI_MODEL:gemini-1.5-flash}  # Gemini: gemini-1.5-flash, gemini-1.5-pro / OpenAI: gpt-3.5-turbo, gpt-4
+
+# Naver Shopping API 설정
+naver:
+  client-id: ${NAVER_CLIENT_ID:}
+  client-secret: ${NAVER_CLIENT_SECRET:}
