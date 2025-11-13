@@ -236,9 +236,7 @@ export const GiftDetailPage = () => {
 const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; giftPrice: number }) => {
   const { data: products, isLoading, error } = useSearchProductsQuery({
     query: giftName,
-    minPrice: Math.floor(giftPrice * 0.7),
-    maxPrice: Math.ceil(giftPrice * 1.3),
-    display: 5,
+    display: 20, // 더 많은 결과를 가져와서 필터링
   });
 
   if (isLoading) {
@@ -250,8 +248,66 @@ const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; gif
     );
   }
 
-  if (error || !products || products.length === 0) {
+  // 에러가 있으면 표시하지 않음
+  if (error) {
+    console.error(`[Shopping API Error] 선물: "${giftName}", 예산: ${giftPrice}`, error);
     return null;
+  }
+
+  // 검색 결과가 없으면 메시지 표시
+  if (!products || products.length === 0) {
+    console.log(`[Shopping API] 검색 결과 없음 - 선물: "${giftName}", 예산: ${giftPrice}`);
+    return (
+      <div className="rounded-lg border bg-card p-6 shadow-sm">
+        <h2 className="mb-4 text-xl font-semibold">추천 상품</h2>
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">
+            '{giftName}'에 대한 검색 결과를 찾을 수 없습니다.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            다른 검색어로 시도해보세요.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  console.log(`[Shopping API] 검색 성공 - 선물: "${giftName}", 결과: ${products.length}개`);
+
+  // 예산 이하의 상품만 필터링
+  const affordableProducts = products
+    .filter(product => {
+      const price = parseInt(product.lprice, 10);
+      return price <= giftPrice;
+    })
+    .slice(0, 5); // 최대 5개까지만 표시
+
+  console.log(`[Shopping API] 필터링 후 - 선물: "${giftName}", 예산 내 상품: ${affordableProducts.length}개`);
+
+  const formatPrice = (price: string | number) => {
+    const numPrice = typeof price === 'string' ? parseInt(price, 10) : price;
+    return new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency: "KRW",
+    }).format(numPrice);
+  };
+
+  // 예산 내 상품이 없으면 예산 초과 메시지 표시
+  if (affordableProducts.length === 0) {
+    console.log(`[Shopping API] 예산 초과 - 선물: "${giftName}", 예산: ${giftPrice}, 최저가: ${products[0]?.lprice}`);
+    return (
+      <div className="rounded-lg border bg-card p-6 shadow-sm">
+        <h2 className="mb-4 text-xl font-semibold">추천 상품</h2>
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">
+            예산({formatPrice(giftPrice)}) 내 상품을 찾을 수 없습니다.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            최저가: {formatPrice(products[0]?.lprice || 0)}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const cleanTitle = (title: string) => {
@@ -270,11 +326,11 @@ const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; gif
     <div className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="mb-4 text-xl font-semibold">추천 상품</h2>
       <p className="mb-4 text-sm text-muted-foreground">
-        네이버 쇼핑에서 찾은 '{giftName}' 관련 상품입니다
+        네이버 쇼핑에서 찾은 '{giftName}' 관련 상품입니다 (예산: {formatPrice(giftPrice.toString())} 이하)
       </p>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {products.slice(0, 5).map((product, index) => (
+        {affordableProducts.map((product, index) => (
           <a
             key={`${product.productId}-${index}`}
             href={product.link}
