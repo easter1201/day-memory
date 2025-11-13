@@ -110,6 +110,16 @@ public class GiftItemService {
     }
 
     /**
+     * 구매 완료 선물 목록 조회
+     */
+    public List<GiftItemDto.Response> getPurchasedGiftItems(Long userId) {
+        List<GiftItem> giftItems = giftItemRepository.findByUserIdAndIsPurchasedTrue(userId);
+        return giftItems.stream()
+                .map(GiftItemDto.Response::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 미구매 선물 목록 조회
      */
     public List<GiftItemDto.Response> getUnpurchasedGiftItems(Long userId) {
@@ -124,6 +134,16 @@ public class GiftItemService {
      */
     public List<GiftItemDto.Response> getGiftItemsByCategory(Long userId, GiftItem.GiftCategory category) {
         List<GiftItem> giftItems = giftItemRepository.findByUserIdAndCategory(userId, category);
+        return giftItems.stream()
+                .map(GiftItemDto.Response::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 구매 상태와 카테고리로 필터링
+     */
+    public List<GiftItemDto.Response> getGiftItemsByPurchaseStatusAndCategory(Long userId, Boolean isPurchased, GiftItem.GiftCategory category) {
+        List<GiftItem> giftItems = giftItemRepository.findByUserIdAndIsPurchasedAndCategory(userId, isPurchased, category);
         return giftItems.stream()
                 .map(GiftItemDto.Response::from)
                 .collect(Collectors.toList());

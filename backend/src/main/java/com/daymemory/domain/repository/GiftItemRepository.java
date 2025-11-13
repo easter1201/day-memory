@@ -35,7 +35,14 @@ public interface GiftItemRepository extends JpaRepository<GiftItem, Long> {
             @Param("userId") Long userId,
             @Param("eventId") Long eventId);
 
-    // N+1 문제 방지: User와 Event를 fetch join
+    // N+1 문제 방지: User와 Event를 fetch join (구매 완료)
+    @Query("SELECT DISTINCT g FROM GiftItem g " +
+           "LEFT JOIN FETCH g.user " +
+           "LEFT JOIN FETCH g.event " +
+           "WHERE g.user.id = :userId AND g.isPurchased = true")
+    List<GiftItem> findByUserIdAndIsPurchasedTrue(@Param("userId") Long userId);
+
+    // N+1 문제 방지: User와 Event를 fetch join (미구매)
     @Query("SELECT DISTINCT g FROM GiftItem g " +
            "LEFT JOIN FETCH g.user " +
            "LEFT JOIN FETCH g.event " +
@@ -56,6 +63,16 @@ public interface GiftItemRepository extends JpaRepository<GiftItem, Long> {
            "WHERE g.user.id = :userId AND g.category = :category")
     List<GiftItem> findByUserIdAndCategory(
             @Param("userId") Long userId,
+            @Param("category") GiftItem.GiftCategory category);
+
+    // 구매 상태와 카테고리로 필터링 (N+1 방지)
+    @Query("SELECT DISTINCT g FROM GiftItem g " +
+           "LEFT JOIN FETCH g.user " +
+           "LEFT JOIN FETCH g.event " +
+           "WHERE g.user.id = :userId AND g.isPurchased = :isPurchased AND g.category = :category")
+    List<GiftItem> findByUserIdAndIsPurchasedAndCategory(
+            @Param("userId") Long userId,
+            @Param("isPurchased") Boolean isPurchased,
             @Param("category") GiftItem.GiftCategory category);
 
     // 키워드 검색 (N+1 방지) - 선물 이름, 설명에서 검색

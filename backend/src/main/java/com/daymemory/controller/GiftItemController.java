@@ -52,13 +52,22 @@ public class GiftItemController {
     })
     @GetMapping
     public ResponseEntity<List<GiftItemDto.Response>> getGiftItems(
-            @RequestParam(required = false) Boolean purchased,
+            @RequestParam(required = false) Boolean isPurchased,
             @RequestParam(required = false) GiftItem.GiftCategory category) {
         Long userId = SecurityUtils.getCurrentUserId();
 
-        // 미구매 선물 조회
-        if (purchased != null && !purchased) {
-            return ResponseEntity.ok(giftItemService.getUnpurchasedGiftItems(userId));
+        // 구매 상태와 카테고리 모두로 필터링
+        if (isPurchased != null && category != null) {
+            return ResponseEntity.ok(giftItemService.getGiftItemsByPurchaseStatusAndCategory(userId, isPurchased, category));
+        }
+
+        // 구매 상태로만 필터링
+        if (isPurchased != null) {
+            if (isPurchased) {
+                return ResponseEntity.ok(giftItemService.getPurchasedGiftItems(userId));
+            } else {
+                return ResponseEntity.ok(giftItemService.getUnpurchasedGiftItems(userId));
+            }
         }
 
         // 카테고리별 조회
