@@ -33,8 +33,7 @@ export interface CreateGiftRequest {
   category: string;
   price: number;
   url?: string;
-  memo?: string;
-  isPurchased: boolean;
+  description?: string;
   eventId?: number;
 }
 
@@ -43,7 +42,6 @@ export interface UpdateGiftRequest {
   category: string;
   price: number;
   url?: string;
-  memo?: string;
-  isPurchased: boolean;
+  description?: string;
   eventId?: number;
 }

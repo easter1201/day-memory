@@ -13,8 +13,7 @@ const giftSchema = z.object({
   category: z.string().min(1, "카테고리를 선택해주세요"),
   price: z.number().min(0, "가격은 0 이상이어야 합니다"),
   url: z.string().optional(),
-  memo: z.string().optional(),
-  isPurchased: z.boolean(),
+  description: z.string().optional(),
   eventId: z.number().optional(),
 });
 
@@ -28,13 +27,15 @@ interface GiftFormProps {
 }
 
 const CATEGORIES = [
-  { value: "ELECTRONICS", label: "전자기기" },
+  { value: "FLOWER", label: "꽃" },
+  { value: "JEWELRY", label: "주얼리" },
+  { value: "COSMETICS", label: "화장품" },
   { value: "FASHION", label: "패션" },
-  { value: "FOOD", label: "식품" },
-  { value: "BOOK", label: "도서" },
-  { value: "HOBBY", label: "취미" },
-  { value: "BEAUTY", label: "뷰티" },
-  { value: "HOME", label: "생활용품" },
+  { value: "ELECTRONICS", label: "전자기기" },
+  { value: "FOOD", label: "음식/디저트" },
+  { value: "EXPERIENCE", label: "체험/이벤트" },
+  { value: "BOOK", label: "책" },
+  { value: "HOBBY", label: "취미용품" },
   { value: "OTHER", label: "기타" },
 ];
 
@@ -52,8 +53,7 @@ export const GiftForm = ({ onSubmit, onCancel, isLoading, defaultValues }: GiftF
       category: defaultValues?.category || "",
       price: defaultValues?.price || 0,
       url: defaultValues?.url || "",
-      memo: defaultValues?.memo || "",
-      isPurchased: defaultValues?.isPurchased !== undefined ? defaultValues.isPurchased : false,
+      description: defaultValues?.description || "",
       eventId: defaultValues?.eventId || undefined,
     },
   });
@@ -63,16 +63,13 @@ export const GiftForm = ({ onSubmit, onCancel, isLoading, defaultValues }: GiftF
     size: 100,
   });
 
-  const isPurchased = watch("isPurchased");
-
   const handleFormSubmit = (data: GiftFormData) => {
     const submitData: CreateGiftRequest = {
       name: data.name,
       category: data.category,
       price: data.price,
       url: data.url || undefined,
-      memo: data.memo || undefined,
-      isPurchased: data.isPurchased,
+      description: data.description || undefined,
       eventId: data.eventId || undefined,
     };
     onSubmit(submitData);
@@ -119,8 +116,12 @@ export const GiftForm = ({ onSubmit, onCancel, isLoading, defaultValues }: GiftF
         </label>
         <Input
           id="price"
-          type="number"
-          {...register("price", { valueAsNumber: true })}
+          type="text"
+          inputMode="numeric"
+          {...register("price", {
+            valueAsNumber: true,
+            setValueAs: (v) => v === "" ? 0 : parseInt(v.replace(/[^0-9]/g, ""), 10)
+          })}
           placeholder="가격을 입력하세요"
           error={errors.price?.message}
         />
@@ -139,17 +140,17 @@ export const GiftForm = ({ onSubmit, onCancel, isLoading, defaultValues }: GiftF
       </div>
 
       <div>
-        <label htmlFor="memo" className="mb-2 block text-sm font-medium">
-          메모
+        <label htmlFor="description" className="mb-2 block text-sm font-medium">
+          설명
         </label>
         <Textarea
-          id="memo"
-          {...register("memo")}
-          placeholder="메모를 입력하세요"
+          id="description"
+          {...register("description")}
+          placeholder="선물에 대한 설명을 입력하세요"
           rows={4}
         />
-        {errors.memo && (
-          <p className="mt-1 text-sm text-red-500">{errors.memo.message}</p>
+        {errors.description && (
+          <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>
         )}
       </div>
 
@@ -172,15 +173,6 @@ export const GiftForm = ({ onSubmit, onCancel, isLoading, defaultValues }: GiftF
         {errors.eventId && (
           <p className="mt-1 text-sm text-red-500">{errors.eventId.message}</p>
         )}
-      </div>
-
-      <div>
-        <Checkbox
-          id="isPurchased"
-          label="구매 완료"
-          checked={isPurchased}
-          onChange={(e) => setValue("isPurchased", e.target.checked)}
-        />
       </div>
 
       <div className="flex space-x-3">
