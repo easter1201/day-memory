@@ -72,10 +72,10 @@ export const Header = () => {
               aria-haspopup="true"
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <span className="text-sm font-medium">{user?.name?.[0] || "U"}</span>
+                <span className="text-sm font-medium">{user?.nickname?.[0] || "U"}</span>
               </div>
               <span className="hidden text-sm font-medium md:inline-block">
-                {user?.name || "사용자"}
+                {user?.nickname || "사용자"}
               </span>
             </button>
 
@@ -88,7 +88,7 @@ export const Header = () => {
                 />
                 <div className="absolute right-0 z-50 mt-2 w-56 rounded-md border bg-popover p-1 shadow-md" role="menu">
                   <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{user?.name || "사용자"}</p>
+                    <p className="text-sm font-medium">{user?.nickname || "사용자"}</p>
                     <p className="text-xs text-muted-foreground">{user?.email || "user@example.com"}</p>
                   </div>
                   <div className="my-1 h-px bg-border" />
