@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { Button } from "../components/ui/Button";
 import { HeroSection } from "../components/landing/HeroSection";
 import { FeaturesSection } from "../components/landing/FeaturesSection";
@@ -13,6 +14,13 @@ export const LandingPage = () => {
   const dispatch = useDispatch();
   const { user, accessToken } = useSelector((state: RootState) => state.auth);
   const isLoggedIn = !!accessToken;
+
+  // 로그인된 사용자는 대시보드로 리다이렉트
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -31,7 +39,7 @@ export const LandingPage = () => {
             {isLoggedIn ? (
               <>
                 <span className="text-sm text-muted-foreground">
-                  {user?.name}님 환영합니다
+                  {user?.nickname}님 환영합니다
                 </span>
                 <Button onClick={() => navigate("/dashboard")}>
                   대시보드
