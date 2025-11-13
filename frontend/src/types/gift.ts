@@ -4,7 +4,7 @@ export interface Gift {
   category: string;
   price: number;
   url?: string;
-  memo?: string;
+  description?: string;
   isPurchased: boolean;
   eventId?: number;
   eventTitle?: string;

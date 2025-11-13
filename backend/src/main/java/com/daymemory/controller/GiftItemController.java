@@ -71,6 +71,19 @@ public class GiftItemController {
         return ResponseEntity.ok(giftItems);
     }
 
+    @Operation(summary = "선물 단건 조회", description = "선물 ID로 선물 상세 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "선물 조회 성공",
+                    content = @Content(schema = @Schema(implementation = GiftItemDto.Response.class))),
+            @ApiResponse(responseCode = "404", description = "선물을 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = com.daymemory.exception.GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    @GetMapping("/{giftId}")
+    public ResponseEntity<GiftItemDto.Response> getGiftItem(@PathVariable Long giftId) {
+        GiftItemDto.Response response = giftItemService.getGiftItemById(giftId);
+        return ResponseEntity.ok(response);
+    }
+
     @Operation(summary = "이벤트별 선물 조회", description = "특정 이벤트와 연결된 선물 목록을 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선물 목록 조회 성공",

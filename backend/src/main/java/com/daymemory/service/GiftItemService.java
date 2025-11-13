@@ -59,6 +59,12 @@ public class GiftItemService {
                 .collect(Collectors.toList());
     }
 
+    public GiftItemDto.Response getGiftItemById(Long giftId) {
+        GiftItem giftItem = giftItemRepository.findById(giftId)
+                .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+        return GiftItemDto.Response.from(giftItem);
+    }
+
     public List<GiftItemDto.Response> getGiftItemsByEvent(Long eventId) {
         List<GiftItem> giftItems = giftItemRepository.findByEventId(eventId);
         return giftItems.stream()

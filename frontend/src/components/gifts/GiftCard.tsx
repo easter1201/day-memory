@@ -8,24 +8,28 @@ interface GiftCardProps {
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  ELECTRONICS: "전자기기",
+  FLOWER: "꽃",
+  JEWELRY: "주얼리",
+  COSMETICS: "화장품",
   FASHION: "패션",
-  FOOD: "식품",
-  BOOK: "도서",
-  HOBBY: "취미",
-  BEAUTY: "뷰티",
-  HOME: "생활용품",
+  ELECTRONICS: "전자기기",
+  FOOD: "음식/디저트",
+  EXPERIENCE: "체험/이벤트",
+  BOOK: "책",
+  HOBBY: "취미용품",
   OTHER: "기타",
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
+  FLOWER: "bg-pink-100 text-pink-800",
+  JEWELRY: "bg-purple-100 text-purple-800",
+  COSMETICS: "bg-rose-100 text-rose-800",
+  FASHION: "bg-indigo-100 text-indigo-800",
   ELECTRONICS: "bg-blue-100 text-blue-800",
-  FASHION: "bg-purple-100 text-purple-800",
   FOOD: "bg-orange-100 text-orange-800",
+  EXPERIENCE: "bg-amber-100 text-amber-800",
   BOOK: "bg-green-100 text-green-800",
-  HOBBY: "bg-pink-100 text-pink-800",
-  BEAUTY: "bg-rose-100 text-rose-800",
-  HOME: "bg-amber-100 text-amber-800",
+  HOBBY: "bg-cyan-100 text-cyan-800",
   OTHER: "bg-gray-100 text-gray-800",
 };
 

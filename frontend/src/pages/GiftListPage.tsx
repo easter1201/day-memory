@@ -8,13 +8,15 @@ import { useGetGiftsQuery } from "../store/services/giftsApi";
 
 const CATEGORY_FILTERS = [
   { value: "", label: "전체" },
-  { value: "ELECTRONICS", label: "전자기기" },
+  { value: "FLOWER", label: "꽃" },
+  { value: "JEWELRY", label: "주얼리" },
+  { value: "COSMETICS", label: "화장품" },
   { value: "FASHION", label: "패션" },
-  { value: "FOOD", label: "식품" },
-  { value: "BOOK", label: "도서" },
-  { value: "HOBBY", label: "취미" },
-  { value: "BEAUTY", label: "뷰티" },
-  { value: "HOME", label: "생활용품" },
+  { value: "ELECTRONICS", label: "전자기기" },
+  { value: "FOOD", label: "음식/디저트" },
+  { value: "EXPERIENCE", label: "체험/이벤트" },
+  { value: "BOOK", label: "책" },
+  { value: "HOBBY", label: "취미용품" },
   { value: "OTHER", label: "기타" },
 ];
 
