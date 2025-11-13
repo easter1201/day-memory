@@ -69,7 +69,21 @@ public class RecurringEventService {
      * 반복 이벤트를 다음 해로 복사
      */
     private void createNextYearEvent(Event originalEvent) {
-        LocalDate nextYearDate = originalEvent.getEventDate().plusYears(1);
+        LocalDate originalDate = originalEvent.getEventDate();
+        LocalDate nextYearDate;
+
+        // 윤년 2월 29일 처리: 다음 해가 윤년이 아니면 2월 28일로 조정
+        if (originalDate.getMonthValue() == 2 && originalDate.getDayOfMonth() == 29) {
+            int nextYear = originalDate.getYear() + 1;
+            // 다음 해가 윤년인지 확인
+            if (LocalDate.of(nextYear, 1, 1).isLeapYear()) {
+                nextYearDate = LocalDate.of(nextYear, 2, 29);
+            } else {
+                nextYearDate = LocalDate.of(nextYear, 2, 28);
+            }
+        } else {
+            nextYearDate = originalDate.plusYears(1);
+        }
 
         // 다음 해 이벤트가 이미 존재하는지 확인
         if (isEventAlreadyExists(originalEvent, nextYearDate)) {
@@ -78,10 +92,12 @@ public class RecurringEventService {
         }
 
         // 새로운 이벤트 생성 (원본 이벤트 복사)
+        // 설명(description)은 제외하고, 대상자명과 관계는 포함
         Event newEvent = Event.builder()
                 .user(originalEvent.getUser())
                 .title(originalEvent.getTitle())
-                .description(originalEvent.getDescription())
+                .recipientName(originalEvent.getRecipientName())
+                .relationship(originalEvent.getRelationship())
                 .eventDate(nextYearDate)
                 .eventType(originalEvent.getEventType())
                 .isRecurring(true)

@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import type { Gift } from "../../types/gift";
-import { Checkbox } from "../ui/Checkbox";
-import { useTogglePurchasedMutation } from "../../store/services/giftsApi";
 
 interface GiftCardProps {
   gift: Gift;
@@ -35,19 +33,9 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 export const GiftCard = ({ gift }: GiftCardProps) => {
   const navigate = useNavigate();
-  const [togglePurchased] = useTogglePurchasedMutation();
 
   const handleCardClick = () => {
     navigate(`/gifts/${gift.id}`);
-  };
-
-  const handleCheckboxChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation();
-    try {
-      await togglePurchased(gift.id).unwrap();
-    } catch (error) {
-      console.error("Failed to toggle purchased status:", error);
-    }
   };
 
   const formatPrice = (price: number) => {
@@ -60,13 +48,26 @@ export const GiftCard = ({ gift }: GiftCardProps) => {
   return (
     <div
       onClick={handleCardClick}
-      className="cursor-pointer rounded-lg border bg-card p-4 shadow-sm transition-shadow hover:shadow-md"
+      className={`cursor-pointer rounded-lg border p-4 shadow-sm transition-all hover:shadow-md ${
+        gift.isPurchased
+          ? "bg-green-50 border-green-200 opacity-75"
+          : "bg-card border-border"
+      }`}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">{gift.name}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className={`text-lg font-semibold ${gift.isPurchased ? "text-green-900" : ""}`}>
+              {gift.name}
+            </h3>
+            {gift.isPurchased && (
+              <span className="flex items-center gap-1 rounded-full bg-green-600 px-2 py-0.5 text-xs font-medium text-white">
+                ✓ 구매완료
+              </span>
+            )}
+          </div>
           {gift.eventTitle && (
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className={`mt-1 text-sm ${gift.isPurchased ? "text-green-700" : "text-muted-foreground"}`}>
               연결: {gift.eventTitle}
             </p>
           )}
@@ -80,18 +81,10 @@ export const GiftCard = ({ gift }: GiftCardProps) => {
         </span>
       </div>
 
-      <div className="mt-3 flex items-center justify-between">
-        <p className="text-lg font-bold text-primary">
+      <div className="mt-3">
+        <p className={`text-lg font-bold ${gift.isPurchased ? "text-green-700" : "text-primary"}`}>
           {formatPrice(gift.price)}
         </p>
-        <div onClick={(e) => e.stopPropagation()}>
-          <Checkbox
-            id={`gift-${gift.id}`}
-            label="구매 완료"
-            checked={gift.isPurchased}
-            onChange={handleCheckboxChange}
-          />
-        </div>
       </div>
     </div>
   );

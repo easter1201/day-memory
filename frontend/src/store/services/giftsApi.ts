@@ -21,7 +21,7 @@ export const giftsApi = createApi({
       query: (params) => {
         const searchParams = new URLSearchParams();
         if (params.category) searchParams.append("category", params.category);
-        if (params.isPurchased !== undefined) searchParams.append("purchased", params.isPurchased.toString());
+        if (params.isPurchased !== undefined) searchParams.append("isPurchased", params.isPurchased.toString());
 
         const queryString = searchParams.toString();
         return queryString ? `/gifts?${queryString}` : '/gifts';
