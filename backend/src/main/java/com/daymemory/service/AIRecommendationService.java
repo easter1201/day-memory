@@ -45,10 +45,10 @@ public class AIRecommendationService {
     @Value("${ai.api-key:}")
     private String apiKey;
 
-    @Value("${ai.provider:openai}")
+    @Value("${ai.provider:gemini}")
     private String aiProvider;
 
-    @Value("${ai.model:gpt-3.5-turbo}")
+    @Value("${ai.model:gemini-2.5-flash}")
     private String model;
 
     @PostConstruct

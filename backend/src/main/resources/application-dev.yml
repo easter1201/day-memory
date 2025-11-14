@@ -63,7 +63,7 @@ file:
 ai:
   provider: ${AI_PROVIDER:gemini}  # gemini 또는 openai
   api-key: ${AI_API_KEY:}  # Gemini 또는 OpenAI API 키
-  model: ${AI_MODEL:gemini-2.5-flash}  # Gemini: gemini-1.5-flash, gemini-1.5-pro / OpenAI: gpt-3.5-turbo, gpt-4
+  model: ${AI_MODEL:gemini-2.5-flash}  # Gemini: gemini-2.5-flash, gemini-1.5-flash, gemini-1.5-pro / OpenAI: gpt-3.5-turbo, gpt-4
 
 # Naver Shopping API 설정
 naver:

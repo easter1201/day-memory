@@ -48,7 +48,7 @@ export const GiftCard = ({ gift }: GiftCardProps) => {
   return (
     <div
       onClick={handleCardClick}
-      className={`cursor-pointer rounded-lg border p-4 shadow-sm transition-all hover:shadow-md ${
+      className={`relative cursor-pointer rounded-lg border p-4 shadow-sm transition-all hover:shadow-md ${
         gift.isPurchased
           ? "bg-green-50 border-green-200 opacity-75"
           : "bg-card border-border"
@@ -56,16 +56,9 @@ export const GiftCard = ({ gift }: GiftCardProps) => {
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <h3 className={`text-lg font-semibold ${gift.isPurchased ? "text-green-900" : ""}`}>
-              {gift.name}
-            </h3>
-            {gift.isPurchased && (
-              <span className="flex items-center gap-1 rounded-full bg-green-600 px-2 py-0.5 text-xs font-medium text-white">
-                ✓ 구매완료
-              </span>
-            )}
-          </div>
+          <h3 className={`text-lg font-semibold ${gift.isPurchased ? "text-green-900" : ""}`}>
+            {gift.name}
+          </h3>
           {gift.eventTitle && (
             <p className={`mt-1 text-sm ${gift.isPurchased ? "text-green-700" : "text-muted-foreground"}`}>
               연결: {gift.eventTitle}
@@ -105,6 +98,14 @@ export const GiftCard = ({ gift }: GiftCardProps) => {
           </p>
         )}
       </div>
+
+      {gift.isPurchased && (
+        <div className="absolute bottom-3 right-3">
+          <span className="flex items-center gap-1 rounded-full bg-green-600 px-3 py-1 text-xs font-medium text-white shadow-sm">
+            ✓ 구매완료
+          </span>
+        </div>
+      )}
     </div>
   );
 };
