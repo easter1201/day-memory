@@ -17,8 +17,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:kite1201kr@gmail.com}
-    password: ${MAIL_PASSWORD:ckimofxhgocstvwu}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
@@ -38,7 +38,6 @@ logging:
     org.springframework.jdbc.datasource: DEBUG
     com.zaxxer.hikari: DEBUG
   file:
-    path: logs
     name: logs/day-memory-dev
 
 # Actuator 설정 (개발 환경)
@@ -63,10 +62,10 @@ file:
 # AI API 설정 (개발 환경)
 ai:
   provider: ${AI_PROVIDER:gemini}  # gemini 또는 openai
-  api-key: ${AI_API_KEY:AIzaSyAnBXOppRPYbiiwmOihxnX8PDuXka9gTF0}  # Gemini 또는 OpenAI API 키
+  api-key: ${AI_API_KEY:}  # Gemini 또는 OpenAI API 키
   model: ${AI_MODEL:gemini-2.5-flash}  # Gemini: gemini-1.5-flash, gemini-1.5-pro / OpenAI: gpt-3.5-turbo, gpt-4
 
 # Naver Shopping API 설정
 naver:
-  client-id: ${NAVER_CLIENT_ID:iw9XgEVwrWdEIPtVGEDl}
-  client-secret: ${NAVER_CLIENT_SECRET:DnfZhivL2M}
+  client-id: ${NAVER_CLIENT_ID:}
+  client-secret: ${NAVER_CLIENT_SECRET:}
