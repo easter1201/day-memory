@@ -6,14 +6,14 @@ FROM gradle:8.5-jdk17-alpine AS build
 WORKDIR /app
 
 # Copy Gradle wrapper and build files (cached layer)
-COPY gradle gradle
-COPY gradlew .
-COPY gradlew.bat .
-COPY settings.gradle.kts .
-COPY build.gradle.kts .
+COPY gradlew gradlew.bat ./
+COPY gradle ./gradle
+COPY settings.gradle.kts build.gradle.kts ./
 
-# Set execute permission and download dependencies (cached layer)
-RUN chmod +x ./gradlew && ./gradlew dependencies --no-daemon
+# Fix line endings and set execute permission, then download dependencies
+RUN sed -i 's/\r$//' gradlew && \
+    chmod +x gradlew && \
+    ./gradlew dependencies --no-daemon
 
 # Copy source code and build
 COPY src ./src
@@ -25,7 +25,9 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Create non-root user for security
-RUN addgroup -S spring && adduser -S spring -G spring
+RUN addgroup -S spring && adduser -S spring -G spring && \
+    mkdir -p /app/logs && \
+    chown -R spring:spring /app/logs
 USER spring:spring
 
 # Copy JAR from build stage
