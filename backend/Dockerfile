@@ -12,8 +12,8 @@ COPY gradlew.bat .
 COPY settings.gradle.kts .
 COPY build.gradle.kts .
 
-# Download dependencies (cached layer)
-RUN ./gradlew dependencies --no-daemon
+# Set execute permission and download dependencies (cached layer)
+RUN chmod +x ./gradlew && ./gradlew dependencies --no-daemon
 
 # Copy source code and build
 COPY src ./src

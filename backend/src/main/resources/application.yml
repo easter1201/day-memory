@@ -14,9 +14,9 @@ spring:
       fail-on-unknown-properties: false
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/daymemory}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:5432/daymemory_dev
+    username: postgres
+    password: 12345678
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -29,10 +29,10 @@ spring:
         format_sql: true
 
   mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:your-email@gmail.com}
-    password: ${MAIL_PASSWORD:your-app-password}
+    host: smtp.gmail.com
+    port: 587
+    username: kite1201kr@gmail.com
+    password: your-app-password
     properties:
       mail:
         smtp:
@@ -51,17 +51,17 @@ file:
   upload-dir: uploads/gifts
 
 jwt:
-  secret: ${JWT_SECRET:your-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm}
-  access-token-expiration: ${JWT_ACCESS_EXPIRATION:3600000}  # 1시간 (1000 * 60 * 60)
-  refresh-token-expiration: ${JWT_REFRESH_EXPIRATION:604800000}  # 7일 (1000 * 60 * 60 * 24 * 7)
+  secret: day-memory-jwt-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm
+  access-token-expiration: 3600000  # 1시간 (1000 * 60 * 60)
+  refresh-token-expiration: 604800000  # 7일 (1000 * 60 * 60 * 24 * 7)
 
 server:
   port: 8080
 
 ai:
-  api-key: ${AI_API_KEY:}
-  provider: ${AI_PROVIDER:openai}
-  model: ${AI_MODEL:gpt-3.5-turbo}
+  api-key: AIzaSyAnBXOppRPYbiiwmOihxnX8PDuXka9gTF0
+  provider: gemini
+  model: gemini-2.5-flash
 
 oauth:
   google:
@@ -70,6 +70,10 @@ oauth:
   kakao:
     client-id: ${KAKAO_CLIENT_ID:}
     client-secret: ${KAKAO_CLIENT_SECRET:}
+
+naver:
+  client-id: iw9XgEVwrWdEIPtVGEDl
+  client-secret: DnfZhivL2M
 
 logging:
   level:
