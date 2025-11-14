@@ -24,6 +24,14 @@ public class ShoppingController {
     private final NaverShoppingService naverShoppingService;
 
     /**
+     * 네이버 API 설정 확인용 (개발용)
+     */
+    @GetMapping("/config-check")
+    public ResponseEntity<String> checkConfig() {
+        return ResponseEntity.ok("Naver Shopping API Configuration Check Endpoint");
+    }
+
+    /**
      * 네이버 쇼핑 API로 상품 검색
      * GET /api/shopping/search?query={검색어}&display={개수}
      * GET /api/shopping/search?query={검색어}&minPrice={최소가격}&maxPrice={최대가격}&display={개수}

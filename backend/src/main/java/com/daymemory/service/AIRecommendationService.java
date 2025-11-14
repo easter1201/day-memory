@@ -1,12 +1,19 @@
 package com.daymemory.service;
 
 import com.daymemory.domain.dto.AIRecommendationDto;
+import com.daymemory.domain.entity.AIRecommendation;
 import com.daymemory.domain.entity.Event;
 import com.daymemory.domain.entity.GiftItem;
+import com.daymemory.domain.entity.RecommendedGiftItem;
+import com.daymemory.domain.entity.User;
+import com.daymemory.domain.repository.AIRecommendationRepository;
 import com.daymemory.domain.repository.EventRepository;
 import com.daymemory.domain.repository.GiftItemRepository;
+import com.daymemory.domain.repository.RecommendedGiftItemRepository;
+import com.daymemory.domain.repository.UserRepository;
 import com.daymemory.exception.CustomException;
 import com.daymemory.exception.ErrorCode;
+import com.daymemory.security.SecurityUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +36,9 @@ public class AIRecommendationService {
 
     private final EventRepository eventRepository;
     private final GiftItemRepository giftItemRepository;
+    private final AIRecommendationRepository aiRecommendationRepository;
+    private final RecommendedGiftItemRepository recommendedGiftItemRepository;
+    private final UserRepository userRepository;
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -53,6 +63,146 @@ public class AIRecommendationService {
     private String maskApiKey(String key) {
         if (key == null || key.length() < 8) return "****";
         return key.substring(0, 4) + "****" + key.substring(key.length() - 4);
+    }
+
+    /**
+     * AI 추천 이력 조회
+     */
+    public List<AIRecommendationDto.RecommendResponse> getRecommendations() {
+        Long userId = SecurityUtils.getCurrentUserId();
+        List<AIRecommendation> recommendations = aiRecommendationRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        return recommendations.stream()
+                .map(this::convertToResponse)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * AI 추천 상세 조회
+     */
+    public AIRecommendationDto.RecommendResponse getRecommendationById(Long id) {
+        AIRecommendation recommendation = aiRecommendationRepository.findByIdWithUserAndEvent(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.AI_RECOMMENDATION_NOT_FOUND));
+
+        // 권한 체크: 본인의 추천 내역만 조회 가능
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        if (!recommendation.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+
+        return convertToResponse(recommendation);
+    }
+
+    /**
+     * AI 추천을 응답 DTO로 변환
+     */
+    private AIRecommendationDto.RecommendResponse convertToResponse(AIRecommendation recommendation) {
+        // 추천된 선물 아이템 조회
+        List<RecommendedGiftItem> recommendedItems = recommendedGiftItemRepository.findByRecommendationId(recommendation.getId());
+
+        // 사용자의 저장된 선물 조회 (실시간 매칭을 위해)
+        Long userId = recommendation.getUser().getId();
+        List<GiftItem> userGifts = giftItemRepository.findByUserId(userId);
+
+        // 이미 매칭된 GiftItem ID를 추적 (중복 매칭 방지)
+        java.util.Set<Long> matchedGiftIds = new java.util.HashSet<>();
+
+        // GiftRecommendation DTO 리스트 생성
+        List<AIRecommendationDto.GiftRecommendation> giftRecommendations = recommendedItems.stream()
+                .map(item -> {
+                    // 실시간으로 사용자 선물과 매칭
+                    GiftItem matchedGift = null;
+                    if (item.getSavedGift() != null) {
+                        // 이미 연결된 경우
+                        matchedGift = item.getSavedGift();
+                        matchedGiftIds.add(matchedGift.getId());
+                    } else {
+                        // 실시간 매칭 (이름, 카테고리, 가격대로 판단)
+                        for (GiftItem userGift : userGifts) {
+                            // 이미 다른 추천 아이템과 매칭된 선물은 건너뛰기
+                            if (matchedGiftIds.contains(userGift.getId())) {
+                                continue;
+                            }
+
+                            if (isMatchingGift(item, userGift)) {
+                                matchedGift = userGift;
+                                matchedGiftIds.add(userGift.getId());
+                                // DB에 연결 저장
+                                item.setSavedGift(userGift);
+                                recommendedGiftItemRepository.save(item);
+                                break;
+                            }
+                        }
+                    }
+
+                    return AIRecommendationDto.GiftRecommendation.builder()
+                            .name(item.getName())
+                            .description(item.getDescription())
+                            .category(item.getCategory())
+                            .estimatedPrice(item.getEstimatedPrice())
+                            .reason(item.getReason())
+                            .purchaseLink(item.getPurchaseLink())
+                            .isUserSaved(matchedGift != null)
+                            .savedGiftId(matchedGift != null ? matchedGift.getId() : null)
+                            .build();
+                })
+                .collect(java.util.stream.Collectors.toList());
+
+        // 저장된 선물만 필터링
+        List<AIRecommendationDto.GiftRecommendation> userSavedGifts = giftRecommendations.stream()
+                .filter(gift -> gift.getIsUserSaved() != null && gift.getIsUserSaved())
+                .collect(java.util.stream.Collectors.toList());
+
+        // 응답 DTO 생성
+        return AIRecommendationDto.RecommendResponse.builder()
+                .id(recommendation.getId())
+                .recommendations(giftRecommendations)
+                .aiRecommendations(giftRecommendations)  // 동일한 목록
+                .userSavedGifts(userSavedGifts)  // 저장된 것만
+                .eventTitle(recommendation.getEventTitle())
+                .eventType(recommendation.getEvent() != null ? recommendation.getEvent().getEventType() : null)
+                .daysUntilEvent(recommendation.getDaysUntilEvent())
+                .recipientName(recommendation.getRecipientName())
+                .budget(recommendation.getBudget())
+                .status(recommendation.getStatus() != null ? recommendation.getStatus().name() : "COMPLETED")
+                .createdAt(recommendation.getCreatedAt() != null ? recommendation.getCreatedAt().toString() : null)
+                .build();
+    }
+
+    /**
+     * RecommendedGiftItem과 GiftItem 매칭 여부 판단
+     * 매칭 조건을 엄격하게 적용하여 정확한 매칭만 허용
+     */
+    private boolean isMatchingGift(RecommendedGiftItem recommendedItem, GiftItem userGift) {
+        // 이름 정규화 (대소문자 무시, 공백 제거)
+        String recName = recommendedItem.getName().toLowerCase().replaceAll("\\s+", "");
+        String giftName = userGift.getName().toLowerCase().replaceAll("\\s+", "");
+
+        // 카테고리 체크
+        boolean categoryMatch = recommendedItem.getCategory() == userGift.getCategory();
+
+        // 가격 체크
+        Integer recPrice = recommendedItem.getEstimatedPrice();
+        Integer giftPrice = userGift.getEstimatedPrice() != null ? userGift.getEstimatedPrice() : userGift.getPrice();
+        boolean priceMatch = false;
+
+        if (recPrice != null && giftPrice != null) {
+            // 가격이 ±20% 범위 내에 있는지 확인 (더 엄격하게)
+            int priceDiff = Math.abs(giftPrice - recPrice);
+            int priceAvg = (giftPrice + recPrice) / 2;
+            priceMatch = priceDiff < priceAvg * 0.2;
+        }
+
+        // 이름이 거의 일치하면서 카테고리도 맞아야 매칭
+        boolean exactNameMatch = recName.equals(giftName);
+
+        // 이름의 길이가 5자 이상이고, 한쪽이 다른쪽을 완전히 포함하는 경우만 부분 매칭 허용
+        boolean partialNameMatch = false;
+        if (recName.length() >= 5 && giftName.length() >= 5) {
+            partialNameMatch = recName.contains(giftName) || giftName.contains(recName);
+        }
+
+        // 매칭 조건: (정확한 이름 일치 OR (부분 이름 일치 AND 가격 일치)) AND 카테고리 일치
+        return categoryMatch && (exactNameMatch || (partialNameMatch && priceMatch));
     }
 
     /**
@@ -86,12 +236,68 @@ public class AIRecommendationService {
             recommendations = matchAndPrioritizeUserGifts(recommendations, userId);
         }
 
+        // DB에 추천 내역 저장
+        AIRecommendation savedRecommendation = saveRecommendationToDatabase(request, event, recommendations, daysUntilEvent);
+
         return AIRecommendationDto.RecommendResponse.builder()
+                .id(savedRecommendation.getId())
                 .recommendations(recommendations)
                 .eventTitle(eventTitle)
                 .eventType(eventType)
                 .daysUntilEvent(daysUntilEvent)
                 .build();
+    }
+
+    /**
+     * 추천 내역을 데이터베이스에 저장
+     */
+    private AIRecommendation saveRecommendationToDatabase(
+            AIRecommendationDto.RecommendRequest request,
+            Event event,
+            List<AIRecommendationDto.GiftRecommendation> recommendations,
+            int daysUntilEvent) {
+
+        Long userId = SecurityUtils.getCurrentUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 추천 내역 생성
+        AIRecommendation recommendation = AIRecommendation.builder()
+                .user(user)
+                .event(event)
+                .eventTitle(event.getTitle())
+                .recipientName(event.getRecipientName())
+                .recipientGender(request.getRecipientGender())
+                .recipientAge(request.getRecipientAge())
+                .budget(request.getBudget())
+                .preferredCategories(request.getPreferredCategories() != null
+                        ? String.join(",", request.getPreferredCategories())
+                        : null)
+                .additionalMessage(request.getAdditionalMessage())
+                .daysUntilEvent(daysUntilEvent)
+                .status(AIRecommendation.RecommendationStatus.COMPLETED)
+                .build();
+
+        AIRecommendation savedRecommendation = aiRecommendationRepository.save(recommendation);
+
+        // 추천된 선물 아이템 저장
+        for (AIRecommendationDto.GiftRecommendation giftRec : recommendations) {
+            RecommendedGiftItem recommendedGift = RecommendedGiftItem.builder()
+                    .recommendation(savedRecommendation)
+                    .name(giftRec.getName())
+                    .description(giftRec.getDescription())
+                    .category(giftRec.getCategory())
+                    .estimatedPrice(giftRec.getEstimatedPrice())
+                    .reason(giftRec.getReason())
+                    .purchaseLink(giftRec.getPurchaseLink())
+                    .build();
+
+            recommendedGiftItemRepository.save(recommendedGift);
+        }
+
+        log.info("Saved recommendation to database: id={}, event={}", savedRecommendation.getId(), event.getTitle());
+
+        return savedRecommendation;
     }
 
     /**

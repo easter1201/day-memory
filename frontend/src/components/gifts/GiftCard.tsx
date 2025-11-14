@@ -81,10 +81,29 @@ export const GiftCard = ({ gift }: GiftCardProps) => {
         </span>
       </div>
 
-      <div className="mt-3">
-        <p className={`text-lg font-bold ${gift.isPurchased ? "text-green-700" : "text-primary"}`}>
-          {formatPrice(gift.price)}
-        </p>
+      <div className="mt-3 space-y-1">
+        {gift.budget ? (
+          <>
+            <div>
+              <p className="text-xs text-muted-foreground">예산</p>
+              <p className={`text-lg font-bold ${gift.isPurchased ? "text-green-700" : "text-primary"}`}>
+                {formatPrice(gift.budget)}
+              </p>
+            </div>
+            {gift.estimatedPrice && (
+              <div>
+                <p className="text-xs text-muted-foreground">AI 예상 가격</p>
+                <p className={`text-sm font-medium ${gift.isPurchased ? "text-green-600" : "text-muted-foreground"}`}>
+                  {formatPrice(gift.estimatedPrice)}
+                </p>
+              </div>
+            )}
+          </>
+        ) : (
+          <p className={`text-lg font-bold ${gift.isPurchased ? "text-green-700" : "text-primary"}`}>
+            {formatPrice(gift.price)}
+          </p>
+        )}
       </div>
     </div>
   );

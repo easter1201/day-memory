@@ -28,9 +28,17 @@ public class GiftItemDto {
         @Size(max = 500, message = "설명은 500자 이하여야 합니다.")
         private String description;
 
-        @Schema(description = "선물 가격", example = "350000")
-        @Positive(message = "가격은 양수여야 합니다.")
+        @Schema(description = "선물 가격 (실제 가격 또는 예산)", example = "350000")
+        @Min(value = 0, message = "가격은 0 이상이어야 합니다.")
         private Integer price;
+
+        @Schema(description = "AI 예상 가격", example = "320000")
+        @Min(value = 0, message = "예상 가격은 0 이상이어야 합니다.")
+        private Integer estimatedPrice;
+
+        @Schema(description = "예산", example = "500000")
+        @Min(value = 0, message = "예산은 0 이상이어야 합니다.")
+        private Integer budget;
 
         @Schema(description = "구매 URL", example = "https://www.apple.com/kr/airpods-pro")
         private String url;
@@ -63,6 +71,12 @@ public class GiftItemDto {
         @Schema(description = "선물 가격", example = "350000")
         private Integer price;
 
+        @Schema(description = "AI 예상 가격", example = "320000")
+        private Integer estimatedPrice;
+
+        @Schema(description = "예산", example = "500000")
+        private Integer budget;
+
         @Schema(description = "구매 URL", example = "https://www.apple.com/kr/airpods-pro")
         private String url;
 
@@ -89,6 +103,8 @@ public class GiftItemDto {
                     .name(giftItem.getName())
                     .description(giftItem.getDescription())
                     .price(giftItem.getPrice())
+                    .estimatedPrice(giftItem.getEstimatedPrice())
+                    .budget(giftItem.getBudget())
                     .url(giftItem.getUrl())
                     .imageUrl(giftItem.getImageUrl())
                     .category(giftItem.getCategory())

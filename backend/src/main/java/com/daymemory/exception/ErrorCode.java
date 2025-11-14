@@ -40,6 +40,7 @@ public enum ErrorCode {
     // AI
     AI_SERVICE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "AI 서비스를 사용할 수 없습니다."),
     AI_REQUEST_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AI 추천 요청에 실패했습니다."),
+    AI_RECOMMENDATION_NOT_FOUND(HttpStatus.NOT_FOUND, "AI 추천 내역을 찾을 수 없습니다."),
 
     // Shopping API
     EXTERNAL_API_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "외부 API 호출에 실패했습니다."),

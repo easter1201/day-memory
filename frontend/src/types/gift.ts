@@ -4,6 +4,7 @@ export interface Gift {
   category: string;
   price: number;
   estimatedPrice?: number;
+  budget?: number;
   url?: string;
   description?: string;
   isPurchased: boolean;
@@ -34,6 +35,7 @@ export interface CreateGiftRequest {
   category: string;
   price: number;
   estimatedPrice?: number;
+  budget?: number;
   url?: string;
   description?: string;
   eventId?: number;

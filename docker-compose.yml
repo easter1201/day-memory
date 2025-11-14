@@ -1,8 +1,6 @@
 # Base Docker Compose configuration
 # Use docker-compose.dev.yml or docker-compose.prod.yml for specific environments
 
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -49,6 +47,8 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       KAKAO_CLIENT_ID: ${KAKAO_CLIENT_ID}
       KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET}
+      NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
+      NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
     ports:
       - "${SERVER_PORT:-8080}:8080"
     volumes:

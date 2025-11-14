@@ -43,6 +43,9 @@ public class AIRecommendationDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RecommendResponse {
+        @Schema(description = "추천 ID")
+        private Long id;
+
         @Schema(description = "추천 선물 목록")
         private List<GiftRecommendation> recommendations;
 
@@ -54,6 +57,24 @@ public class AIRecommendationDto {
 
         @Schema(description = "이벤트까지 남은 일수", example = "30")
         private int daysUntilEvent;
+
+        @Schema(description = "받는 사람 이름", example = "엄마")
+        private String recipientName;
+
+        @Schema(description = "예산", example = "100000")
+        private Integer budget;
+
+        @Schema(description = "추천 상태", example = "COMPLETED")
+        private String status;
+
+        @Schema(description = "생성 일시", example = "2024-01-01T12:00:00")
+        private String createdAt;
+
+        @Schema(description = "AI 추천 선물 목록 (recommendations와 동일)")
+        private List<GiftRecommendation> aiRecommendations;
+
+        @Schema(description = "사용자가 저장한 선물 목록")
+        private List<GiftRecommendation> userSavedGifts;
     }
 
     @Schema(description = "AI 추천 선물 정보")

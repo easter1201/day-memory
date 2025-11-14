@@ -6,7 +6,6 @@ import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import {
   useGetRecommendationByIdQuery,
-  useSaveRecommendedGiftMutation,
 } from "../store/services/recommendationsApi";
 import { useCreateGiftMutation } from "../store/services/giftsApi";
 import { GIFT_CATEGORY_COLORS } from "../constants";
@@ -21,48 +20,40 @@ export const RecommendationResultPage = () => {
   // state로 전달된 추천 결과 확인
   const stateData = location.state as { recommendation?: any; request?: any } | null;
 
-  const { data: recommendation, isLoading, error } = useGetRecommendationByIdQuery(Number(id), {
-    skip: !!stateData?.recommendation || !id || isNaN(Number(id))
-  });
-  const [saveGift, { isLoading: isSaving }] = useSaveRecommendedGiftMutation();
+  const { data: recommendation, isLoading, error, refetch } = useGetRecommendationByIdQuery(Number(id));
   const [createGift, { isLoading: isCreatingGift }] = useCreateGiftMutation();
   const [savedGiftIds, setSavedGiftIds] = useState<Set<number>>(new Set());
 
-  // state 데이터 또는 API 데이터 사용
-  const displayData = stateData?.recommendation || recommendation;
-
-  const handleSaveGift = async (giftId: number) => {
-    try {
-      await saveGift({
-        recommendationId: Number(id),
-        recommendedGiftId: giftId,
-      }).unwrap();
-      Toast.success("선물이 내 리스트에 저장되었습니다");
-    } catch (error) {
-      console.error("Failed to save gift:", error);
-      Toast.error("선물 저장에 실패했습니다");
-    }
-  };
+  // API 데이터를 우선 사용 (최신 상태 반영)
+  const displayData = recommendation || stateData?.recommendation;
 
   const handleSaveToGiftList = async (recommendation: any, index: number) => {
     try {
-      // Get the event ID from the state data if available
+      // Get the event ID from state or API data
       const eventId = stateData?.request?.eventId;
 
-      // Get the budget from request if available
-      const budget = stateData?.request?.budget;
+      // Get budget from API response (displayData.budget) or state data
+      // displayData.budget comes from the saved recommendation in the database
+      const budget = displayData?.budget || stateData?.request?.budget;
 
       await createGift({
         name: recommendation.name,
         category: recommendation.category,
-        price: budget || recommendation.estimatedPrice, // Use budget if available, otherwise estimatedPrice
+        price: recommendation.estimatedPrice, // Keep estimatedPrice as price for backward compatibility
         estimatedPrice: recommendation.estimatedPrice,
+        budget: budget || undefined, // Use budget from API or state
         url: recommendation.purchaseLink || undefined,
         description: recommendation.reason || undefined,
         eventId: eventId || undefined,
       }).unwrap();
 
       setSavedGiftIds(prev => new Set(prev).add(index));
+
+      // 데이터를 다시 불러와서 isUserSaved 상태를 업데이트
+      if (id && !isNaN(Number(id))) {
+        await refetch();
+      }
+
       Toast.success("선물이 선물 탭에 저장되었습니다");
     } catch (error) {
       console.error("Failed to save gift to gift list:", error);
@@ -165,31 +156,6 @@ export const RecommendationResultPage = () => {
           </div>
         </div>
 
-        {/* User Saved Gifts Section */}
-        {displayData.userSavedGifts && displayData.userSavedGifts.length > 0 && (
-          <div className="rounded-lg border bg-card p-6 shadow-sm">
-            <h2 className="mb-4 text-xl font-semibold">
-              내가 저장한 선물 ({displayData.userSavedGifts.length}개)
-            </h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {displayData.userSavedGifts.map((gift: any) => (
-                <div key={gift.id} className="rounded-lg border p-4">
-                  <div className="mb-2 flex items-start justify-between">
-                    <h3 className="font-medium">{gift.name}</h3>
-                    {gift.isPurchased && (
-                      <Badge variant="default" className="text-xs">
-                        구매완료
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground">{gift.category}</p>
-                  <p className="mt-2 font-semibold text-primary">{formatPrice(gift.price)}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* AI Recommendations Section */}
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <h2 className="mb-4 text-xl font-semibold">
@@ -258,15 +224,26 @@ export const RecommendationResultPage = () => {
                     </a>
                   )}
 
-                  <Button
-                    variant={savedGiftIds.has(index) ? "outline" : "default"}
-                    size="sm"
-                    onClick={() => handleSaveToGiftList(gift, index)}
-                    disabled={isCreatingGift || savedGiftIds.has(index)}
-                    className="mt-2 w-full"
-                  >
-                    {savedGiftIds.has(index) ? "✓ 저장됨" : "선물 탭에 저장하기"}
-                  </Button>
+                  {gift.isUserSaved || savedGiftIds.has(index) ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled
+                      className="mt-2 w-full"
+                    >
+                      ✓ 저장됨
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="default"
+                      size="sm"
+                      onClick={() => handleSaveToGiftList(gift, index)}
+                      disabled={isCreatingGift}
+                      className="mt-2 w-full"
+                    >
+                      선물 탭에 저장하기
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>

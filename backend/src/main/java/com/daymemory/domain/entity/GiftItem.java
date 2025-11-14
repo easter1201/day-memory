@@ -36,6 +36,9 @@ public class GiftItem extends BaseEntity {
     private Integer estimatedPrice;
 
     @Column
+    private Integer budget;
+
+    @Column
     private String url;
 
     @Column(name = "image_url")

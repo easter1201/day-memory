@@ -25,18 +25,34 @@ public class AIRecommendationController {
     private final AIRecommendationService aiRecommendationService;
 
     /**
-     * AI 추천 이력 조회 (임시 - 빈 목록 반환)
+     * AI 추천 이력 조회
      * GET /api/ai/recommendations
      */
-    @Operation(summary = "AI 추천 이력 조회", description = "AI 추천 이력을 조회합니다. 현재는 실시간 추천만 지원하여 빈 목록을 반환합니다.")
+    @Operation(summary = "AI 추천 이력 조회", description = "저장된 AI 추천 이력을 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = AIRecommendationDto.RecommendResponse.class))))
     })
     @GetMapping
     public ResponseEntity<List<AIRecommendationDto.RecommendResponse>> getRecommendations() {
-        // 현재는 추천 이력 저장 기능이 없으므로 빈 목록 반환
-        return ResponseEntity.ok(new ArrayList<>());
+        List<AIRecommendationDto.RecommendResponse> recommendations = aiRecommendationService.getRecommendations();
+        return ResponseEntity.ok(recommendations);
+    }
+
+    /**
+     * AI 추천 상세 조회
+     * GET /api/ai/recommendations/{id}
+     */
+    @Operation(summary = "AI 추천 상세 조회", description = "특정 추천 내역의 상세 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(schema = @Schema(implementation = AIRecommendationDto.RecommendResponse.class))),
+            @ApiResponse(responseCode = "404", description = "추천 내역을 찾을 수 없음")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<AIRecommendationDto.RecommendResponse> getRecommendationById(@PathVariable Long id) {
+        AIRecommendationDto.RecommendResponse recommendation = aiRecommendationService.getRecommendationById(id);
+        return ResponseEntity.ok(recommendation);
     }
 
     /**

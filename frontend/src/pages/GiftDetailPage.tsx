@@ -141,9 +141,27 @@ export const GiftDetailPage = () => {
 
             <div className="mt-6 flex items-center justify-between border-t pt-4">
               <div>
-                <p className="text-3xl font-bold text-primary">
-                  {formatPrice(gift.price)}
-                </p>
+                {gift.budget && (
+                  <div className="mb-2">
+                    <p className="text-sm text-muted-foreground">예산</p>
+                    <p className="text-2xl font-bold text-primary">
+                      {formatPrice(gift.budget)}
+                    </p>
+                  </div>
+                )}
+                {gift.estimatedPrice && (
+                  <div className="mb-2">
+                    <p className="text-sm text-muted-foreground">AI 예상 가격</p>
+                    <p className="text-lg font-semibold text-muted-foreground">
+                      {formatPrice(gift.estimatedPrice)}
+                    </p>
+                  </div>
+                )}
+                {!gift.budget && !gift.estimatedPrice && gift.price && (
+                  <p className="text-3xl font-bold text-primary">
+                    {formatPrice(gift.price)}
+                  </p>
+                )}
               </div>
               <div>
                 <Checkbox
@@ -228,7 +246,7 @@ export const GiftDetailPage = () => {
         {/* Product Recommendations Section */}
         <ProductRecommendations
           giftName={gift.name}
-          giftPrice={gift.estimatedPrice || gift.price}
+          giftPrice={gift.budget || gift.price || 0}
         />
       </div>
     </PageLayout>

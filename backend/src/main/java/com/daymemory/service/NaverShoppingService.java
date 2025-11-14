@@ -113,9 +113,10 @@ public class NaverShoppingService {
      */
     private String callNaverApi(String apiUrl) throws Exception {
         // 디버그: Client ID와 Secret이 제대로 로딩되었는지 확인
-        log.debug("Naver API Request - URL: {}", apiUrl);
-        log.debug("Client ID loaded: {}", clientId != null && !clientId.isEmpty() ? "YES (length: " + clientId.length() + ")" : "NO");
-        log.debug("Client Secret loaded: {}", clientSecret != null && !clientSecret.isEmpty() ? "YES (length: " + clientSecret.length() + ")" : "NO");
+        log.info("=== Naver API Request ===");
+        log.info("URL: {}", apiUrl);
+        log.info("Client ID: {}", clientId != null ? (clientId.isEmpty() ? "EMPTY" : "Loaded (length: " + clientId.length() + ")") : "NULL");
+        log.info("Client Secret: {}", clientSecret != null ? (clientSecret.isEmpty() ? "EMPTY" : "Loaded (length: " + clientSecret.length() + ")") : "NULL");
 
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -126,11 +127,15 @@ public class NaverShoppingService {
             connection.setRequestProperty("X-Naver-Client-Secret", clientSecret);
 
             int responseCode = connection.getResponseCode();
+            log.info("Response Code: {}", responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                return readResponse(connection);
+                String response = readResponse(connection);
+                log.info("Success! Response length: {} characters", response.length());
+                return response;
             } else {
-                log.error("Naver API error. Response code: {}", responseCode);
+                log.error("=== Naver API ERROR ===");
+                log.error("Response code: {}", responseCode);
                 String errorResponse = readErrorResponse(connection);
                 log.error("Error response: {}", errorResponse);
                 throw new CustomException(ErrorCode.EXTERNAL_API_ERROR);

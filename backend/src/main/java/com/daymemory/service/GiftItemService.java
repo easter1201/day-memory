@@ -3,9 +3,11 @@ package com.daymemory.service;
 import com.daymemory.domain.dto.GiftItemDto;
 import com.daymemory.domain.entity.Event;
 import com.daymemory.domain.entity.GiftItem;
+import com.daymemory.domain.entity.RecommendedGiftItem;
 import com.daymemory.domain.entity.User;
 import com.daymemory.domain.repository.EventRepository;
 import com.daymemory.domain.repository.GiftItemRepository;
+import com.daymemory.domain.repository.RecommendedGiftItemRepository;
 import com.daymemory.domain.repository.UserRepository;
 import com.daymemory.exception.CustomException;
 import com.daymemory.exception.ErrorCode;
@@ -26,6 +28,7 @@ public class GiftItemService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final FileStorageService fileStorageService;
+    private final RecommendedGiftItemRepository recommendedGiftItemRepository;
 
     @Transactional
     public GiftItemDto.Response createGiftItem(Long userId, GiftItemDto.Request request) {
@@ -44,6 +47,8 @@ public class GiftItemService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .price(request.getPrice())
+                .estimatedPrice(request.getEstimatedPrice())
+                .budget(request.getBudget())
                 .url(request.getUrl())
                 .category(request.getCategory() != null ? request.getCategory() : GiftItem.GiftCategory.OTHER)
                 .build();
@@ -106,6 +111,18 @@ public class GiftItemService {
     public void deleteGiftItem(Long giftId) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+
+        // 이 선물과 연결된 RecommendedGiftItem의 연결 해제
+        List<RecommendedGiftItem> linkedRecommendations =
+            recommendedGiftItemRepository.findAll().stream()
+                .filter(item -> item.getSavedGift() != null && item.getSavedGift().getId().equals(giftId))
+                .collect(java.util.stream.Collectors.toList());
+
+        for (RecommendedGiftItem item : linkedRecommendations) {
+            item.setSavedGift(null);
+            recommendedGiftItemRepository.save(item);
+        }
+
         giftItemRepository.delete(giftItem);
     }
 

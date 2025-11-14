@@ -26,6 +26,13 @@ export const EventInfoSection = ({ event }: EventInfoSectionProps) => {
           <span className="flex-1 text-sm">{getRelationshipLabel(event.relationship)}</span>
         </div>
 
+        {event.description && (
+          <div className="flex items-start">
+            <span className="w-24 text-sm font-medium text-muted-foreground">설명</span>
+            <span className="flex-1 whitespace-pre-wrap text-sm">{event.description}</span>
+          </div>
+        )}
+
         {event.memo && (
           <div className="flex items-start">
             <span className="w-24 text-sm font-medium text-muted-foreground">메모</span>
