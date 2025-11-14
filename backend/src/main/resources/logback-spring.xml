@@ -4,8 +4,7 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
     <!-- 프로퍼티 설정 -->
-    <springProperty scope="context" name="LOG_PATH" source="logging.file.path" defaultValue="logs"/>
-    <springProperty scope="context" name="LOG_FILE" source="logging.file.name" defaultValue="day-memory"/>
+    <springProperty scope="context" name="LOG_FILE" source="logging.file.name" defaultValue="logs/day-memory"/>
 
     <!-- 환경별 로그 레벨 설정 -->
     <springProfile name="dev">
@@ -28,14 +27,14 @@
 
     <!-- 파일 로그 출력 설정 (전체 로그) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${LOG_FILE}.log</file>
+        <file>${LOG_FILE}.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
         <!-- 일별 로그 파일 로테이션 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/${LOG_FILE}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 로그 파일 보관 기간: 30일 -->
             <maxHistory>30</maxHistory>
             <!-- 전체 로그 파일 최대 크기: 5GB -->
@@ -45,7 +44,7 @@
 
     <!-- ERROR 레벨 로그만 별도 파일로 저장 -->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${LOG_FILE}-error.log</file>
+        <file>${LOG_FILE}-error.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
             <charset>UTF-8</charset>
@@ -57,7 +56,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/${LOG_FILE}-error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_FILE}-error-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
@@ -65,7 +64,7 @@
 
     <!-- WARN 레벨 로그만 별도 파일로 저장 (4xx 에러 등) -->
     <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${LOG_FILE}-warn.log</file>
+        <file>${LOG_FILE}-warn.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
             <charset>UTF-8</charset>
@@ -77,7 +76,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/${LOG_FILE}-warn-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_FILE}-warn-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
