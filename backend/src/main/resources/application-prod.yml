@@ -35,8 +35,8 @@ logging:
     org.hibernate.SQL: WARN
     org.springframework: INFO
   file:
-    path: /var/log/day-memory
-    name: /var/log/day-memory/application
+    path: /app/logs
+    name: /app/logs/application
 
 # Actuator 설정 (운영 환경)
 management:
