@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 220개
+- **완료**: 231개
 - **진행중**: 0개
-- **대기**: 5개
-- **전체**: 225개
-- **진행률**: 97.8%
+- **대기**: 1개
+- **전체**: 232개
+- **진행률**: 99.6%
 
 ---
 
@@ -116,6 +116,12 @@
 - [x] 미구매 선물 목록 조회 API (GET /api/gifts?purchased=false)
 - [x] 카테고리별 선물 조회 API (GET /api/gifts?category={category})
 - [x] 선물 검색 기능 (GET /api/gifts/search?keyword={keyword})
+  - [x] PostgreSQL Full-Text Search 구현
+  - [x] pg_trgm 확장 설치 (트라이그램 검색)
+  - [x] GIN 인덱스 추가 (name, description, memo - 8개 인덱스)
+  - [x] SIMILARITY 함수 활용 (유사도 기반 검색)
+  - [x] 오타 허용 검색 (임계값 0.3 이상)
+  - [x] 검색 결과 유사도 순 정렬
 - [x] 선물 이미지 업로드 (로컬 파일 시스템, AWS S3 연동 준비)
 
 #### 엔티티 및 Repository
@@ -125,6 +131,8 @@
   - [x] user, event 관계 (ManyToOne)
 - [x] GiftItemRepository 구현
   - [x] N+1 문제 해결 (LEFT JOIN FETCH user, event)
+  - [x] searchByKeyword 쿼리 (ILIKE + SIMILARITY 정렬)
+  - [x] searchBySimilarity 쿼리 (유사도 0.3 이상, LIMIT 20)
 - [x] GiftCategory enum 정의
   - [x] FLOWER, JEWELRY, COSMETICS, FASHION, ELECTRONICS
   - [x] FOOD, EXPERIENCE, BOOK, HOBBY, OTHER
@@ -536,10 +544,15 @@
   - [ ] 데이터베이스 일일 백업
   - [ ] S3 백업 저장
   - [ ] 복구 절차 문서화
-- [ ] 성능 튜닝
-  - [ ] 쿼리 최적화
-  - [ ] 인덱스 추가
-  - [ ] 캐싱 전략 (Redis)
+- [x] 성능 튜닝
+  - [x] 쿼리 최적화
+    - [x] N+1 문제 해결 (4개 Repository - Event, GiftItem, EventReminder, ReminderLog)
+    - [x] Fetch Join 적용 (User, Event, Reminders 관계)
+  - [x] 인덱스 추가
+    - [x] 기본 인덱스 (13개 - user_id, event_id, is_active, event_date 등)
+    - [x] Full-Text Search 인덱스 (8개 GIN 인덱스 - pg_trgm)
+    - [x] 총 21개 데이터베이스 인덱스 생성
+  - [ ] 캐싱 전략 (Redis - 선택)
 
 ---
 
