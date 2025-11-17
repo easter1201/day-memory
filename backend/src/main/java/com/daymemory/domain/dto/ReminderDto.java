@@ -1,6 +1,7 @@
 package com.daymemory.domain.dto;
 
 import com.daymemory.domain.entity.ReminderLog;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class ReminderDto {
         private Integer daysBeforeEvent;
 
         @Schema(description = "발송 시각", example = "2025-11-11T10:30:00")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime sentAt;
 
         @Schema(description = "발송 상태 (SENT, FAILED)", example = "SENT")
