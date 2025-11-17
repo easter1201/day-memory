@@ -74,4 +74,11 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findTrackingEventsBetweenDates(
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
+
+    // 모든 반복 이벤트를 Reminders와 함께 조회 (N+1 방지)
+    @Query("SELECT DISTINCT e FROM Event e " +
+           "LEFT JOIN FETCH e.user " +
+           "LEFT JOIN FETCH e.reminders " +
+           "WHERE e.isRecurring = true AND e.isActive = true")
+    List<Event> findAllRecurringEventsWithReminders();
 }

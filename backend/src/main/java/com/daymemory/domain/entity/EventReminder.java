@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "event_reminders")
+@Table(name = "event_reminders", indexes = {
+    @Index(name = "idx_reminder_event_id", columnList = "event_id"),
+    @Index(name = "idx_reminder_days", columnList = "days_before_event, is_active"),
+    @Index(name = "idx_reminder_event_days", columnList = "event_id, days_before_event, is_active")
+})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

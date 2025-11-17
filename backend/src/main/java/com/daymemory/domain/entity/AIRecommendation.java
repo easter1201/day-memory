@@ -4,7 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "ai_recommendations")
+@Table(name = "ai_recommendations", indexes = {
+    @Index(name = "idx_ai_rec_user_id", columnList = "user_id"),
+    @Index(name = "idx_ai_rec_event_id", columnList = "event_id"),
+    @Index(name = "idx_ai_rec_user_created", columnList = "user_id, created_at"),
+    @Index(name = "idx_ai_rec_status", columnList = "status")
+})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
