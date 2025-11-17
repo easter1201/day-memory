@@ -1,7 +1,7 @@
 # Multi-stage build for Spring Boot application
 
 # Stage 1: Build stage
-FROM gradle:8.5-jdk17-alpine AS build
+FROM gradle:8.5-jdk17 AS build
 
 WORKDIR /app
 
@@ -20,12 +20,12 @@ COPY src ./src
 RUN ./gradlew bootJar --no-daemon
 
 # Stage 2: Runtime stage
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
 # Create non-root user for security
-RUN addgroup -S spring && adduser -S spring -G spring && \
+RUN groupadd -r spring && useradd -r -g spring spring && \
     mkdir -p /app/logs && \
     chown -R spring:spring /app/logs
 USER spring:spring
