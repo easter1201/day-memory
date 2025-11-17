@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface AIRecommendationRepository extends JpaRepository<AIRecommendation, Long> {
 
+    // User와 Event를 함께 조회 (N+1 방지)
     @Query("SELECT DISTINCT r FROM AIRecommendation r " +
            "LEFT JOIN FETCH r.user " +
            "LEFT JOIN FETCH r.event " +
@@ -19,6 +20,7 @@ public interface AIRecommendationRepository extends JpaRepository<AIRecommendati
            "ORDER BY r.createdAt DESC")
     List<AIRecommendation> findByUserIdOrderByCreatedAtDesc(@Param("userId") Long userId);
 
+    // ID로 조회 시 User와 Event를 함께 조회
     @Query("SELECT DISTINCT r FROM AIRecommendation r " +
            "LEFT JOIN FETCH r.user " +
            "LEFT JOIN FETCH r.event " +

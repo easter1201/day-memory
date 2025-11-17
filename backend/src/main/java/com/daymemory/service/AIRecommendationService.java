@@ -66,18 +66,22 @@ public class AIRecommendationService {
     }
 
     /**
-     * AI 추천 이력 조회
+     * AI 추천 이력 조회 (N+1 문제 방지)
      */
     public List<AIRecommendationDto.RecommendResponse> getRecommendations() {
         Long userId = SecurityUtils.getCurrentUserId();
         List<AIRecommendation> recommendations = aiRecommendationRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        // 사용자 선물을 한번만 조회 (N+1 방지)
+        List<GiftItem> userGifts = giftItemRepository.findByUserId(userId);
+
         return recommendations.stream()
-                .map(this::convertToResponse)
+                .map(recommendation -> convertToResponse(recommendation, userGifts))
                 .collect(java.util.stream.Collectors.toList());
     }
 
     /**
-     * AI 추천 상세 조회
+     * AI 추천 상세 조회 (N+1 문제 방지)
      */
     public AIRecommendationDto.RecommendResponse getRecommendationById(Long id) {
         AIRecommendation recommendation = aiRecommendationRepository.findByIdWithUserAndEvent(id)
@@ -89,19 +93,18 @@ public class AIRecommendationService {
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
-        return convertToResponse(recommendation);
+        // 사용자 선물을 한번만 조회 (N+1 방지)
+        List<GiftItem> userGifts = giftItemRepository.findByUserId(currentUserId);
+
+        return convertToResponse(recommendation, userGifts);
     }
 
     /**
-     * AI 추천을 응답 DTO로 변환
+     * AI 추천을 응답 DTO로 변환 (N+1 방지 - userGifts를 외부에서 주입)
      */
-    private AIRecommendationDto.RecommendResponse convertToResponse(AIRecommendation recommendation) {
-        // 추천된 선물 아이템 조회
+    private AIRecommendationDto.RecommendResponse convertToResponse(AIRecommendation recommendation, List<GiftItem> userGifts) {
+        // 추천된 선물 아이템 조회 (이미 fetch join으로 조회됨)
         List<RecommendedGiftItem> recommendedItems = recommendedGiftItemRepository.findByRecommendationId(recommendation.getId());
-
-        // 사용자의 저장된 선물 조회 (실시간 매칭을 위해)
-        Long userId = recommendation.getUser().getId();
-        List<GiftItem> userGifts = giftItemRepository.findByUserId(userId);
 
         // 이미 매칭된 GiftItem ID를 추적 (중복 매칭 방지)
         java.util.Set<Long> matchedGiftIds = new java.util.HashSet<>();
