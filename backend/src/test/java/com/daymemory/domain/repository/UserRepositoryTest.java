@@ -56,7 +56,7 @@ class UserRepositoryTest {
         assertThat(foundUser).isPresent();
         assertThat(foundUser.get().getId()).isEqualTo(savedUser.getId());
         assertThat(foundUser.get().getEmail()).isEqualTo("test@example.com");
-        assertThat(foundUser.get().getName()).isEqualTo("Test User");
+        assertThat(foundUser.get().getNickname()).isEqualTo("Test User");
         assertThat(foundUser.get().getEmailVerified()).isFalse();
     }
 
@@ -215,7 +215,7 @@ class UserRepositoryTest {
         // then
         assertThat(foundUser1).isPresent();
         assertThat(foundUser2).isPresent();
-        assertThat(foundUser1.get().getName()).isEqualTo("User 1");
-        assertThat(foundUser2.get().getName()).isEqualTo("User 2");
+        assertThat(foundUser1.get().getNickname()).isEqualTo("User 1");
+        assertThat(foundUser2.get().getNickname()).isEqualTo("User 2");
     }
 }

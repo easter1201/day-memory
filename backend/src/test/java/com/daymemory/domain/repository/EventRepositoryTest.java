@@ -96,7 +96,7 @@ class EventRepositoryTest {
 
         // N+1 문제 방지 확인 - User가 이미 fetch join 되어 있어야 함
         assertThat(activeEvents.get(0).getUser()).isNotNull();
-        assertThat(activeEvents.get(0).getUser().getName()).isEqualTo("Test User");
+        assertThat(activeEvents.get(0).getUser().getNickname()).isEqualTo("Test User");
     }
 
     @Test
@@ -266,7 +266,7 @@ class EventRepositoryTest {
         // N+1 문제 방지 확인 - User와 Reminders가 이미 fetch join 되어 있어야 함
         Event event = foundEvent.get();
         assertThat(event.getUser()).isNotNull();
-        assertThat(event.getUser().getName()).isEqualTo("Test User");
+        assertThat(event.getUser().getNickname()).isEqualTo("Test User");
 
         assertThat(event.getReminders()).hasSize(2);
         assertThat(event.getReminders().get(0).getDaysBeforeEvent()).isIn(7, 3);
@@ -443,6 +443,8 @@ class EventRepositoryTest {
         savedEvent.update(
                 "Updated Title",
                 "Updated Description",
+                "Updated Name",
+                "Updated Relationship",
                 LocalDate.now().plusDays(30),
                 Event.EventType.ANNIVERSARY_1YEAR,
                 false
@@ -452,6 +454,8 @@ class EventRepositoryTest {
         // then
         assertThat(updatedEvent.getTitle()).isEqualTo("Updated Title");
         assertThat(updatedEvent.getDescription()).isEqualTo("Updated Description");
+        assertThat(updatedEvent.getRecipientName()).isEqualTo("Updated Name");
+        assertThat(updatedEvent.getRelationship()).isEqualTo("Updated Relationship");
         assertThat(updatedEvent.getEventDate()).isEqualTo(LocalDate.now().plusDays(30));
         assertThat(updatedEvent.getEventType()).isEqualTo(Event.EventType.ANNIVERSARY_1YEAR);
         assertThat(updatedEvent.getIsRecurring()).isFalse();

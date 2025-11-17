@@ -77,7 +77,7 @@ class GiftItemServiceTest {
                 .id(1L)
                 .user(testUser)
                 .event(testEvent)
-                .nickname("향수")
+                .name("향수")
                 .description("고급 향수")
                 .price(100000)
                 .url("https://example.com/perfume")
@@ -88,7 +88,7 @@ class GiftItemServiceTest {
         // Given: 선물 생성 요청 DTO
         createRequest = GiftItemDto.Request.builder()
                 .eventId(1L)
-                .nickname("향수")
+                .name("향수")
                 .description("고급 향수")
                 .price(100000)
                 .url("https://example.com/perfume")
@@ -128,7 +128,7 @@ class GiftItemServiceTest {
 
         GiftItemDto.Request requestWithInvalidEvent = GiftItemDto.Request.builder()
                 .eventId(999L)
-                .nickname("선물")
+                .name("선물")
                 .build();
 
         // When & Then
@@ -146,7 +146,7 @@ class GiftItemServiceTest {
         // Given
         GiftItemDto.Request requestWithoutEvent = GiftItemDto.Request.builder()
                 .eventId(null)
-                .nickname("일반 선물")
+                .name("일반 선물")
                 .description("이벤트와 관련없는 선물")
                 .price(50000)
                 .category(GiftItem.GiftCategory.OTHER)
@@ -156,7 +156,7 @@ class GiftItemServiceTest {
                 .id(2L)
                 .user(testUser)
                 .event(null)
-                .nickname("일반 선물")
+                .name("일반 선물")
                 .description("이벤트와 관련없는 선물")
                 .price(50000)
                 .category(GiftItem.GiftCategory.OTHER)
@@ -252,7 +252,7 @@ class GiftItemServiceTest {
         testGiftItem = GiftItem.builder()
                 .id(1L)
                 .user(testUser)
-                .nickname("향수")
+                .name("향수")
                 .isPurchased(true)
                 .build();
 
@@ -389,7 +389,7 @@ class GiftItemServiceTest {
         testGiftItem = GiftItem.builder()
                 .id(1L)
                 .user(testUser)
-                .nickname("향수")
+                .name("향수")
                 .imageUrl(oldImageUrl)
                 .build();
 
@@ -419,7 +419,7 @@ class GiftItemServiceTest {
         testGiftItem = GiftItem.builder()
                 .id(1L)
                 .user(testUser)
-                .nickname("향수")
+                .name("향수")
                 .imageUrl(imageUrl)
                 .build();
 
@@ -440,7 +440,7 @@ class GiftItemServiceTest {
     void testUpdateGiftItem_Success() {
         // Given
         GiftItemDto.Request updateRequest = GiftItemDto.Request.builder()
-                .nickname("수정된 향수")
+                .name("수정된 향수")
                 .description("새로운 설명")
                 .price(150000)
                 .url("https://example.com/new-perfume")
@@ -464,7 +464,7 @@ class GiftItemServiceTest {
     void testUpdateGiftItem_NotFound() {
         // Given
         GiftItemDto.Request updateRequest = GiftItemDto.Request.builder()
-                .nickname("수정된 선물")
+                .name("수정된 선물")
                 .build();
 
         given(giftItemRepository.findById(999L)).willReturn(Optional.empty());

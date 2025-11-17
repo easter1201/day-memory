@@ -65,7 +65,7 @@ class GiftItemControllerTest {
         // Given: 선물 생성 요청 DTO
         createRequest = GiftItemDto.Request.builder()
                 .eventId(1L)
-                .nickname("Test Gift")
+                .name("Test Gift")
                 .description("Test Description")
                 .price(50000)
                 .url("https://example.com/gift")
@@ -76,7 +76,7 @@ class GiftItemControllerTest {
         giftResponse = GiftItemDto.Response.builder()
                 .id(1L)
                 .eventId(1L)
-                .nickname("Test Gift")
+                .name("Test Gift")
                 .description("Test Description")
                 .price(50000)
                 .url("https://example.com/gift")
@@ -118,7 +118,7 @@ class GiftItemControllerTest {
     void testCreateGiftItem_ValidationFailed_EmptyName() throws Exception {
         // Given
         GiftItemDto.Request invalidRequest = GiftItemDto.Request.builder()
-                .nickname("")  // 빈 이름
+                .name("")  // 빈 이름
                 .price(50000)
                 .build();
 
@@ -245,7 +245,7 @@ class GiftItemControllerTest {
     void testUpdateGiftItem_Success() throws Exception {
         // Given
         GiftItemDto.Request updateRequest = GiftItemDto.Request.builder()
-                .nickname("Updated Gift")
+                .name("Updated Gift")
                 .description("Updated Description")
                 .price(60000)
                 .url("https://example.com/updated")
@@ -254,7 +254,7 @@ class GiftItemControllerTest {
 
         GiftItemDto.Response updatedResponse = GiftItemDto.Response.builder()
                 .id(1L)
-                .nickname("Updated Gift")
+                .name("Updated Gift")
                 .description("Updated Description")
                 .price(60000)
                 .url("https://example.com/updated")
@@ -307,7 +307,7 @@ class GiftItemControllerTest {
         // Given
         GiftItemDto.Response purchasedResponse = GiftItemDto.Response.builder()
                 .id(1L)
-                .nickname("Test Gift")
+                .name("Test Gift")
                 .isPurchased(true)
                 .build();
 
@@ -413,7 +413,7 @@ class GiftItemControllerTest {
 
         GiftItemDto.Response responseWithImage = GiftItemDto.Response.builder()
                 .id(1L)
-                .nickname("Test Gift")
+                .name("Test Gift")
                 .imageUrl("https://example.com/images/test-image.jpg")
                 .isPurchased(false)
                 .build();
@@ -524,7 +524,7 @@ class GiftItemControllerTest {
     void testCreateGiftItem_ValidationFailed_NegativePrice() throws Exception {
         // Given
         GiftItemDto.Request invalidRequest = GiftItemDto.Request.builder()
-                .nickname("Test Gift")
+                .name("Test Gift")
                 .price(-1000)  // 음수 가격
                 .build();
 
