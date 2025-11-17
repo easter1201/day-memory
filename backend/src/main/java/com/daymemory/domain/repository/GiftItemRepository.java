@@ -75,14 +75,46 @@ public interface GiftItemRepository extends JpaRepository<GiftItem, Long> {
             @Param("isPurchased") Boolean isPurchased,
             @Param("category") GiftItem.GiftCategory category);
 
-    // 키워드 검색 (N+1 방지) - 선물 이름, 설명에서 검색
-    @Query("SELECT DISTINCT g FROM GiftItem g " +
-           "LEFT JOIN FETCH g.user " +
-           "LEFT JOIN FETCH g.event " +
-           "WHERE g.user.id = :userId " +
-           "AND (LOWER(g.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-           "OR LOWER(g.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    // 키워드 검색 (최적화 - pg_trgm 인덱스 활용)
+    // N+1 방지: User와 Event를 fetch join
+    // 검색 대상: 이름, 설명, 메모
+    // 정렬: 유사도 높은 순
+    @Query(value = "SELECT DISTINCT g.* FROM gift_items g " +
+           "LEFT JOIN users u ON g.user_id = u.id " +
+           "LEFT JOIN events e ON g.event_id = e.id " +
+           "WHERE g.user_id = :userId " +
+           "AND (g.name ILIKE '%' || :keyword || '%' " +
+           "     OR g.description ILIKE '%' || :keyword || '%' " +
+           "     OR g.memo ILIKE '%' || :keyword || '%') " +
+           "ORDER BY " +
+           "  GREATEST(" +
+           "    SIMILARITY(g.name, :keyword), " +
+           "    COALESCE(SIMILARITY(g.description, :keyword), 0), " +
+           "    COALESCE(SIMILARITY(g.memo, :keyword), 0)" +
+           "  ) DESC",
+           nativeQuery = true)
     List<GiftItem> searchByKeyword(
+            @Param("userId") Long userId,
+            @Param("keyword") String keyword);
+
+    // 유사도 기반 검색 (임계값 적용 - 관련성 높은 것만)
+    // 유사도 0.3 이상인 결과만 반환 (오타 허용)
+    @Query(value = "SELECT DISTINCT g.* FROM gift_items g " +
+           "WHERE g.user_id = :userId " +
+           "AND (" +
+           "  SIMILARITY(g.name, :keyword) > 0.3 " +
+           "  OR SIMILARITY(COALESCE(g.description, ''), :keyword) > 0.3 " +
+           "  OR SIMILARITY(COALESCE(g.memo, ''), :keyword) > 0.3" +
+           ") " +
+           "ORDER BY " +
+           "  GREATEST(" +
+           "    SIMILARITY(g.name, :keyword), " +
+           "    SIMILARITY(COALESCE(g.description, ''), :keyword), " +
+           "    SIMILARITY(COALESCE(g.memo, ''), :keyword)" +
+           "  ) DESC " +
+           "LIMIT 20",
+           nativeQuery = true)
+    List<GiftItem> searchBySimilarity(
             @Param("userId") Long userId,
             @Param("keyword") String keyword);
 }
