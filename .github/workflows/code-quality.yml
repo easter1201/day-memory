@@ -61,6 +61,21 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: daymemory_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -80,3 +95,12 @@ jobs:
         run: ./gradlew build --scan --no-daemon
         env:
           GRADLE_OPTS: "-Dorg.gradle.caching=true"
+          DB_URL: jdbc:postgresql://localhost:5432/daymemory_test
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
+          JWT_SECRET: test-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+          MAIL_USERNAME: test@example.com
+          MAIL_PASSWORD: test-password

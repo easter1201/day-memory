@@ -47,6 +47,11 @@ jobs:
           DB_USERNAME: postgres
           DB_PASSWORD: postgres
           JWT_SECRET: test-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+          MAIL_USERNAME: test@example.com
+          MAIL_PASSWORD: test-password
         run: ./gradlew test --no-daemon
 
       - name: Publish test results
