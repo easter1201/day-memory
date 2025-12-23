@@ -1,5 +1,6 @@
 package com.daymemory.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -7,14 +8,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
+    @Value("${cors.allowed-origins:http://localhost:3000,http://localhost:5173,http://localhost:4173}")
+    private String allowedOriginsStr;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        String[] allowedOrigins = allowedOriginsStr.split(",");
+        
         registry.addMapping("/api/**")
-                .allowedOrigins(
-                    "http://localhost:3000",
-                    "http://localhost:5173",  // Vite 개발 서버
-                    "http://localhost:4173"   // Vite 프리뷰 서버
-                )
+                .allowedOrigins(allowedOrigins)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)

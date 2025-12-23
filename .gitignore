@@ -28,6 +28,19 @@ frontend/yarn-error.log*
 
 # IDE
 .idea/
+
+# Windows system files
+nul
+CON
+PRN
+AUX
+LPT*
+*.tmp
+
+# Temporary files
+CUsersadday-memorydocker-logs.txt
+temp_methods.txt
+*.log
 .vscode/
 *.swp
 *.swo

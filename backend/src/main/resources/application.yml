@@ -50,6 +50,9 @@ spring:
 file:
   upload-dir: uploads/gifts
 
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://localhost:4173}
+
 jwt:
   secret: ${JWT_SECRET:day-memory-jwt-secret-key-must-be-at-least-256-bits-long-for-HS256-algorithm}
   access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:3600000}
