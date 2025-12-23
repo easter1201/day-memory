@@ -112,11 +112,8 @@ public class GiftItemService {
         GiftItem giftItem = giftItemRepository.findById(giftId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
 
-        // 이 선물과 연결된 RecommendedGiftItem의 연결 해제
-        List<RecommendedGiftItem> linkedRecommendations =
-            recommendedGiftItemRepository.findAll().stream()
-                .filter(item -> item.getSavedGift() != null && item.getSavedGift().getId().equals(giftId))
-                .collect(java.util.stream.Collectors.toList());
+        // 이 선물과 연결된 RecommendedGiftItem의 연결 해제 (최적화: findAll() 대신 findBySavedGiftId() 사용)
+        List<RecommendedGiftItem> linkedRecommendations = recommendedGiftItemRepository.findBySavedGiftId(giftId);
 
         for (RecommendedGiftItem item : linkedRecommendations) {
             item.setSavedGift(null);

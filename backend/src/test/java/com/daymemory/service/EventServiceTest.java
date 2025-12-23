@@ -68,6 +68,8 @@ class EventServiceTest {
         createRequest = EventDto.Request.builder()
                 .title("생일")
                 .description("친구 생일")
+                .recipientName("홍길동")
+                .relationship("친구")
                 .eventDate(LocalDate.now().plusDays(30))
                 .eventType(Event.EventType.BIRTHDAY)
                 .isRecurring(false)
@@ -150,6 +152,8 @@ class EventServiceTest {
         EventDto.Request updateRequest = EventDto.Request.builder()
                 .title("수정된 생일")
                 .description("수정된 설명")
+                .recipientName("김철수")
+                .relationship("가족")
                 .eventDate(LocalDate.now().plusDays(40))
                 .eventType(Event.EventType.BIRTHDAY)
                 .isRecurring(true)
@@ -178,6 +182,8 @@ class EventServiceTest {
 
         EventDto.Request updateRequest = EventDto.Request.builder()
                 .title("수정된 생일")
+                .recipientName("홍길동")
+                .relationship("친구")
                 .build();
 
         // When & Then
@@ -355,6 +361,8 @@ class EventServiceTest {
         EventDto.Request requestWithoutReminders = EventDto.Request.builder()
                 .title("생일")
                 .description("친구 생일")
+                .recipientName("이영희")
+                .relationship("친구")
                 .eventDate(LocalDate.now().plusDays(30))
                 .eventType(Event.EventType.BIRTHDAY)
                 .isRecurring(false)

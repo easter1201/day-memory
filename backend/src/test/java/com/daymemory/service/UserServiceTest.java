@@ -77,7 +77,7 @@ class UserServiceTest {
                 .id(1L)
                 .email(signupRequest.getEmail())
                 .password("encodedPassword")
-                .name(signupRequest.getName())
+                .nickname(signupRequest.getNickname())
                 .emailVerified(false)
                 .build();
 
@@ -89,7 +89,7 @@ class UserServiceTest {
         // Then
         assertThat(response).isNotNull();
         assertThat(response.getEmail()).isEqualTo(signupRequest.getEmail());
-        assertThat(response.getName()).isEqualTo(signupRequest.getName());
+        assertThat(response.getNickname()).isEqualTo(signupRequest.getNickname());
 
         // Verify
         then(userRepository).should(times(1)).existsByEmail(signupRequest.getEmail());
@@ -257,7 +257,7 @@ class UserServiceTest {
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(1L);
         assertThat(response.getEmail()).isEqualTo(testUser.getEmail());
-        assertThat(response.getName()).isEqualTo(testUser.getName());
+        assertThat(response.getNickname()).isEqualTo(testUser.getNickname());
 
         // Verify
         then(userRepository).should(times(1)).findById(1L);

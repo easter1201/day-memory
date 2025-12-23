@@ -66,7 +66,7 @@ class GiftItemRepositoryTest {
         testGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Test Gift")
+                .name("Test Gift")
                 .description("Test Description")
                 .price(50000)
                 .url("https://example.com/gift")
@@ -92,7 +92,7 @@ class GiftItemRepositoryTest {
         GiftItem anotherGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Another Gift")
+                .name("Another Gift")
                 .category(GiftItem.GiftCategory.JEWELRY)
                 .isPurchased(false)
                 .build();
@@ -111,7 +111,7 @@ class GiftItemRepositoryTest {
 
         // N+1 문제 방지 확인 - User와 Event가 이미 fetch join 되어 있어야 함
         assertThat(gifts.get(0).getUser()).isNotNull();
-        assertThat(gifts.get(0).getUser().getName()).isEqualTo("Test User");
+        assertThat(gifts.get(0).getUser().getNickname()).isEqualTo("Test User");
         assertThat(gifts.get(0).getEvent()).isNotNull();
         assertThat(gifts.get(0).getEvent().getTitle()).isEqualTo("Birthday");
     }
@@ -134,7 +134,7 @@ class GiftItemRepositoryTest {
         GiftItem giftForAnotherEvent = GiftItem.builder()
                 .user(testUser)
                 .event(anotherEvent)
-                .nickname("Anniversary Gift")
+                .name("Anniversary Gift")
                 .category(GiftItem.GiftCategory.JEWELRY)
                 .isPurchased(false)
                 .build();
@@ -181,7 +181,7 @@ class GiftItemRepositoryTest {
         GiftItem purchasedGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Purchased Gift")
+                .name("Purchased Gift")
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .isPurchased(true)
                 .build();
@@ -218,7 +218,7 @@ class GiftItemRepositoryTest {
         // N+1 문제 방지 확인 - User와 Event가 이미 fetch join 되어 있어야 함
         GiftItem gift = foundGift.get();
         assertThat(gift.getUser()).isNotNull();
-        assertThat(gift.getUser().getName()).isEqualTo("Test User");
+        assertThat(gift.getUser().getNickname()).isEqualTo("Test User");
         assertThat(gift.getEvent()).isNotNull();
         assertThat(gift.getEvent().getTitle()).isEqualTo("Birthday");
     }
@@ -232,7 +232,7 @@ class GiftItemRepositoryTest {
         GiftItem jewelryGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Jewelry Gift")
+                .name("Jewelry Gift")
                 .category(GiftItem.GiftCategory.JEWELRY)
                 .isPurchased(false)
                 .build();
@@ -241,7 +241,7 @@ class GiftItemRepositoryTest {
         GiftItem cosmeticsGift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Cosmetics Gift")
+                .name("Cosmetics Gift")
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .isPurchased(false)
                 .build();
@@ -269,7 +269,7 @@ class GiftItemRepositoryTest {
         GiftItem flowerBouquet = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Beautiful Flower Bouquet")
+                .name("Beautiful Flower Bouquet")
                 .description("Roses and tulips")
                 .category(GiftItem.GiftCategory.FLOWER)
                 .isPurchased(false)
@@ -294,7 +294,7 @@ class GiftItemRepositoryTest {
         GiftItem gift = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Perfume")
+                .name("Perfume")
                 .description("Elegant fragrance with floral notes")
                 .category(GiftItem.GiftCategory.COSMETICS)
                 .isPurchased(false)
@@ -399,7 +399,7 @@ class GiftItemRepositoryTest {
         // given
         GiftItem giftWithoutEvent = GiftItem.builder()
                 .user(testUser)
-                .nickname("Wishlist Item")
+                .name("Wishlist Item")
                 .description("General wishlist item")
                 .category(GiftItem.GiftCategory.OTHER)
                 .isPurchased(false)
@@ -421,7 +421,7 @@ class GiftItemRepositoryTest {
         GiftItem giftWithoutPrice = GiftItem.builder()
                 .user(testUser)
                 .event(testEvent)
-                .nickname("Priceless Gift")
+                .name("Priceless Gift")
                 .description("Special gift with no price")
                 .category(GiftItem.GiftCategory.OTHER)
                 .isPurchased(false)

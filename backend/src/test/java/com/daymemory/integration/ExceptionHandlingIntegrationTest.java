@@ -82,6 +82,8 @@ class ExceptionHandlingIntegrationTest {
         assertThatThrownBy(() -> {
             EventDto.Request request = EventDto.Request.builder()
                     .title("테스트 이벤트")
+                    .recipientName("Test Person")
+                    .relationship("Friend")
                     .eventDate(LocalDate.now().plusDays(30))
                     .eventType(Event.EventType.BIRTHDAY)
                     .build();

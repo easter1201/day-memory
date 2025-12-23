@@ -4,7 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "gift_items")
+@Table(name = "gift_items", indexes = {
+    @Index(name = "idx_gift_user_id", columnList = "user_id"),
+    @Index(name = "idx_gift_event_id", columnList = "event_id"),
+    @Index(name = "idx_gift_user_purchased", columnList = "user_id, is_purchased"),
+    @Index(name = "idx_gift_category", columnList = "category"),
+    @Index(name = "idx_gift_user_category", columnList = "user_id, category")
+})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

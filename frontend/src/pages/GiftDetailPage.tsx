@@ -271,13 +271,11 @@ const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; gif
 
   // 에러가 있으면 표시하지 않음
   if (error) {
-    console.error(`[Shopping API Error] 선물: "${giftName}", 예산: ${giftPrice}`, error);
     return null;
   }
 
   // 검색 결과가 없으면 메시지 표시
   if (!products || products.length === 0) {
-    console.log(`[Shopping API] 검색 결과 없음 - 선물: "${giftName}", 예산: ${giftPrice}`);
     return (
       <div className="rounded-lg border bg-card p-6 shadow-sm">
         <h2 className="mb-4 text-xl font-semibold">추천 상품</h2>
@@ -293,8 +291,6 @@ const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; gif
     );
   }
 
-  console.log(`[Shopping API] 검색 성공 - 선물: "${giftName}", 결과: ${products.length}개`);
-
   // 예산 이하의 상품만 필터링
   const affordableProducts = products
     .filter(product => {
@@ -302,8 +298,6 @@ const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; gif
       return price <= giftPrice;
     })
     .slice(0, 5); // 최대 5개까지만 표시
-
-  console.log(`[Shopping API] 필터링 후 - 선물: "${giftName}", 예산 내 상품: ${affordableProducts.length}개`);
 
   const formatPrice = (price: string | number) => {
     const numPrice = typeof price === 'string' ? parseInt(price, 10) : price;
@@ -315,7 +309,6 @@ const ProductRecommendations = ({ giftName, giftPrice }: { giftName: string; gif
 
   // 예산 내 상품이 없으면 예산 초과 메시지 표시
   if (affordableProducts.length === 0) {
-    console.log(`[Shopping API] 예산 초과 - 선물: "${giftName}", 예산: ${giftPrice}, 최저가: ${products[0]?.lprice}`);
     return (
       <div className="rounded-lg border bg-card p-6 shadow-sm">
         <h2 className="mb-4 text-xl font-semibold">추천 상품</h2>

@@ -8,7 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "events")
+@Table(name = "events", indexes = {
+    @Index(name = "idx_event_user_id", columnList = "user_id"),
+    @Index(name = "idx_event_user_active", columnList = "user_id, is_active"),
+    @Index(name = "idx_event_date", columnList = "event_date"),
+    @Index(name = "idx_event_user_date", columnList = "user_id, event_date"),
+    @Index(name = "idx_event_type", columnList = "event_type"),
+    @Index(name = "idx_event_recurring", columnList = "is_recurring, is_active"),
+    @Index(name = "idx_event_tracking", columnList = "is_tracking, is_active")
+})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

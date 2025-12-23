@@ -67,6 +67,8 @@ class EventControllerTest {
         createRequest = EventDto.Request.builder()
                 .title("Test Event")
                 .description("Test Description")
+                .recipientName("John Doe")
+                .relationship("Friend")
                 .eventDate(LocalDate.now().plusDays(30))
                 .eventType(Event.EventType.BIRTHDAY)
                 .isRecurring(false)
@@ -79,6 +81,8 @@ class EventControllerTest {
                 .id(1L)
                 .title("Test Event")
                 .description("Test Description")
+                .recipientName("John Doe")
+                .relationship("Friend")
                 .eventDate(LocalDate.now().plusDays(30))
                 .eventType(Event.EventType.BIRTHDAY)
                 .isRecurring(false)
@@ -122,6 +126,8 @@ class EventControllerTest {
         // Given
         EventDto.Request invalidRequest = EventDto.Request.builder()
                 .title("")  // 빈 제목
+                .recipientName("John Doe")
+                .relationship("Friend")
                 .eventDate(LocalDate.now().plusDays(30))
                 .eventType(Event.EventType.BIRTHDAY)
                 .build();
@@ -247,6 +253,8 @@ class EventControllerTest {
         EventDto.Request updateRequest = EventDto.Request.builder()
                 .title("Updated Event")
                 .description("Updated Description")
+                .recipientName("Jane Smith")
+                .relationship("Sister")
                 .eventDate(LocalDate.now().plusDays(40))
                 .eventType(Event.EventType.ANNIVERSARY_100)
                 .isRecurring(true)
@@ -256,6 +264,8 @@ class EventControllerTest {
                 .id(1L)
                 .title("Updated Event")
                 .description("Updated Description")
+                .recipientName("Jane Smith")
+                .relationship("Sister")
                 .eventDate(LocalDate.now().plusDays(40))
                 .eventType(Event.EventType.ANNIVERSARY_100)
                 .isRecurring(true)
@@ -481,6 +491,8 @@ class EventControllerTest {
         // Given
         EventDto.Request invalidRequest = EventDto.Request.builder()
                 .title("Test Event")
+                .recipientName("John Doe")
+                .relationship("Friend")
                 .eventDate(LocalDate.now().minusDays(1))  // 과거 날짜
                 .eventType(Event.EventType.BIRTHDAY)
                 .build();

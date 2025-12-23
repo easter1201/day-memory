@@ -138,17 +138,17 @@ class EmailServiceTest {
     void testBuildReminderEmailContent_VariousDays() {
         // Given & When & Then
         // 1일 전
-        String content1 = emailService.buildReminderEmailContent("생일", 1);
+        String content1 = emailService.buildReminderEmailContent("생일", 1, "테스트사용자");
         assertThat(content1).contains("D-1");
         assertThat(content1).contains("1일 남았습니다");
 
         // 30일 전
-        String content30 = emailService.buildReminderEmailContent("기념일", 30);
+        String content30 = emailService.buildReminderEmailContent("기념일", 30, "테스트사용자");
         assertThat(content30).contains("D-30");
         assertThat(content30).contains("30일 남았습니다");
 
         // 100일 전
-        String content100 = emailService.buildReminderEmailContent("결혼기념일", 100);
+        String content100 = emailService.buildReminderEmailContent("결혼기념일", 100, "테스트사용자");
         assertThat(content100).contains("D-100");
         assertThat(content100).contains("100일 남았습니다");
     }
@@ -210,7 +210,7 @@ class EmailServiceTest {
         int daysRemaining = 3;
 
         // When
-        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining);
+        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining, "테스트사용자");
 
         // Then
         assertThat(content).contains(eventTitle);
@@ -224,7 +224,7 @@ class EmailServiceTest {
         int daysRemaining = 5;
 
         // When
-        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining);
+        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining, "테스트사용자");
 
         // Then
         assertThat(content).contains("D-" + daysRemaining);
@@ -239,7 +239,7 @@ class EmailServiceTest {
         int daysRemaining = 7;
 
         // When
-        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining);
+        String content = emailService.buildReminderEmailContent(eventTitle, daysRemaining, "테스트사용자");
 
         // Then
         // 스타일 요소 확인

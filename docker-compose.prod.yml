@@ -1,5 +1,5 @@
-# Production environment Docker Compose configuration
-# Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# Production Docker Compose (RDS 사용)
+# AWS EC2에서 사용하는 설정
 
 version: '3.8'
 
@@ -31,6 +31,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: daymemory-backend
+    restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: prod
       DB_URL: jdbc:postgresql://postgres:5432/daymemory_prod
@@ -61,6 +63,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    networks:
+      - daymemory-network
 
   # Frontend service
   frontend:
@@ -109,6 +113,10 @@ services:
       - daymemory-network
     depends_on:
       - backend
+
+networks:
+  daymemory-network:
+    driver: bridge
 
 volumes:
   postgres_prod_data:

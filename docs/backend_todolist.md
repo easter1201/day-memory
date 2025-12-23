@@ -2,11 +2,11 @@
 
 ## 📌 전체 진행 상황
 
-- **완료**: 209개
+- **완료**: 231개
 - **진행중**: 0개
-- **대기**: 0개
-- **전체**: 209개
-- **진행률**: 100%
+- **대기**: 1개
+- **전체**: 232개
+- **진행률**: 99.6%
 
 ---
 
@@ -116,6 +116,12 @@
 - [x] 미구매 선물 목록 조회 API (GET /api/gifts?purchased=false)
 - [x] 카테고리별 선물 조회 API (GET /api/gifts?category={category})
 - [x] 선물 검색 기능 (GET /api/gifts/search?keyword={keyword})
+  - [x] PostgreSQL Full-Text Search 구현
+  - [x] pg_trgm 확장 설치 (트라이그램 검색)
+  - [x] GIN 인덱스 추가 (name, description, memo - 8개 인덱스)
+  - [x] SIMILARITY 함수 활용 (유사도 기반 검색)
+  - [x] 오타 허용 검색 (임계값 0.3 이상)
+  - [x] 검색 결과 유사도 순 정렬
 - [x] 선물 이미지 업로드 (로컬 파일 시스템, AWS S3 연동 준비)
 
 #### 엔티티 및 Repository
@@ -125,6 +131,8 @@
   - [x] user, event 관계 (ManyToOne)
 - [x] GiftItemRepository 구현
   - [x] N+1 문제 해결 (LEFT JOIN FETCH user, event)
+  - [x] searchByKeyword 쿼리 (ILIKE + SIMILARITY 정렬)
+  - [x] searchBySimilarity 쿼리 (유사도 0.3 이상, LIMIT 20)
 - [x] GiftCategory enum 정의
   - [x] FLOWER, JEWELRY, COSMETICS, FASHION, ELECTRONICS
   - [x] FOOD, EXPERIENCE, BOOK, HOBBY, OTHER
@@ -490,23 +498,32 @@
 ### 클라우드 배포
 
 #### AWS 설정
-- [ ] AWS EC2 인스턴스 설정
-  - [ ] 인스턴스 생성 (Ubuntu 또는 Amazon Linux)
-  - [ ] 보안 그룹 설정 (8080, 22 포트)
-  - [ ] Elastic IP 할당
-- [ ] AWS RDS (PostgreSQL) 설정
-  - [ ] RDS 인스턴스 생성
-  - [ ] 데이터베이스 설정
-  - [ ] 보안 그룹 설정 (5432 포트)
+- [x] AWS EC2 인스턴스 설정
+  - [x] 인스턴스 생성 (Ubuntu 24.04 LTS, t2.micro)
+  - [x] 보안 그룹 설정 (80, 8080, 22 포트)
+  - [x] 키 페어 생성 (daymemory-key.pem)
+  - [x] SSH 접속 및 Docker 설치
+- [x] AWS RDS (PostgreSQL) 설정
+  - [x] RDS 인스턴스 생성 (db.t3.micro, PostgreSQL 16.4)
+  - [x] 데이터베이스 설정 (daymemory DB)
+  - [x] 보안 그룹 설정 (5432 포트, EC2만 접근 허용)
+  - [x] RDS 엔드포인트 연결 확인
+  - [x] 테이블 자동 생성 (ddl-auto: update)
+- [x] 프로덕션 환경 설정
+  - [x] .env 파일 생성 (환경 변수 설정)
+  - [x] docker-compose.prod.yml 설정
+  - [x] Docker 컨테이너 배포
+  - [x] 헬스 체크 확인 (/actuator/health)
 - [ ] AWS S3 버킷 생성 (선택)
   - [ ] 파일 업로드용 버킷
   - [ ] IAM 역할 설정
 - [ ] 도메인 및 HTTPS 설정
   - [ ] Route 53 DNS 설정
   - [ ] SSL 인증서 발급 (Let's Encrypt)
-- [ ] Nginx 리버스 프록시 설정
-  - [ ] Nginx 설치
-  - [ ] 프록시 설정 (8080 → 80/443)
+- [x] Nginx 설정 (프론트엔드 호스팅)
+  - [x] Nginx 설치
+  - [x] 정적 파일 호스팅 (/var/www/daymemory)
+  - [x] API 프록시 설정 (/api → localhost:8080)
   - [ ] SSL 설정
 
 ---
@@ -527,10 +544,15 @@
   - [ ] 데이터베이스 일일 백업
   - [ ] S3 백업 저장
   - [ ] 복구 절차 문서화
-- [ ] 성능 튜닝
-  - [ ] 쿼리 최적화
-  - [ ] 인덱스 추가
-  - [ ] 캐싱 전략 (Redis)
+- [x] 성능 튜닝
+  - [x] 쿼리 최적화
+    - [x] N+1 문제 해결 (4개 Repository - Event, GiftItem, EventReminder, ReminderLog)
+    - [x] Fetch Join 적용 (User, Event, Reminders 관계)
+  - [x] 인덱스 추가
+    - [x] 기본 인덱스 (13개 - user_id, event_id, is_active, event_date 등)
+    - [x] Full-Text Search 인덱스 (8개 GIN 인덱스 - pg_trgm)
+    - [x] 총 21개 데이터베이스 인덱스 생성
+  - [ ] 캐싱 전략 (Redis - 선택)
 
 ---
 

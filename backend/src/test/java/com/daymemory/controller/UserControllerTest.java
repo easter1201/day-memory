@@ -104,7 +104,7 @@ class UserControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.email").value("test@example.com"))
-                .andExpect(jsonPath("$.name").value("Test User"));
+                .andExpect(jsonPath("$.nickname").value("Test User"));
 
         // Verify
         then(userService).should(times(1)).signup(any(UserDto.SignupRequest.class));
@@ -343,7 +343,7 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.email").value("test@example.com"))
-                .andExpect(jsonPath("$.name").value("Test User"));
+                .andExpect(jsonPath("$.nickname").value("Test User"));
 
         // Verify
         then(userService).should(times(1)).getCurrentUserId();
@@ -409,7 +409,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Updated Name"));
+                .andExpect(jsonPath("$.nickname").value("Updated Name"));
 
         // Verify
         then(userService).should(times(1)).getCurrentUserId();

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,20 +48,11 @@ public class RecurringEventService {
     }
 
     /**
-     * 모든 활성화된 반복 이벤트 조회
+     * 모든 활성화된 반복 이벤트 조회 (N+1 문제 방지)
      */
     private List<Event> findAllRecurringEvents() {
-        // 모든 이벤트 중 반복 이벤트만 필터링
-        List<Event> allEvents = eventRepository.findAll();
-        List<Event> recurringEvents = new ArrayList<>();
-
-        for (Event event : allEvents) {
-            if (Boolean.TRUE.equals(event.getIsRecurring()) && Boolean.TRUE.equals(event.getIsActive())) {
-                recurringEvents.add(event);
-            }
-        }
-
-        return recurringEvents;
+        // User와 Reminders를 fetch join으로 함께 조회 (101 queries → 1 query)
+        return eventRepository.findAllRecurringEventsWithReminders();
     }
 
     /**

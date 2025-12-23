@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate  # 운영 환경에서는 스키마 검증만 수행
+      ddl-auto: update  # 첫 배포시 테이블 생성, 이후 validate로 변경 권장
     show-sql: false
     properties:
       hibernate:
@@ -35,8 +35,8 @@ logging:
     org.hibernate.SQL: WARN
     org.springframework: INFO
   file:
-    path: /var/log/day-memory
-    name: /var/log/day-memory/application
+    path: /app/logs
+    name: /app/logs/application
 
 # Actuator 설정 (운영 환경)
 management:
