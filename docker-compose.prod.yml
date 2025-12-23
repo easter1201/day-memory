@@ -37,10 +37,10 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       DB_URL: jdbc:postgresql://postgres:5432/daymemory_prod
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost,http://localhost:3000}
-      # JVM optimization flags
+      # JVM optimization flags (t2.micro 최적화)
       JAVA_OPTS: >
-        -Xms512m
-        -Xmx1024m
+        -Xms256m
+        -Xmx512m
         -XX:+UseG1GC
         -XX:MaxGCPauseMillis=200
         -XX:+UseStringDeduplication
@@ -53,11 +53,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
-          memory: 1536M
-        reservations:
-          cpus: '1'
+          cpus: '0.5'
           memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
     logging:
       driver: "json-file"
       options:
