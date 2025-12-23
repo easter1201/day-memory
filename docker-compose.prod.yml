@@ -5,9 +5,7 @@ version: '3.8'
 
 services:
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: easter1201/day-memory-backend:latest
     container_name: daymemory-backend
     restart: unless-stopped
     environment:
@@ -64,17 +62,11 @@ services:
 
   # Frontend service
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        VITE_API_BASE_URL: ${FRONTEND_API_BASE_URL:-http://15.164.212.141/api}
+    image: easter1201/day-memory-frontend:latest
     container_name: daymemory-frontend
     restart: unless-stopped
     ports:
       - "3000:80"
-    environment:
-      VITE_API_BASE_URL: ${FRONTEND_API_BASE_URL:-http://15.164.212.141/api}
     deploy:
       resources:
         limits:
