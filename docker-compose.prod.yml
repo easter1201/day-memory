@@ -13,7 +13,7 @@ services:
       # RDS 엔드포인트 사용
       DB_URL: jdbc:postgresql://daymemory-db.crqya82ugsxx.ap-northeast-2.rds.amazonaws.com:5432/daymemory
       DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-12345678}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://3.37.123.125}
       JWT_SECRET: ${JWT_SECRET}
       JWT_ACCESS_EXPIRATION: ${JWT_ACCESS_EXPIRATION:-3600000}
