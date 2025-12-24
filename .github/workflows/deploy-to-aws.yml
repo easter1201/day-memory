@@ -24,13 +24,26 @@ jobs:
             set -e
             
             echo "🚀 Starting deployment..."
+            echo "Current user: $(whoami)"
+            echo "Current directory: $(pwd)"
+            echo "Available docker-compose version: $(docker-compose --version || echo 'docker-compose not found')"
+            echo "Available docker version: $(docker --version || echo 'docker not found')"
             
             # Navigate to project directory
-            cd ~/day-memory
+            if [ -d ~/day-memory ]; then
+              echo "✅ Project directory found: ~/day-memory"
+              cd ~/day-memory
+            else
+              echo "❌ Project directory not found: ~/day-memory"
+              echo "Creating directory..."
+              mkdir -p ~/day-memory
+              cd ~/day-memory
+              git clone https://github.com/easter1201/day-memory.git .
+            fi
             
             # Pull latest code from main branch
             echo "📥 Pulling latest code from GitHub..."
-            git pull origin main
+            git pull origin main || true
             
             # Stop running containers
             echo "🛑 Stopping existing containers..."

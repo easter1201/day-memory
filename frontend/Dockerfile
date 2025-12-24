@@ -13,14 +13,17 @@ RUN npm ci
 COPY . .
 
 # Build arguments for environment variables
-ARG VITE_API_BASE_URL=http://localhost:8080/api
+ARG VITE_API_BASE_URL=http://3.37.123.125:8080/api
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
-# Build the application
-RUN npm run build
+# Build the application (use vite directly, skip TypeScript)
+RUN npx vite build
 
 # Production stage - Nginx
 FROM nginx:alpine
+
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
