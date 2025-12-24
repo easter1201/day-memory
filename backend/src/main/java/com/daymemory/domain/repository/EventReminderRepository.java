@@ -30,7 +30,7 @@ public interface EventReminderRepository extends JpaRepository<EventReminder, Lo
            "WHERE e.user.id = :userId " +
            "AND er.isActive = true " +
            "AND e.isActive = true " +
-           "AND CAST((e.eventDate - :today) AS int) = er.daysBeforeEvent")
+           "AND FUNCTION('DATE_PART', 'day', (e.eventDate - :today)) = er.daysBeforeEvent")
     List<EventReminder> findTodayRemindersByUserId(
             @Param("userId") Long userId,
             @Param("today") LocalDate today);
