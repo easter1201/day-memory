@@ -79,16 +79,16 @@ JWT_REFRESH_EXPIRATION=604800000
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=587
 MAIL_USERNAME=kite1201kr@gmail.com
-MAIL_PASSWORD=ckimofxhgocstvwu
+MAIL_PASSWORD=your-email-app-password-here
 
 # AI Configuration
 AI_PROVIDER=gemini
-AI_API_KEY=AIzaSyAnBXOppRPYbiiwmOihxnX8PDuXka9gTF0
+AI_API_KEY=your-gemini-api-key-here
 AI_MODEL=gemini-2.5-flash
 
 # Naver Shopping
 NAVER_CLIENT_ID=iw9XgEVwrWdEIPtVGEDl
-NAVER_CLIENT_SECRET=DnfZhivL2M
+NAVER_CLIENT_SECRET=your-naver-client-secret-here
 
 # Server Configuration
 SERVER_PORT=8080
