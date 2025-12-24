@@ -48,7 +48,9 @@ export const LoginPage = () => {
       dispatch(setCredentials(response));
       
       toast.success("로그인에 성공했습니다!");
-      navigate("/");
+      
+      // 페이지 전체를 리로드하여 모든 컴포넌트를 새로 마운트
+      window.location.href = "/";
     } catch (error: any) {
       const message =
         error?.data?.message || "로그인에 실패했습니다. 다시 시도해주세요.";
