@@ -1,5 +1,7 @@
 package com.daymemory.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -7,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * Spring Security 관련 유틸리티 클래스
  */
 public class SecurityUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(SecurityUtils.class);
 
     private SecurityUtils() {
         // 유틸리티 클래스는 인스턴스화 방지
@@ -29,7 +33,9 @@ public class SecurityUtils {
 
         if (principal instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) principal;
-            return userDetails.getId();
+            Long userId = userDetails.getId();
+            log.debug("Current authenticated user ID: {} (email: {})", userId, userDetails.getUsername());
+            return userId;
         }
 
         throw new IllegalStateException("인증 정보를 찾을 수 없습니다.");

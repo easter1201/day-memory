@@ -30,6 +30,9 @@ const authSlice = createSlice({
 
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      
+      // RTK Query 캐시 초기화를 위해 전체 localStorage 정리
+      localStorage.clear();
     },
     updateUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;

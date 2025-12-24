@@ -5,6 +5,11 @@ import type { RootState } from "../../store";
 import { logout } from "../../store/slices/authSlice";
 import { cn } from "../../utils/cn";
 import { ThemeToggle } from "../common/ThemeToggle";
+import { authApi } from "../../store/services/authApi";
+import { dashboardApi } from "../../store/services/dashboardApi";
+import { eventsApi } from "../../store/services/eventsApi";
+import { giftsApi } from "../../store/services/giftsApi";
+import { recommendationsApi } from "../../store/services/recommendationsApi";
 
 export const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -14,6 +19,14 @@ export const Header = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const handleLogout = () => {
+    // RTK Query 캐시 모두 초기화
+    dispatch(authApi.util.resetApiState());
+    dispatch(dashboardApi.util.resetApiState());
+    dispatch(eventsApi.util.resetApiState());
+    dispatch(giftsApi.util.resetApiState());
+    dispatch(recommendationsApi.util.resetApiState());
+    
+    // 로그아웃 처리
     dispatch(logout());
     navigate("/login");
   };
