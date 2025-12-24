@@ -20,7 +20,11 @@ export const RecommendationResultPage = () => {
   // state로 전달된 추천 결과 확인
   const stateData = location.state as { recommendation?: any; request?: any } | null;
 
-  const { data: recommendation, isLoading, error, refetch } = useGetRecommendationByIdQuery(Number(id));
+  // id가 있을 때만 API 호출
+  const { data: recommendation, isLoading, error, refetch } = useGetRecommendationByIdQuery(
+    Number(id),
+    { skip: !id || isNaN(Number(id)) } // id가 없거나 NaN이면 쿼리 skip
+  );
   const [createGift, { isLoading: isCreatingGift }] = useCreateGiftMutation();
   const [savedGiftIds, setSavedGiftIds] = useState<Set<number>>(new Set());
 
