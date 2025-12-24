@@ -67,6 +67,13 @@ public class GiftItemService {
     public GiftItemDto.Response getGiftItemById(Long giftId) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 선물만 조회 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!giftItem.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+        
         return GiftItemDto.Response.from(giftItem);
     }
 
@@ -81,6 +88,12 @@ public class GiftItemService {
     public GiftItemDto.Response updateGiftItem(Long giftId, GiftItemDto.Request request) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 선물만 수정 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!giftItem.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
 
         giftItem.update(
                 request.getName(),
@@ -97,6 +110,12 @@ public class GiftItemService {
     public GiftItemDto.Response togglePurchaseStatus(Long giftId) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 선물만 수정 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!giftItem.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
 
         if (giftItem.getIsPurchased()) {
             giftItem.markAsNotPurchased();
@@ -111,6 +130,12 @@ public class GiftItemService {
     public void deleteGiftItem(Long giftId) {
         GiftItem giftItem = giftItemRepository.findById(giftId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GIFT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 선물만 삭제 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!giftItem.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
 
         // 이 선물과 연결된 RecommendedGiftItem의 연결 해제 (최적화: findAll() 대신 findBySavedGiftId() 사용)
         List<RecommendedGiftItem> linkedRecommendations = recommendedGiftItemRepository.findBySavedGiftId(giftId);

@@ -76,6 +76,13 @@ public class EventService {
     public EventDto.Response getEvent(Long eventId) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 이벤트만 조회 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!event.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+        
         return EventDto.Response.from(event);
     }
 
@@ -83,6 +90,12 @@ public class EventService {
     public EventDto.Response updateEvent(Long eventId, EventDto.Request request) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 이벤트만 수정 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!event.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
 
         event.update(
                 request.getTitle(),
@@ -111,6 +124,13 @@ public class EventService {
     public void deleteEvent(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 이벤트만 삭제 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!event.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
+        
         event.deactivate();
     }
 
@@ -128,6 +148,12 @@ public class EventService {
     public EventDto.Response updateReminders(Long eventId, EventDto.UpdateReminderRequest request) {
         Event event = eventRepository.findByIdWithUserAndReminders(eventId)
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 이벤트만 수정 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!event.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
 
         updateEventReminders(event, request.getReminderDays());
 
@@ -138,6 +164,12 @@ public class EventService {
     public EventDto.Response toggleTracking(Long eventId, Boolean isTracking) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+        
+        // 권한 체크: 본인의 이벤트만 수정 가능
+        Long currentUserId = com.daymemory.security.SecurityUtils.getCurrentUserId();
+        if (!event.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
 
         event.setTracking(isTracking);
 
