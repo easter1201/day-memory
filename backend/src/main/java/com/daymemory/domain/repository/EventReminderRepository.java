@@ -24,14 +24,11 @@ public interface EventReminderRepository extends JpaRepository<EventReminder, Lo
            "WHERE er.daysBeforeEvent = :days AND er.isActive = true")
     List<EventReminder> findAllActiveRemindersByDays(@Param("days") Integer days);
 
-    // N+1 문제 방지: Event를 fetch join으로 함께 조회
+    // 활성화된 리마인더와 이벤트 조회 (Java에서 날짜 필터링)
     @Query("SELECT er FROM EventReminder er " +
            "JOIN FETCH er.event e " +
            "WHERE e.user.id = :userId " +
            "AND er.isActive = true " +
-           "AND e.isActive = true " +
-           "AND FUNCTION('DATE_PART', 'day', (e.eventDate - :today)) = er.daysBeforeEvent")
-    List<EventReminder> findTodayRemindersByUserId(
-            @Param("userId") Long userId,
-            @Param("today") LocalDate today);
+           "AND e.isActive = true")
+    List<EventReminder> findActiveRemindersByUserId(@Param("userId") Long userId);
 }

@@ -108,11 +108,18 @@ public class DashboardService {
     private List<DashboardDto.TodayReminderDto> getTodayReminders(Long userId, LocalDate today) {
         log.info("getTodayReminders - userId: {}, today: {}", userId, today);
 
-        List<EventReminder> todayReminders = eventReminderRepository.findTodayRemindersByUserId(userId, today);
+        // 모든 활성 리마인더 조회 후 Java에서 필터링
+        List<EventReminder> allReminders = eventReminderRepository.findActiveRemindersByUserId(userId);
 
-        log.info("getTodayReminders - found {} reminders", todayReminders.size());
+        log.info("getTodayReminders - found {} total active reminders", allReminders.size());
 
-        List<DashboardDto.TodayReminderDto> result = todayReminders.stream()
+        List<DashboardDto.TodayReminderDto> result = allReminders.stream()
+                .filter(reminder -> {
+                    Event event = reminder.getEvent();
+                    long daysUntilEvent = ChronoUnit.DAYS.between(today, event.getEventDate());
+                    // 오늘 발송해야 하는 리마인더 필터링
+                    return daysUntilEvent == reminder.getDaysBeforeEvent();
+                })
                 .map(reminder -> {
                     Event event = reminder.getEvent();
                     long daysUntilEvent = ChronoUnit.DAYS.between(today, event.getEventDate());
