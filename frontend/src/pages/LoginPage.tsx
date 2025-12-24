@@ -9,6 +9,10 @@ import { Button } from "../components/ui/Button";
 import { useLoginMutation } from "../store/services/authApi";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../store/slices/authSlice";
+import { dashboardApi } from "../store/services/dashboardApi";
+import { eventsApi } from "../store/services/eventsApi";
+import { giftsApi } from "../store/services/giftsApi";
+import { recommendationsApi } from "../store/services/recommendationsApi";
 
 const loginSchema = z.object({
   email: z.string().email("유효한 이메일을 입력해주세요"),
@@ -33,7 +37,16 @@ export const LoginPage = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await login(data).unwrap();
+      
+      // 이전 사용자 데이터 캐시 완전히 제거
+      dispatch(dashboardApi.util.resetApiState());
+      dispatch(eventsApi.util.resetApiState());
+      dispatch(giftsApi.util.resetApiState());
+      dispatch(recommendationsApi.util.resetApiState());
+      
+      // 새 사용자 인증 정보 설정
       dispatch(setCredentials(response));
+      
       toast.success("로그인에 성공했습니다!");
       navigate("/");
     } catch (error: any) {
